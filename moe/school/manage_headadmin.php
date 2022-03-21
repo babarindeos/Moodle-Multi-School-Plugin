@@ -48,7 +48,7 @@
  echo "<h2>School Information</h2>";
 
 
- // nav bar
+ // navigation  bar
  include_once($CFG->dirroot.'/local/newwaves/nav/moe_main_nav.php');
 
 
