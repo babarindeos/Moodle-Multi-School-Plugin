@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/newwaves/db" VERSION="20220308" COMMENT="XMLDB file for Local Message"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+
+    <!-- Newwaves Schools //-->
+    <TABLE NAME="newwaves_schools" COMMENT="each record is a school">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="name" TYPE="text" NOTNULL="true"/>
+        <FIELD NAME="type" TYPE="text" NOTNULL="true"/>
+        <FIELD NAME="state" TYPE="text" NOTNULL="true"/>
+        <FIELD NAME="lga" TYPE="text" NOTNULL="true"/>
+        <FIELD NAME="address" TYPE="text" NOTNULL="true"/>
+        <FIELD NAME="creator" TYPE="text" NOTNULL="true"/>
+        <FIELD NAME="timestamp" TYPE="text" NOTNULL="true"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <!--  End of Newwaves Schools//-->
+
+    <!--Newwaves School Users //-->
+    <TABLE NAME="newwaves_schools_users" COMMENT="each record is the head of a school">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="schoolid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="title" TYPE="text" LENGTH="50" NOTNULL="true" />
+        <FIELD NAME="surname" TYPE="text" LENGTH="50" NOTNULL="true" />
+        <FIELD NAME="firstname" TYPE="text" LENGTH="50" NOTNULL="true" />
+        <FIELD NAME="middlename" TYPE="text" LENGTH="50" NOTNULL="true" />
+        <FIELD NAME="gender" TYPE="text" LENGTH="50" NOTNULL="true" />
+        <FIELD NAME="email" TYPE="text" LENGTH="50" NOTNULL="true" />
+        <FIELD NAME="phone" TYPE="text" LENGTH="50" NOTNULL="true" />
+        <FIELD NAME="role" TYPE="text" LENGTH="50" NOTNULL="true" />
+        <FIELD NAME="timestamp" TYPE="datetime" />
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <!-- Newwaves School Users//-->
+
+
+    <!--Newwaves School Teacher //-->
+    <TABLE NAME="newwaves_schools_teachers" COMMENT="each record is the teacher of a school">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="schoolid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="qualifications" TYPE="text" LENGTH="1000" NOTNULL="true" />
+        <FIELD NAME="timestamp" TYPE="datetime" />
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <!-- Newwaves School Teacher//-->
+
+
+    <!--Newwaves School Students //-->
+    <TABLE NAME="newwaves_schools_students" COMMENT="each record is the student of a school">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="schoolid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="class" TYPE="text" LENGTH="50" NOTNULL="true" />
+        <FIELD NAME="timestamp" TYPE="datetime" />
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <!-- Newwaves School Students//-->
+
+
+  </TABLES>
+</XMLDB>
