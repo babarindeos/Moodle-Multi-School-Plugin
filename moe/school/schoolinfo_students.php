@@ -21,34 +21,76 @@
  * @var stdClass $plugin
  */
 
- require_once(__DIR__.'/../../../../config.php');
 
+require_once(__DIR__.'/../../../../config.php');
 
- require_once($CFG->dirroot.'/local/newwaves/classes/form/create_school_student.php');
- require_once($CFG->dirroot.'/local/newwaves/functions/schooltypes.php');
- require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
- require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
- require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
-
-
- // ------------------     Form ------------------------------------------------
-
-   // // Get School Id
-   // if (!isset($_GET['q']) || $_GET['q']==''){
-   //        redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php');
-   // }
-   //
-   // $_GET_URL_school_id = explode("-",htmlspecialchars(strip_tags($_GET['q'])));
-   // $_GET_URL_school_id = $_GET_URL_school_id[1];
+require_login();
+require_once($CFG->dirroot.'/local/newwaves/classes/form/create_school_student.php');
+require_once($CFG->dirroot.'/local/newwaves/functions/schooltypes.php');
+require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
+require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
+require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
 
 
 //------------------------------------------------------------------------------
 
  global $DB;
 
- $PAGE->set_url(new moodle_url('/local/newwaves/moe/school/schoolinfo_student.php'));
- $PAGE->set_context(\context_system::instance());
- $PAGE->set_title('Create School Student');
+$PAGE->set_url(new moodle_url('/local/newwaves/moe/school/schoolinfo_student.php'));
+$PAGE->set_context(\context_system::instance());
+$PAGE->set_title('Create School Student');
+
+
+$mform = new createSchoolStudent();
+
+
+if ($mform->is_cancelled()){
+    redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php', 'No School Student is created. You cancelled the operation.');
+
+}else if($fromform = $mform->get_data()){
+    echo 'Get Data ';
+    $recordtoinsert = new stdClass();
+    $recordtoinsert->schoolid = $fromform->school_id;
+    $recordtoinsert->title = $fromform->title;
+    $recordtoinsert->surname = $fromform->surname;
+    $recordtoinsert->firstname = $fromform->firstname;
+    $recordtoinsert->middlename = $fromform->middlename;
+    $recordtoinsert->gender = $fromform->gender;
+    $recordtoinsert->email = $fromform->email;
+    $recordtoinsert->phone = $fromform->phone;
+    $recordtoinsert->role = "student";
+
+    $DB->insert_record('newwaves_schools_users', $recordtoinsert);
+
+    // write to moodle_users
+    $createlogin = new stdClass();
+    $createlogin->auth = 'manual';
+    $createlogin->confirmed = '1';
+    $createlogin->policyagreed = '0';
+    $createlogin->deleted = '0';
+    $createlogin->suspended = '0';
+    $createlogin->mnethostid = '1';
+    $createlogin->username = $fromform->email;
+    $createlogin->password = md5('12345678');
+    $createlogin->firstname = $fromform->firstname;
+    $createlogin->lastname = $fromform->surname;
+    $createlogin->email = $fromform->email;
+
+    $DB->insert_record("user", $createlogin);
+
+    $schoolinfo_href = "manage_students.php?q=".mask($fromform->school_id);
+    $newHeadAdmin = $fromform->surname.' '.$fromform->firstname;
+    redirect($CFG->wwwroot."/local/newwaves/moe/school/{$schoolinfo_href}", "A Student with the name <strong>{$newHeadAdmin}</strong>.");
+
+}else {
+    // Get School Id if not redirect page
+    if (!isset($_GET['q']) || $_GET['q'] == '') {
+        redirect($CFG->wwwroot . '/local/newwaves/moe/manage_schools.php', 'Sorry, the page is not fully formed with the required information.');
+    }
+        $_GET_URL_school_id = explode("-", htmlspecialchars(strip_tags($_GET['q'])));
+        $_GET_URL_school_id = $_GET_URL_school_id[1];
+
+}
 
  echo $OUTPUT->header();
  echo "<h2>School Information</h2>";
@@ -57,9 +99,18 @@
  // nav bar
  include_once($CFG->dirroot.'/local/newwaves/nav/moe_main_nav.php'); //hello
 
+// retrieve school information from DB
+$sql = "SELECT * from {newwaves_schools} where id={$_GET_URL_school_id}";
+$school =  $DB->get_records_sql($sql);
 
-
-
+foreach($school as $row){
+    $school_name = $row->name;
+    $school_type = schoolTypes($row->type);
+    $lga = $row->lga;
+    $address = $row->address;
+    echo "<h4>{$school_name}</h4>";
+    echo "<div>{$address}, {$lga}</div>";
+}
 
   ?>
 
@@ -82,44 +133,20 @@
           <?php
 
 
-                  $mform = new createSchoolStudent();
 
+          // Get School Id if not redirect page
+          if (!isset($_GET['q']) || $_GET['q']==''){
+              redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php', 'Sorry, the page is not fully formed with the required information.');
+          }else{
+              $_GET_URL_school_id = explode("-",htmlspecialchars(strip_tags($_GET['q'])));
+              $_GET_URL_school_id = $_GET_URL_school_id[1];
+          }
 
-                  if ($mform->is_cancelled()){
-                     redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php', 'No School Student is created. You cancelled the operation.');
+          $data_packet = array("school_id"=>$_GET_URL_school_id);
 
-                  }else if($fromform = $mform->get_data()){
-                     echo 'Get Data ';
-                     $recordtoinsert = new stdClass();
-                     $recordtoinsert->schoolid = $fromform->school_id;
-                     $recordtoinsert->title = $fromform->title;
-                     $recordtoinsert->surname = $fromform->surname;
-                     $recordtoinsert->firstname = $fromform->firstname;
-                     $recordtoinsert->middlename = $fromform->middlename;
-                     $recordtoinsert->gender = $fromform->gender;
-                     $recordtoinsert->email = $fromform->email;
-                     $recordtoinsert->phone = $fromform->phone;
-                     $recordtoinsert->role = "headadmin";
+          $mform->set_data($data_packet);
+          $mform->display();
 
-                     $DB->insert_record('newwaves_schools_heads', $recordtoinsert);
-
-
-
-
-                  }else{
-                      // Get School Id if not redirect page
-                      if (!isset($_GET['q']) || $_GET['q']==''){
-                             redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php', 'Sorry, the page is not fully formed with the required information.');
-                      }else{
-                            $_GET_URL_school_id = explode("-",htmlspecialchars(strip_tags($_GET['q'])));
-                            $_GET_URL_school_id = $_GET_URL_school_id[1];
-                      }
-
-                      $data_packet = array("school_id"=>$_GET_URL_school_id);
-
-                      $mform->set_data($data_packet);
-                      $mform->display();
-                  }
 
 
           ?>
