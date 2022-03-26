@@ -15,8 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package     local_message
- * @author      Kristian
+ * @package     schoolinfo
+ * @author      Seyibabs
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @var stdClass $plugin
  */
@@ -38,6 +38,7 @@
  require_once($CFG->dirroot.'/local/newwaves/functions/schooltypes.php');
  require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
  require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
+ require_once($CFG->dirroot.'/local/newwaves/lib/custom.css.php');
  require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
 
  global $DB;
@@ -47,7 +48,8 @@
  $PAGE->set_title('School Information');
 
  echo $OUTPUT->header();
- echo "<h2>School Information</h2>";
+ echo "<h2>School Information <small>[ Dashboard ]</small></h2>";
+ $active_menu_item = 'dashboard';
 
 
  // nav bar

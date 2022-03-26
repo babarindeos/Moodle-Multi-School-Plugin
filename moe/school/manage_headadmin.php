@@ -46,7 +46,8 @@ global $DB;
  $PAGE->set_title('School Information');
 
  echo $OUTPUT->header();
- echo "<h2>School Information</h2>";
+ echo "<h2>School Information <small>[ Head Admin ]</small></h2>";
+ $active_menu_item = 'headadmin';
 
 
  // navigation  bar
@@ -76,7 +77,7 @@ global $DB;
  ?>
  <!-- end of navigation //-->
 
- <div class="row d-flex justify-content-right mt-2">
+ <div class="row d-flex justify-content-right mt-2 mb-4">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <?php
            $create_head_href = "create_school_head.php?q=".mask($_GET_URL_school_id);

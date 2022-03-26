@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle Course Rollover Plugin
+// This file is part of Newwaves Integrator Plugin
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,8 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package     local_message
- * @author      Kristian
+ * @package     create_school_head
+ * @author      Seyibabs
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @var stdClass $plugin
  */
@@ -60,6 +60,7 @@
       $recordtoinsert->email = $fromform->email;
       $recordtoinsert->phone = $fromform->phone;
       $recordtoinsert->role = "headadmin";
+      $recordtoinsert->timestamp = time();
 
       $DB->insert_record('newwaves_schools_users', $recordtoinsert);
 
@@ -103,7 +104,8 @@
 
 
  echo $OUTPUT->header();
- echo "<h2>School Information</h2>";
+ echo "<h2>School Information <small>[ Head Admin]</small></h2>";
+ $active_menu_item = "headadmin";
 
 
  // nav bar

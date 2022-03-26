@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle Course Rollover Plugin
+// This file is part of Newwaves Integrator Plugin
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,8 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package     local_message
- * @author      Kristian
+ * @package     create_school_admin
+ * @author      Seyibabs
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @var stdClass $plugin
  */
@@ -35,8 +35,8 @@ require_login();
  global $DB;
 
 $PAGE->set_url(new moodle_url('/local/newwaves/moe/school/schoolinfo_schooladmin.php'));
- $PAGE->set_context(\context_system::instance());
- $PAGE->set_title('Create School Head');
+$PAGE->set_context(\context_system::instance());
+$PAGE->set_title('Create School Admin');
 
 
 $mform = new createSchoolAdmin();
@@ -79,7 +79,7 @@ if ($mform->is_cancelled()){
 
     $schoolinfo_href = "manage_schooladmin.php?q=".mask($fromform->school_id);
     $newHeadAdmin = $fromform->surname.' '.$fromform->firstname;
-    redirect($CFG->wwwroot."/local/newwaves/moe/school/{$schoolinfo_href}", "A School Admin with the name <strong>{$newHeadAdmin}</strong>.");
+    redirect($CFG->wwwroot."/local/newwaves/moe/school/{$schoolinfo_href}", "A School Admin with the name <strong>{$newHeadAdmin}</strong> has been successfully created.");
 
 
 }else{
@@ -98,7 +98,8 @@ if ($mform->is_cancelled()){
 
 
 echo $OUTPUT->header();
-echo "<h2>School Information</h2>";
+echo "<h2>School Information <small>[ School Admin ]</small></h2>";
+$active_menu_item = "schooladmins";
 
 
 // nav bar

@@ -15,8 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package     local_message
- * @author      Kristian
+ * @package     manage_schooladmin
+ * @author      Seyibabs
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @var stdClass $plugin
  */
@@ -46,7 +46,8 @@ global $DB;
  $PAGE->set_title('School Information');
 
  echo $OUTPUT->header();
- echo "<h2>School Information</h2>";
+ echo "<h2>School Information <small>[ Manage School Admin ]</small></h2>";
+ $active_menu_item = 'schooladmins';
 
 
  // navigation  bar
@@ -76,10 +77,10 @@ global $DB;
  ?>
  <!-- end of navigation //-->
 
- <div class="row d-flex justify-content-right mt-2">
+ <div class="row d-flex justify-content-right mt-2 mb-4">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <?php
-           $create_head_href = "schoolinfo_schooladmin.php?q=".mask($_GET_URL_school_id);
+           $create_head_href = "create_school_admin.php?q=".mask($_GET_URL_school_id);
         ?>
         <button onClick="window.location='<?php echo $create_head_href; ?>'" class='btn btn-sm btn-primary rounded'>Create School Admin</button>
     </div>

@@ -1,8 +1,8 @@
 <?php
 
 /**
- * @package     local_message
- * @author      Kristian
+ * @package     create_school_admin
+ * @author      Seyibabs
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
  */
@@ -39,13 +39,13 @@
 
         // Firstname
         $mform->addElement('text', 'firstname', 'Firstname', $name_attributes);
-        $mform->setType('text', PARAM_NOTAGS);
+        $mform->setType('firstname', PARAM_NOTAGS);
         $mform->setDefault('firstname', '');
 
 
         // Middlename
         $mform->addElement('text', 'middlename', 'Middlename');
-        $mform->setType('text', PARAM_NOTAGS);
+        $mform->setType('middlename', PARAM_NOTAGS);
         $mform->setDefault('middlename', '');
 
         //gender

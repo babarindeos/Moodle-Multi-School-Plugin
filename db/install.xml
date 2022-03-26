@@ -9,13 +9,14 @@
     <TABLE NAME="newwaves_schools" COMMENT="each record is a school">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="name" TYPE="text" NOTNULL="true"/>
-        <FIELD NAME="type" TYPE="text" NOTNULL="true"/>
-        <FIELD NAME="state" TYPE="text" NOTNULL="true"/>
-        <FIELD NAME="lga" TYPE="text" NOTNULL="true"/>
-        <FIELD NAME="address" TYPE="text" NOTNULL="true"/>
-        <FIELD NAME="creator" TYPE="text" NOTNULL="true"/>
-        <FIELD NAME="timestamp" TYPE="text" NOTNULL="true"/>
+        <FIELD NAME="name" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="type" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="state" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="lga" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="address" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="creator" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="timecreated" TYPE="int" NOTNULL="true" LENGTH="50" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" NOTNULL="true" LENGTH="50" DEFAULT="0" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -36,11 +37,15 @@
         <FIELD NAME="email" TYPE="text" LENGTH="50" NOTNULL="true" />
         <FIELD NAME="phone" TYPE="text" LENGTH="50" NOTNULL="true" />
         <FIELD NAME="role" TYPE="text" LENGTH="50" NOTNULL="true" />
-        <FIELD NAME="timestamp" TYPE="datetime" />
+        <FIELD NAME="timecreated" TYPE="int" NOTNULL="true" LENGTH="50" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" NOTNULL="true" LENGTH="50" DEFAULT="0" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
+      <INDEXES>
+        <INDEX NAME="email" UNIQUE="true" FIELDS="email"/>
+      </INDEXES>
     </TABLE>
     <!-- Newwaves School Users//-->
 
@@ -52,11 +57,15 @@
         <FIELD NAME="schoolid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="qualifications" TYPE="text" LENGTH="1000" NOTNULL="true" />
-        <FIELD NAME="timestamp" TYPE="datetime" />
+        <FIELD NAME="timecreated" TYPE="int" NOTNULL="true" LENGTH="50" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" NOTNULL="true" LENGTH="50" DEFAULT="0" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
+      <INDEXES>
+        <INDEX NAME="userid" UNIQUE="true" FIELDS="userid"/>
+      </INDEXES>
     </TABLE>
     <!-- Newwaves School Teacher//-->
 
@@ -68,11 +77,15 @@
         <FIELD NAME="schoolid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="class" TYPE="text" LENGTH="50" NOTNULL="true" />
-        <FIELD NAME="timestamp" TYPE="datetime" />
+        <FIELD NAME="timecreated" TYPE="int" NOTNULL="true" LENGTH="50" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" NOTNULL="true" LENGTH="50" DEFAULT="0" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
+      <INDEXES>
+        <INDEX NAME="userid" UNIQUE="true" FIELDS="userid"/>
+      </INDEXES>
     </TABLE>
     <!-- Newwaves School Students//-->
 
