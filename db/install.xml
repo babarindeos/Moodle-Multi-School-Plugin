@@ -24,6 +24,8 @@
     </TABLE>
     <!--  End of Newwaves Schools//-->
 
+
+
     <!--Newwaves School Users //-->
     <TABLE NAME="newwaves_schools_users" COMMENT="each record is the head of a school">
       <FIELDS>
@@ -37,6 +39,7 @@
         <FIELD NAME="email" TYPE="text" LENGTH="50" NOTNULL="true" />
         <FIELD NAME="phone" TYPE="text" LENGTH="50" NOTNULL="true" />
         <FIELD NAME="role" TYPE="text" LENGTH="50" NOTNULL="true" />
+        <FIELD NAME="creator" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="timecreated" TYPE="int" NOTNULL="true" LENGTH="50" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timemodified" TYPE="int" NOTNULL="true" LENGTH="50" DEFAULT="0" SEQUENCE="false"/>
       </FIELDS>
@@ -48,6 +51,7 @@
       </INDEXES>
     </TABLE>
     <!-- Newwaves School Users//-->
+
 
 
     <!--Newwaves School Teacher //-->
@@ -68,6 +72,7 @@
       </INDEXES>
     </TABLE>
     <!-- Newwaves School Teacher//-->
+
 
 
     <!--Newwaves School Students //-->
