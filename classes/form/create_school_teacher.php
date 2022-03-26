@@ -39,13 +39,13 @@
 
         // Firstname
         $mform->addElement('text', 'firstname', 'Firstname', $name_attributes);
-        $mform->setType('text', PARAM_NOTAGS);
+        $mform->setType('firstname', PARAM_NOTAGS);
         $mform->setDefault('firstname', '');
 
 
         // Middlename
         $mform->addElement('text', 'middlename', 'Middlename');
-        $mform->setType('text', PARAM_NOTAGS);
+        $mform->setType('middlename', PARAM_NOTAGS);
         $mform->setDefault('middlename', '');
 
         //gender
