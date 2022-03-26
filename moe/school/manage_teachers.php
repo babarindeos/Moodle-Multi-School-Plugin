@@ -80,7 +80,7 @@ global $DB;
  <div class="row d-flex justify-content-right mt-2 mb-4">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <?php
-           $create_head_href = "schoolinfo_teachers.php?q=".mask($_GET_URL_school_id);
+           $create_head_href = "create_school_teacher.php?q=".mask($_GET_URL_school_id);
         ?>
         <button onClick="window.location='<?php echo $create_head_href; ?>'" class='btn btn-sm btn-primary rounded'>Create School Teacher</button>
     </div>
@@ -126,7 +126,7 @@ global $DB;
             echo "<tr>";
                 echo "<td class='text-center'>{$sn}.</td>";
                 echo "<td class='text-left'>{$title} {$row->surname} {$row->firstname}</td>";
-                echo "<td class='text-left'>{$row->email} {$row->firstname}</td>";
+                echo "<td class='text-left'>{$row->email} </td>";
                 echo "<td class='text-left'>{$row->phone}</td>";
                 echo "<td class='text-center'>{$btnEdit} {$btnDelete}</td>";
             echo "</tr>";
