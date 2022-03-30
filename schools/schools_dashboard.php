@@ -22,13 +22,15 @@
  */
 
  require_once(__DIR__.'/../../../config.php');
+require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
  require_login();
- $PAGE->set_url(new moodle_url('/local/newwaves/moe/schools_dashboard.php'));
+ $PAGE->set_url(new moodle_url('/local/newwaves/schools/schools_dashboard.php'));
  $PAGE->set_context(\context_system::instance());
- $PAGE->set_title('Ministry of Education Dashboard');
+ $PAGE->set_title('School Dashboard');
+$viewHref = "school/schoolinfo.php?q=".mask(1);
 
  echo $OUTPUT->header();
- echo "<div class='mb-5'><h2>Ministry of Education Dashboard</h2></div>";
+ echo "<div class='mb-5'><h2>School Dashboard</h2></div>";
 
 
  // row 1
@@ -37,8 +39,8 @@
     // col 1
     echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 px-1 py-1 text-center'
           style='border:1px solid #f1f1f1;background-color:#58D68D;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
-          href='manage_schools.php' title='Manage Schools'>";
-              echo "<h2 class='mt-2'>Schools</h2>";
+          href='{$viewHref}' title='Manage Schools'>";
+              echo "<h2 class='mt-2'>School info</h2>";
     echo "</a></div>";
     // end of col 1
 

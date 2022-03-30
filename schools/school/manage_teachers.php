@@ -50,10 +50,6 @@ global $DB;
  $active_menu_item = "teachers";
 
 
- // navigation  bar
- include_once($CFG->dirroot.'/local/newwaves/nav/moe_main_nav.php');
-
-
  // retrieve school information from DB
  $sql = "SELECT * from {newwaves_schools} where id={$_GET_URL_school_id}";
  $school =  $DB->get_records_sql($sql);
@@ -73,16 +69,16 @@ global $DB;
  <hr/>
  <!-- Navigation //-->
  <?php
-    include_once($CFG->dirroot.'/local/newwaves/nav/moe_school_nav.php');
+    include_once($CFG->dirroot.'/local/newwaves/nav/schools_school_nav.php');
  ?>
  <!-- end of navigation //-->
 
  <div class="row d-flex justify-content-right mt-2 mb-4">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-<!--        --><?php
-//           $create_head_href = "create_school_teacher.php?q=".mask($_GET_URL_school_id);
-//        ?>
-<!--        <button onClick="window.location='--><?php //echo $create_head_href; ?><!--'" class='btn btn-sm btn-primary rounded'>Create School Teacher</button>-->
+        <?php
+           $create_head_href = "create_school_teacher.php?q=".mask($_GET_URL_school_id);
+        ?>
+        <button onClick="window.location='<?php echo $create_head_href; ?>'" class='btn btn-sm btn-primary rounded'>Create School Teacher</button>
     </div>
  </div>
 
