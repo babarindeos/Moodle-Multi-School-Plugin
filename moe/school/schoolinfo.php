@@ -71,6 +71,39 @@
  }
 
 
+ // get number of registered school heads
+ $sql = "SELECT count(id) as headcount from {newwaves_schools_users} where role='headadmin'";
+ $headadmin = $DB->get_records_sql($sql);
+ foreach($headadmin as $row){
+    $headadmincount = $row->headcount;
+ }
+
+
+ // get number of registered school admins
+ $sql = "SELECT count(id) as headcount from {newwaves_schools_users} where role='schooladmin'";
+ $schooladmin = $DB->get_records_sql($sql);
+ foreach($schooladmin as $row){
+    $schooladmincount = $row->headcount;
+ }
+
+
+ // get number of registered teachers
+ $sql = "SELECT count(id) as teachercount from {newwaves_schools_users} where role='teacher'";
+ $teacher = $DB->get_records_sql($sql);
+ foreach($teacher as $row){
+    $teachercount = $row->teachercount;
+ }
+
+
+ // get number of registered students
+ $sql = "SELECT count(id) as studentcount from {newwaves_schools_users} where role='student'";
+ $student = $DB->get_records_sql($sql);
+ foreach($student as $row){
+    $studentcount = $row->studentcount;
+ }
+
+
+
 ?>
 
 <hr/>
@@ -83,7 +116,7 @@
 
 <div class="row mt-3"><!-- beginning of row //-->
 <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 border"><!-- column 1 //-->
-      Column 1
+      <h4>Users Role Stats</h4>
       <!--Load the AJAX API-->
           <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
           <script type="text/javascript">
@@ -104,10 +137,10 @@
               data.addColumn('string', 'Topping');
               data.addColumn('number', 'Slices');
               data.addRows([
-                ['Head Admin', <?php echo $_GET_URL_school_id;  ?>],
-                ['School Admin', 1],
-                ['Teachers', 1],
-                ['Students', 1],
+                ['Head Admin', <?php echo $headadmincount;  ?>],
+                ['School Admin', <?php echo $schooladmincount; ?>],
+                ['Teachers', <?php echo $teachercount; ?>],
+                ['Students', <?php echo $studentcount; ?>],
 
               ]);
 
@@ -126,7 +159,25 @@
 
 </div><!-- end of column 1 //-->
 <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
-  Column 2
+    <h4>Number of Users</h4>
+
+    <table class='table table-stripped mt-5 border rounded'>
+        <tr>
+            <td class='font-weight:bold;'><strong>Head Admins</strong></td><td><?php echo $headadmincount; ?></td>
+        </td>
+        <tr>
+            <td class='font-weight:bold;'><strong>School Admins</strong></td><td><?php echo $headadmincount; ?></td>
+        </td>
+
+        <tr>
+            <td class='font-weight:bold;'><strong>Teachers</strong></td><td><?php echo $teachercount; ?></td>
+        </td>
+
+        <tr>
+            <td class='font-weight:bold;'><strong>Students</strong></td><td><?php echo $studentcount; ?></td>
+        </td>
+
+    </table>
 
 
 </div><!-- end of column 2 //-->
