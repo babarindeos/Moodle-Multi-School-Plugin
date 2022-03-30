@@ -61,7 +61,8 @@
         <FIELD NAME="staff_no" TYPE="text" LENGTH="50" NOTNULL="false" />
         <FIELD NAME="dob" TYPE="int" LENGTH="15" NOTNULL="false" />
         <FIELD NAME="institution" TYPE="text" LENGTH="1000" NOTNULL="false" />
-        <FIELD NAME="qualifications" TYPE="text" LENGTH="1000" NOTNULL="false" />
+        <FIELD NAME="qualification" TYPE="text" LENGTH="1000" NOTNULL="false" />
+        <FIELD NAME="year_obtained" TYPE="text" LENGTH="1000" NOTNULL="false" />
         <FIELD NAME="timecreated" TYPE="int" NOTNULL="true" LENGTH="15" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timemodified" TYPE="int" NOTNULL="true" LENGTH="15" DEFAULT="0" SEQUENCE="false"/>
       </FIELDS>
