@@ -47,6 +47,7 @@ global $DB;
 
  echo $OUTPUT->header();
  echo "<h2>School Information</h2>";
+ $active_menu_item = "students";
 
 
  // navigation  bar
@@ -76,10 +77,10 @@ global $DB;
  ?>
  <!-- end of navigation //-->
 
- <div class="row d-flex justify-content-right mt-2">
+ <div class="row d-flex justify-content-right mt-2 mb-4">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <?php
-           $create_head_href = "schoolinfo_students.php?q=".mask($_GET_URL_school_id);
+           $create_head_href = "create_school_student.php?q=".mask($_GET_URL_school_id);
         ?>
         <button onClick="window.location='<?php echo $create_head_href; ?>'" class='btn btn-sm btn-primary rounded'>Create School Student</button>
     </div>
@@ -87,7 +88,7 @@ global $DB;
 
 
  <?php
-  $sql = "SELECT id, title, surname, firstname, middlename , gender, email, phone, role FROM
+  $sql = "SELECT id, uuid, title, surname, firstname, middlename , gender, email, phone, role FROM
           {newwaves_schools_users} where role='student' order by id desc";
 
   $headadmin = $DB->get_records_sql($sql);
@@ -100,7 +101,7 @@ global $DB;
   echo "<table class='table table-stripped border' id='tblData'>";
   echo "<thead>";
   echo "<tr class='font-weight-bold' >";
-       echo "<th class='py-3'>SN</th><th>Name</th><th>Email</th><th>Phone</th><th class='text-center'>Action</th></tr>";
+       echo "<th class='py-3'>SN</th><th>Admision No.</th><th>Name</th><th>Email</th><th>Phone</th><th class='text-center'>Action</th></tr>";
   echo "</thead>";
   echo "<tbody>";
         foreach($headadmin as $row){
@@ -124,6 +125,7 @@ global $DB;
             $btnDelete = "<button class='btn btn-danger btn-sm rounded '>Delete</button>";
             echo "<tr>";
                 echo "<td class='text-center'>{$sn}.</td>";
+                echo "<td>{$row->uuid}</td>";
                 echo "<td class='text-left'>{$title} {$row->surname} {$row->firstname}</td>";
                 echo "<td class='text-left'>{$row->email} {$row->firstname}</td>";
                 echo "<td class='text-left'>{$row->phone}</td>";

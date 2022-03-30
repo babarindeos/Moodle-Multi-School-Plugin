@@ -29,6 +29,7 @@ require_once($CFG->dirroot.'/local/newwaves/functions/schooltypes.php');
 require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
 require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
 require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
+require_once($CFG->dirroot.'/local/newwaves/classes/auth.php');
 
 
 
@@ -43,44 +44,127 @@ $mform = new createSchoolTeacher();
 
 
 if ($mform->is_cancelled()){
+    redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php', 'No Student is created. You cancelled the operation.');
+
+}else if($fromform = $mform->get_data()){
+
+    $auth = new Auth();
+    $isEmailExist = $auth->isEmailExist($DB, $fromform->email);
+
+    if ($isEmailExist>0){
+          $create_school_student_href = "create_school_student.php?q=".mask($fromform->school_id);
+          $email = $fromform->email;
+          redirect($CFG->wwwroot."/local/newwaves/moe/school/{$create_school_student_href}", "<strong>[Duplicate Email Error]</strong> A user record with that email <strong>{$email}</strong> already exist.");
+    }else{
+          $recordtoinsert = new stdClass();
+          $recordtoinsert->schoolid = $fromform->school_id;
+          $recordtoinsert->title = $fromform->title;
+          $recordtoinsert->surname = $fromform->surname;
+          $recordtoinsert->firstname = $fromform->firstname;
+          $recordtoinsert->middlename = $fromform->middlename;
+          $recordtoinsert->gender = $fromform->gender;
+          $recordtoinsert->email = $fromform->email;
+          $recordtoinsert->phone = $fromform->phone;
+          $recordtoinsert->role = "student";
+          $recordtoinsert->timecreated = time();
+
+          $DB->insert_record('newwaves_schools_users', $recordtoinsert);
+
+          // write to moodle_users
+          $createlogin = new stdClass();
+          $createlogin->auth = 'manual';
+          $createlogin->confirmed = '1';
+          $createlogin->policyagreed = '0';
+          $createlogin->deleted = '0';
+          $createlogin->suspended = '0';
+          $createlogin->mnethostid = '1';
+          $createlogin->username = $fromform->email;
+          $createlogin->password = md5('12345678');
+          $createlogin->firstname = $fromform->firstname;
+          $createlogin->lastname = $fromform->surname;
+          $createlogin->email = $fromform->email;
+
+          $DB->insert_record("user", $createlogin);
+
+
+          //
+          // write to student
+          $createStudent = new stdClass();
+          $createStudent->userid =
+
+
+          $schoolinfo_href = "manage_teachers.php?q=".mask($fromform->school_id);
+          $newTeacher = $fromform->surname.' '.$fromform->firstname;
+          redirect($CFG->wwwroot."/local/newwaves/moe/school/{$schoolinfo_href}", "A Teacher with the name <strong>{$newTeacher}</strong> has been successfully created.");
+    }
+
+
+
+
+}else{
+    // Get School Id if not redirect page
+    if (!isset($_GET['q']) || $_GET['q']==''){
+        redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php', 'Sorry, the page is not fully formed with the required information.');
+    }
+    $_GET_URL_school_id = explode("-",htmlspecialchars(strip_tags($_GET['q'])));
+    $_GET_URL_school_id = $_GET_URL_school_id[1];
+
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------------------
+
+
+if ($mform->is_cancelled()){
     redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php', 'No Teacher is created. You cancelled the operation.');
 
 }else if($fromform = $mform->get_data()){
 
-    $recordtoinsert = new stdClass();
-    $recordtoinsert->schoolid = $fromform->school_id;
-    $recordtoinsert->title = $fromform->title;
-    $recordtoinsert->surname = $fromform->surname;
-    $recordtoinsert->firstname = $fromform->firstname;
-    $recordtoinsert->middlename = $fromform->middlename;
-    $recordtoinsert->gender = $fromform->gender;
-    $recordtoinsert->email = $fromform->email;
-    $recordtoinsert->phone = $fromform->phone;
-    $recordtoinsert->role = "teacher";
-    $recordtoinsert->timecreated = time();
+    $auth = new Auth();
+    $isEmailExist = $auth->isEmailExist($DB, $fromform->email);
 
-    $DB->insert_record('newwaves_schools_users', $recordtoinsert);
+    if ($isEmailExist>0){
+          $create_school_teacher_href = "create_school_teacher.php?q=".mask($fromform->school_id);
+          $email = $fromform->email;
+          redirect($CFG->wwwroot."/local/newwaves/moe/school/{$create_school_teacher_href}", "<strong>[Duplicate Email Error]</strong> A user record with that email <strong>{$email}</strong> already exist.");
+    }else{
+          $recordtoinsert = new stdClass();
+          $recordtoinsert->schoolid = $fromform->school_id;
+          $recordtoinsert->title = $fromform->title;
+          $recordtoinsert->surname = $fromform->surname;
+          $recordtoinsert->firstname = $fromform->firstname;
+          $recordtoinsert->middlename = $fromform->middlename;
+          $recordtoinsert->gender = $fromform->gender;
+          $recordtoinsert->email = $fromform->email;
+          $recordtoinsert->phone = $fromform->phone;
+          $recordtoinsert->role = "teacher";
+          $recordtoinsert->timecreated = time();
 
-    // write to moodle_users
-    $createlogin = new stdClass();
-    $createlogin->auth = 'manual';
-    $createlogin->confirmed = '1';
-    $createlogin->policyagreed = '0';
-    $createlogin->deleted = '0';
-    $createlogin->suspended = '0';
-    $createlogin->mnethostid = '1';
-    $createlogin->username = $fromform->email;
-    $createlogin->password = md5('12345678');
-    $createlogin->firstname = $fromform->firstname;
-    $createlogin->lastname = $fromform->surname;
-    $createlogin->email = $fromform->email;
+          $DB->insert_record('newwaves_schools_users', $recordtoinsert);
 
-    $DB->insert_record("user", $createlogin);
+          // write to moodle_users
+          $createlogin = new stdClass();
+          $createlogin->auth = 'manual';
+          $createlogin->confirmed = '1';
+          $createlogin->policyagreed = '0';
+          $createlogin->deleted = '0';
+          $createlogin->suspended = '0';
+          $createlogin->mnethostid = '1';
+          $createlogin->username = $fromform->email;
+          $createlogin->password = md5('12345678');
+          $createlogin->firstname = $fromform->firstname;
+          $createlogin->lastname = $fromform->surname;
+          $createlogin->email = $fromform->email;
+
+          $DB->insert_record("user", $createlogin);
 
 
-    $schoolinfo_href = "manage_teachers.php?q=".mask($fromform->school_id);
-    $newTeacher = $fromform->surname.' '.$fromform->firstname;
-    redirect($CFG->wwwroot."/local/newwaves/moe/school/{$schoolinfo_href}", "A Teacher with the name <strong>{$newTeacher}</strong> has been successfully created.");
+          $schoolinfo_href = "manage_teachers.php?q=".mask($fromform->school_id);
+          $newTeacher = $fromform->surname.' '.$fromform->firstname;
+          redirect($CFG->wwwroot."/local/newwaves/moe/school/{$schoolinfo_href}", "A Teacher with the name <strong>{$newTeacher}</strong> has been successfully created.");
+    }
+
+
 
 
 }else{

@@ -29,6 +29,7 @@ require_login();
  require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
  require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
  require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
+ require_once($CFG->dirroot.'/local/newwaves/classes/auth.php');
 
 
 
@@ -47,39 +48,51 @@ if ($mform->is_cancelled()){
 
 }else if($fromform = $mform->get_data()){
 
-    $recordtoinsert = new stdClass();
-    $recordtoinsert->schoolid = $fromform->school_id;
-    $recordtoinsert->title = $fromform->title;
-    $recordtoinsert->surname = $fromform->surname;
-    $recordtoinsert->firstname = $fromform->firstname;
-    $recordtoinsert->middlename = $fromform->middlename;
-    $recordtoinsert->gender = $fromform->gender;
-    $recordtoinsert->email = $fromform->email;
-    $recordtoinsert->phone = $fromform->phone;
-    $recordtoinsert->role = "schooladmin";
+    $auth = new Auth();
+    $isEmailExist = $auth->isEmailExist($DB, $fromform->email);
 
-    $DB->insert_record('newwaves_schools_users', $recordtoinsert);
+    //unique email validation
+    if ($isEmailExist>0){
+            $create_school_admin_href = "create_school_admin.php?q=".mask($fromform->school_id);
+            $email = $fromform->email;
+            redirect($CFG->wwwroot."/local/newwaves/moe/school/{$create_school_admin_href}", "<strong>[Duplicate Email Error]</strong> A user record with that email <strong>{$email}</strong> already exist.");
+    }else{
+            $recordtoinsert = new stdClass();
+            $recordtoinsert->schoolid = $fromform->school_id;
+            $recordtoinsert->title = $fromform->title;
+            $recordtoinsert->surname = $fromform->surname;
+            $recordtoinsert->firstname = $fromform->firstname;
+            $recordtoinsert->middlename = $fromform->middlename;
+            $recordtoinsert->gender = $fromform->gender;
+            $recordtoinsert->email = $fromform->email;
+            $recordtoinsert->phone = $fromform->phone;
+            $recordtoinsert->role = "schooladmin";
+            $recordtoinsert->timestamp = time();
 
-    // write to moodle_users
-    $createlogin = new stdClass();
-    $createlogin->auth = 'manual';
-    $createlogin->confirmed = '1';
-    $createlogin->policyagreed = '0';
-    $createlogin->deleted = '0';
-    $createlogin->suspended = '0';
-    $createlogin->mnethostid = '1';
-    $createlogin->username = $fromform->email;
-    $createlogin->password = md5('12345678');
-    $createlogin->firstname = $fromform->firstname;
-    $createlogin->lastname = $fromform->surname;
-    $createlogin->email = $fromform->email;
+            $DB->insert_record('newwaves_schools_users', $recordtoinsert);
 
-    $DB->insert_record("user", $createlogin);
+            // write to moodle_users
+            $createlogin = new stdClass();
+            $createlogin->auth = 'manual';
+            $createlogin->confirmed = '1';
+            $createlogin->policyagreed = '0';
+            $createlogin->deleted = '0';
+            $createlogin->suspended = '0';
+            $createlogin->mnethostid = '1';
+            $createlogin->username = $fromform->email;
+            $createlogin->password = md5('12345678');
+            $createlogin->firstname = $fromform->firstname;
+            $createlogin->lastname = $fromform->surname;
+            $createlogin->email = $fromform->email;
+
+            $DB->insert_record("user", $createlogin);
 
 
-    $schoolinfo_href = "manage_schooladmin.php?q=".mask($fromform->school_id);
-    $newHeadAdmin = $fromform->surname.' '.$fromform->firstname;
-    redirect($CFG->wwwroot."/local/newwaves/moe/school/{$schoolinfo_href}", "A School Admin with the name <strong>{$newHeadAdmin}</strong> has been successfully created.");
+            $schoolinfo_href = "manage_schooladmin.php?q=".mask($fromform->school_id);
+            $newHeadAdmin = $fromform->surname.' '.$fromform->firstname;
+            redirect($CFG->wwwroot."/local/newwaves/moe/school/{$schoolinfo_href}", "A School Admin with the name <strong>{$newHeadAdmin}</strong> has been successfully created.");
+
+    }
 
 
 }else{

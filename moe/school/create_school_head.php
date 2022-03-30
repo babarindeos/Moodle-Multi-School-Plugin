@@ -29,6 +29,7 @@
  require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
  require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
  require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
+ require_once($CFG->dirroot.'/local/newwaves/classes/auth.php');
 
  global $DB;
 
@@ -48,43 +49,57 @@
 
    }else if($fromform = $mform->get_data()){
 
-
-      //write to newwaves_schools_heads
-      $recordtoinsert = new stdClass();
-      $recordtoinsert->schoolid = $fromform->school_id;
-      $recordtoinsert->title = $fromform->title;
-      $recordtoinsert->surname = $fromform->surname;
-      $recordtoinsert->firstname = $fromform->firstname;
-      $recordtoinsert->middlename = $fromform->middlename;
-      $recordtoinsert->gender = $fromform->gender;
-      $recordtoinsert->email = $fromform->email;
-      $recordtoinsert->phone = $fromform->phone;
-      $recordtoinsert->role = "headadmin";
-      $recordtoinsert->timestamp = time();
-
-      $DB->insert_record('newwaves_schools_users', $recordtoinsert);
+      $auth = new Auth();
+      $isEmailExist = $auth->isEmailExist($DB, $fromform->email);
 
 
-      // write to moodle_users
-      $createlogin = new stdClass();
-      $createlogin->auth = 'manual';
-      $createlogin->confirmed = '1';
-      $createlogin->policyagreed = '0';
-      $createlogin->deleted = '0';
-      $createlogin->suspended = '0';
-      $createlogin->mnethostid = '1';
-      $createlogin->username = $fromform->email;
-      $createlogin->password = md5('12345678');
-      $createlogin->firstname = $fromform->firstname;
-      $createlogin->lastname = $fromform->surname;
-      $createlogin->email = $fromform->email;
+      // Check if email already exist
+      if ($isEmailExist>0){
+                $create_school_head_href = "create_school_head.php?q=".mask($fromform->school_id);
+                $email = $fromform->email;
+                redirect($CFG->wwwroot."/local/newwaves/moe/school/{$create_school_head_href}", "<strong>[Duplicate Email Error]</strong> A user record with that email <strong>{$email}</strong> already exist.");
 
-      $DB->insert_record("user", $createlogin);
+      }else{
+                //write to newwaves_schools_heads
+                $recordtoinsert = new stdClass();
+                $recordtoinsert->schoolid = $fromform->school_id;
+                $recordtoinsert->title = $fromform->title;
+                $recordtoinsert->surname = $fromform->surname;
+                $recordtoinsert->firstname = $fromform->firstname;
+                $recordtoinsert->middlename = $fromform->middlename;
+                $recordtoinsert->gender = $fromform->gender;
+                $recordtoinsert->email = $fromform->email;
+                $recordtoinsert->phone = $fromform->phone;
+                $recordtoinsert->role = "headadmin";
+                $recordtoinsert->timestamp = time();
+
+                $DB->insert_record('newwaves_schools_users', $recordtoinsert);
 
 
-      $schoolinfo_href = "manage_headadmin.php?q=".mask($fromform->school_id);
-      $newHeadAdmin = $fromform->surname.' '.$fromform->firstname;
-      redirect($CFG->wwwroot."/local/newwaves/moe/school/{$schoolinfo_href}", "A School Head Admin with the name <strong>{$newHeadAdmin}</strong>.");
+                // write to moodle_users
+                $createlogin = new stdClass();
+                $createlogin->auth = 'manual';
+                $createlogin->confirmed = '1';
+                $createlogin->policyagreed = '0';
+                $createlogin->deleted = '0';
+                $createlogin->suspended = '0';
+                $createlogin->mnethostid = '1';
+                $createlogin->username = $fromform->email;
+                $createlogin->password = md5('12345678');
+                $createlogin->firstname = $fromform->firstname;
+                $createlogin->lastname = $fromform->surname;
+                $createlogin->email = $fromform->email;
+
+                $DB->insert_record("user", $createlogin);
+
+
+                $schoolinfo_href = "manage_headadmin.php?q=".mask($fromform->school_id);
+                $newHeadAdmin = $fromform->surname.' '.$fromform->firstname;
+                redirect($CFG->wwwroot."/local/newwaves/moe/school/{$schoolinfo_href}", "A School Head Admin with the name <strong>{$newHeadAdmin}</strong>.");
+
+      }
+      // end of email verification if email already exist
+
 
 
    }else{
