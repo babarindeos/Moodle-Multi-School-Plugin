@@ -18,15 +18,12 @@
         $mform = $this->_form;
 
 
-        // title student
-        $title = array();
-        $title['0'] = 'Mr.';
-        $title['1'] = 'Mrs.';
-        $title['2'] = 'Ms.';
-        $title['3'] = 'Dr.';
-        $title['4'] = 'Prof.';
-        $mform->addElement('select', 'title', 'Title', $title);
-        $mform->setDefault('title', '0');
+        // admission no
+
+        $name_attributes = array('size'=>'30%', 'required'=>'^([0-9]{2}[a-zA-Z]?)?$');
+        $mform->addElement('text', 'admission_no', 'Admission No.', $name_attributes);
+        $mform->setType('admission_no', PARAM_NOTAGS);
+        $mform->setDefault('admission_no', '');
 
 
 
@@ -39,13 +36,13 @@
 
         // Firstname
         $mform->addElement('text', 'firstname', 'Firstname', $name_attributes);
-        $mform->setType('text', PARAM_NOTAGS);
+        $mform->setType('firstname', PARAM_NOTAGS);
         $mform->setDefault('firstname', '');
 
 
         // Middlename
         $mform->addElement('text', 'middlename', 'Middlename');
-        $mform->setType('text', PARAM_NOTAGS);
+        $mform->setType('middlename', PARAM_NOTAGS);
         $mform->setDefault('middlename', '');
 
         //gender
@@ -69,6 +66,21 @@
         $mform->addElement('text', 'phone', 'Phone', $phone_attributes);
         $mform->setType('phone', PARAM_NOTAGS);
         $mform->setDefault('phone', '');
+
+        //class
+        $class = array();
+        $class['0'] = 'Basic 3';
+        $class['1'] = 'Basic 4';
+        $class['2'] = 'Basic 5';
+        $class['3'] = 'Basic 6';
+        $class['4'] = 'JSS 1';
+        $class['5'] = 'JSS 2';
+        $class['6'] = 'JSS 3';
+        $class['7'] = 'SSS 1';
+        $class['8'] = 'SSS 2';
+        $class['9'] = 'SSS 3';
+        $mform->addElement('select', 'class', 'Class', $class);
+        $mform->setDefault('class', '0');
 
         //school_id
         $mform->addElement('hidden', 'school_id', 'School_id');
