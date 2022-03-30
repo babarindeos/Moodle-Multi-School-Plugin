@@ -31,7 +31,8 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="schoolid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-        <FIELD NAME="title" TYPE="text" LENGTH="50" NOTNULL="true" />
+        <FIELD NAME="uuid" TYPE="text" LENGTH="50" NOTNULL="false" />
+        <FIELD NAME="title" TYPE="text" LENGTH="50" NOTNULL="false" />
         <FIELD NAME="surname" TYPE="text" LENGTH="50" NOTNULL="true" />
         <FIELD NAME="firstname" TYPE="text" LENGTH="50" NOTNULL="true" />
         <FIELD NAME="middlename" TYPE="text" LENGTH="50" NOTNULL="true" />
@@ -59,8 +60,11 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="schoolid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="qualifications" TYPE="text" LENGTH="1000" NOTNULL="true" />
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="staff_no" TYPE="text" LENGTH="50" NOTNULL="false" />
+        <FIELD NAME="dob" TYPE="int" LENGTH="50" NOTNULL="false" />
+        <FIELD NAME="institution" TYPE="text" LENGTH="1000" NOTNULL="false" />
+        <FIELD NAME="qualifications" TYPE="text" LENGTH="1000" NOTNULL="false" />
         <FIELD NAME="timecreated" TYPE="int" NOTNULL="true" LENGTH="50" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timemodified" TYPE="int" NOTNULL="true" LENGTH="50" DEFAULT="0" SEQUENCE="false"/>
       </FIELDS>
@@ -80,8 +84,10 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="schoolid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="class" TYPE="text" LENGTH="50" NOTNULL="true" />
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="admission_no" TYPE="text" LENGTH="20" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="dob" TYPE="int" LENGTH="50" NOTNULL="false" />
+        <FIELD NAME="class" TYPE="text" LENGTH="50" NOTNULL="false" />
         <FIELD NAME="timecreated" TYPE="int" NOTNULL="true" LENGTH="50" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timemodified" TYPE="int" NOTNULL="true" LENGTH="50" DEFAULT="0" SEQUENCE="false"/>
       </FIELDS>
