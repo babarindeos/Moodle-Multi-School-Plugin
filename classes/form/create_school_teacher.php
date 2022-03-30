@@ -29,6 +29,12 @@
         $mform->setDefault('title', '0');
 
 
+        // admission no
+
+        $name_attributes = array('size'=>'30%', 'required'=>'^([0-9]{2}[a-zA-Z]?)?$');
+        $mform->addElement('text', 'staff_no', 'Staff No.', $name_attributes);
+        $mform->setType('staff_no', PARAM_NOTAGS);
+        $mform->setDefault('staff_no', '');
 
         // Surname
         $name_attributes = array('size'=>'100%', 'required'=>'^([0-9]{2}[a-zA-Z]?)?$');
