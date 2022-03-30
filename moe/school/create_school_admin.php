@@ -67,7 +67,9 @@ if ($mform->is_cancelled()){
             $recordtoinsert->email = $fromform->email;
             $recordtoinsert->phone = $fromform->phone;
             $recordtoinsert->role = "schooladmin";
-            $recordtoinsert->timestamp = time();
+            $recordtoinsert->creator = $USER->id;
+            $recordtoinsert->timecreated = time();
+            $recordtoinsert->timemodified = time();
 
             $DB->insert_record('newwaves_schools_users', $recordtoinsert);
 

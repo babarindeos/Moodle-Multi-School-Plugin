@@ -58,6 +58,7 @@ if ($mform->is_cancelled()){
     }else{
           $recordtoinsert = new stdClass();
           $recordtoinsert->schoolid = $fromform->school_id;
+          $recordtoinsert->uuid = $fromform->staff_no;
           $recordtoinsert->title = $fromform->title;
           $recordtoinsert->surname = $fromform->surname;
           $recordtoinsert->firstname = $fromform->firstname;
@@ -65,8 +66,10 @@ if ($mform->is_cancelled()){
           $recordtoinsert->gender = $fromform->gender;
           $recordtoinsert->email = $fromform->email;
           $recordtoinsert->phone = $fromform->phone;
-          $recordtoinsert->role = "student";
+          $recordtoinsert->role = "teacher";
+          $recordtoinsert->creator = $USER->id;
           $recordtoinsert->timecreated = time();
+          $recordtoinsert->timemodified = time();
 
           $DB->insert_record('newwaves_schools_users', $recordtoinsert);
 
@@ -88,9 +91,14 @@ if ($mform->is_cancelled()){
 
 
           //
-          // write to student
-          $createStudent = new stdClass();
-          $createStudent->userid =
+          // write to teacher
+          $createteacher = new stdClass();
+          $createteacher->staff_no = $fromform->staff_no;
+          $createteacher->schoolid = $fromform->school_id;
+          $createteacher->timecreated = time();
+          $createteacher->timemodified = time();
+
+          $DB->insert_record("newwaves_schools_teachers", $createteacher);
 
 
           $schoolinfo_href = "manage_teachers.php?q=".mask($fromform->school_id);

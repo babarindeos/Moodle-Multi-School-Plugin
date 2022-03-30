@@ -31,7 +31,7 @@
  require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
  require_once($CFG->dirroot.'/local/newwaves/classes/auth.php');
 
- global $DB;
+ global $DB, $USER;
 
  $PAGE->set_url(new moodle_url('/local/newwaves/moe/school/create_school_head.php'));
  $PAGE->set_context(\context_system::instance());
@@ -71,7 +71,9 @@
                 $recordtoinsert->email = $fromform->email;
                 $recordtoinsert->phone = $fromform->phone;
                 $recordtoinsert->role = "headadmin";
-                $recordtoinsert->timestamp = time();
+                $recordtoinsert->creator = $USER->id;
+                $recordtoinsert->timecreated = time();
+                $recordtoinsert->timemodified = time();
 
                 $DB->insert_record('newwaves_schools_users', $recordtoinsert);
 
@@ -95,7 +97,7 @@
 
                 $schoolinfo_href = "manage_headadmin.php?q=".mask($fromform->school_id);
                 $newHeadAdmin = $fromform->surname.' '.$fromform->firstname;
-                redirect($CFG->wwwroot."/local/newwaves/moe/school/{$schoolinfo_href}", "A School Head Admin with the name <strong>{$newHeadAdmin}</strong>.");
+                redirect($CFG->wwwroot."/local/newwaves/moe/school/{$schoolinfo_href}", "A School Head Admin with the name <strong>{$newHeadAdmin}</strong>. has been successfully created");
 
       }
       // end of email verification if email already exist

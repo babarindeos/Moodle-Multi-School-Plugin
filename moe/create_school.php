@@ -35,6 +35,24 @@
 
  $mform = new createSchool();
 
+ if ($mform->is_cancelled()){
+     redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php', 'No school is created. You cancelled the creation of a school.');
+ }else if ($fromform = $mform->get_data()){
+     $recordtoinsert = new stdClass();
+     $recordtoinsert->name = $fromform->name;
+     $recordtoinsert->type = $fromform->type;
+     $recordtoinsert->state = $fromform->state;
+     $recordtoinsert->lga = $fromform->lga;
+     $recordtoinsert->address = $fromform->address;
+     $recordtoinsert->creator = $USER->id;
+     $recordtoinsert->timestamp =  time();
+
+
+     $DB->insert_record('newwaves_schools', $recordtoinsert);
+
+     redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php', 'A school <strong>'.$fromform->name.'</strong> has been successfully created.');
+ }
+
  echo $OUTPUT->header();
 
  // display page Header
@@ -45,27 +63,9 @@
   include_once($CFG->dirroot.'/local/newwaves/nav/moe_main_nav.php');
 
 
+ // display form
+ $mform->display();
 
-
-if ($mform->is_cancelled()){
-    redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php', 'No school is created. You cancelled the creation of a school.');
-}else if ($fromform = $mform->get_data()){
-    $recordtoinsert = new stdClass();
-    $recordtoinsert->name = $fromform->name;
-    $recordtoinsert->type = $fromform->type;
-    $recordtoinsert->state = $fromform->state;
-    $recordtoinsert->lga = $fromform->lga;
-    $recordtoinsert->address = $fromform->address;
-    $recordtoinsert->creator = $USER->id;
-    $recordtoinsert->timestamp =  time();
-
-
-    $DB->insert_record('newwaves_schools', $recordtoinsert);
-
-    redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php', 'You have created a school with name '.$fromform->name);
-}else{
-     $mform->display();
-}
 
 
  require_once($CFG->dirroot.'/local/newwaves/lib/mdb.js.php');
