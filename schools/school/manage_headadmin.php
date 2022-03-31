@@ -1,5 +1,5 @@
 <?php
-// This file is part of Newwaves Integrator Plugin
+// This file is part of Moodle Course Rollover Plugin
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,8 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package     manage_teachers
- * @author      Seyibabs
+ * @package     local_message
+ * @author      Kristian
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @var stdClass $plugin
  */
@@ -46,12 +46,9 @@ global $DB;
  $PAGE->set_title('School Information');
 
  echo $OUTPUT->header();
- echo "<h2>School Information <small>[ Teachers ]</small></h2>";
- $active_menu_item = "teachers";
+ echo "<h2>School Information <small>[ Head Admin ]</small></h2>";
+ $active_menu_item = 'headadmin';
 
-
- // navigation  bar
- include_once($CFG->dirroot.'/local/newwaves/nav/moe_main_nav.php');
 
 
  // retrieve school information from DB
@@ -73,23 +70,23 @@ global $DB;
  <hr/>
  <!-- Navigation //-->
  <?php
-    include_once($CFG->dirroot.'/local/newwaves/nav/moe_school_nav.php');
+    include_once($CFG->dirroot.'/local/newwaves/nav/schools_school_nav.php');
  ?>
  <!-- end of navigation //-->
 
  <div class="row d-flex justify-content-right mt-2 mb-4">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-<!--        --><?php
-//           $create_head_href = "create_school_teacher.php?q=".mask($_GET_URL_school_id);
-//        ?>
-<!--        <button onClick="window.location='--><?php //echo $create_head_href; ?><!--'" class='btn btn-sm btn-primary rounded'>Create School Teacher</button>-->
+        <?php
+           $create_head_href = "create_school_head.php?q=".mask($_GET_URL_school_id);
+        ?>
+        <button onClick="window.location='<?php echo $create_head_href; ?>'" class='btn btn-sm btn-primary rounded'>Create School Head</button>
     </div>
  </div>
 
 
  <?php
-  $sql = "SELECT id, uuid, title, surname, firstname, middlename , gender, email, phone, role FROM
-          {newwaves_schools_users} where role='teacher' order by id desc";
+  $sql = "SELECT id, title, surname, firstname, middlename , gender, email, phone, role FROM
+          {newwaves_schools_users} where role='headadmin' order by id desc";
 
   $headadmin = $DB->get_records_sql($sql);
 
@@ -101,7 +98,7 @@ global $DB;
   echo "<table class='table table-stripped border' id='tblData'>";
   echo "<thead>";
   echo "<tr class='font-weight-bold' >";
-       echo "<th class='py-3'>SN</th><th>Staff No.</th><th>Name</th><th>Email</th><th>Phone</th><th class='text-center'>Action</th></tr>";
+       echo "<th class='py-3'>SN</th><th>Name</th><th>Email</th><th>Phone</th><th class='text-center'>Action</th></tr>";
   echo "</thead>";
   echo "<tbody>";
         foreach($headadmin as $row){
@@ -125,9 +122,8 @@ global $DB;
             $btnDelete = "<button class='btn btn-danger btn-sm rounded '>Delete</button>";
             echo "<tr>";
                 echo "<td class='text-center'>{$sn}.</td>";
-                echo "<td class='text-center'>{$row->uuid}.</td>";
                 echo "<td class='text-left'>{$title} {$row->surname} {$row->firstname}</td>";
-                echo "<td class='text-left'>{$row->email} </td>";
+                echo "<td class='text-left'>{$row->email} {$row->firstname}</td>";
                 echo "<td class='text-left'>{$row->phone}</td>";
                 echo "<td class='text-center'>{$btnEdit} {$btnDelete}</td>";
             echo "</tr>";

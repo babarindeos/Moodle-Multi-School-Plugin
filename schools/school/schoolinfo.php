@@ -25,7 +25,7 @@
 
  // Get School Id
  if (!isset($_GET['q']) || $_GET['q']==''){
-        redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php');
+        redirect($CFG->wwwroot.'/local/newwaves/schools/schools_dashboard.php');
  }
 
   $_GET_URL_school_id = explode("-",htmlspecialchars(strip_tags($_GET['q'])));
@@ -43,17 +43,13 @@
 
  global $DB;
 
- $PAGE->set_url(new moodle_url('/local/newwaves/moe/schoolinfo.php'));
+ $PAGE->set_url(new moodle_url('/local/newwaves/schools/schoolinfo.php'));
  $PAGE->set_context(\context_system::instance());
  $PAGE->set_title('School Information');
 
  echo $OUTPUT->header();
  echo "<h2>School Information <small>[ Dashboard ]</small></h2>";
  $active_menu_item = 'dashboard';
-
-
- // nav bar
- include_once($CFG->dirroot.'/local/newwaves/nav/moe_main_nav.php');
 
 
 
@@ -109,7 +105,7 @@
 <hr/>
 <!-- Navigation //-->
 <?php
-    include_once($CFG->dirroot.'/local/newwaves/nav/moe_school_nav.php');
+    include_once($CFG->dirroot.'/local/newwaves/nav/schools_school_nav.php');
 ?>
 <!-- end of navigation //-->
 
