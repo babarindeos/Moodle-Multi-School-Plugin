@@ -1,7 +1,7 @@
 
 <?php
       require_once(__DIR__.'/../../../config.php');
-      $moe_dashboard = $CFG->wwwroot.'/local/newwaves/moe/schools_dashboard.php';
+      $moe_dashboard = $CFG->wwwroot.'/local/newwaves/moe/school_dashboard.php';
       $manage_schools = $CFG->wwwroot.'/local/newwaves/moe/manage_schools.php';
       $create_school = $CFG->wwwroot.'/local/newwaves/moe/create_school.php';
 
