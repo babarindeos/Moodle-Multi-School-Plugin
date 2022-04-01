@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle Course Rollover Plugin
+// This file is part of Newwaves Integrator Plugin
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,15 +15,15 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package     local_message
- * @author      Kristian
+ * @package     moe_dashboard
+ * @author      Seyibabs
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @var stdClass $plugin
  */
 
  require_once(__DIR__.'/../../../config.php');
  require_login();
- $PAGE->set_url(new moodle_url('/local/newwaves/moe/schools_dashboard.php'));
+ $PAGE->set_url(new moodle_url('/local/newwaves/moe/moe_dashboard.php'));
  $PAGE->set_context(\context_system::instance());
  $PAGE->set_title('Ministry of Education Dashboard');
 
@@ -45,7 +45,7 @@
     // col 2
     echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 px-1 py-1 text-center'
           style='border:1px solid #f1f1f1;background-color:#3498DB;color:#ffffff;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
-          href='#' title='Manage Teachers'>";
+          href='school/teacher/teacher_dashboard.php' title='Manage Teachers'>";
               echo "<h2 class='mt-2'>Teachers</h2>";
     echo "</a></div>";
     // end of col 2
@@ -53,7 +53,7 @@
     // col 3
     echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 px-1 py-1 text-center'
           style='border:1px solid #f1f1f1;background-color:#F1C40F ;color:#ffffff;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
-          href='#' title='Manage Students'>";
+          href='school/student/student_dashboard.php' title='Manage Students'>";
               echo "<h2 class='mt-2'>Students</h2>";
     echo "</a></div>";
     // end of col 3
