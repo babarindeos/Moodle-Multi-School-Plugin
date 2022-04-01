@@ -15,32 +15,32 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package     schooltypes
+ * @package     title
  * @author      Seyibabs
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @var stdClass $plugin
  */
 
+ function title($option){
+    $title = '';
 
- function schoolTypes($typeId){
-      $schoolType = '';
-      switch($typeId){
-        case 1:
-          $schoolType = 'Primary School';
-          break;
-        case 2:
-          $schoolType = 'Secondary School';
-          break;
-        case 3:
-          $schoolType = 'College of Education';
-          break;
-        case 4:
-          $schoolType = 'Polytechnic';
-          break;
-        case 5:
-          $schoolType = 'University';
-          break;
-      }
+    switch($option){
+      case 0:
+        $title = 'Mr.';
+        break;
+      case 1:
+        $title = "Mrs.";
+        break;
+      case 2:
+        $title = "Ms.";
+        break;
+      case 3:
+        $title = "Dr.";
+        break;
+      case 4:
+        $title = "Prof.";
+        break;
+    }
 
-      return $schoolType;
+    return $title;
  }
