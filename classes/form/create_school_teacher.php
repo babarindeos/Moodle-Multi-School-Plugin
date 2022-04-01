@@ -29,8 +29,7 @@
         $mform->setDefault('title', '0');
 
 
-        // admission no
-
+        // staff no
         $name_attributes = array('size'=>'30%', 'required'=>'^([0-9]{2}[a-zA-Z]?)?$');
         $mform->addElement('text', 'staff_no', 'Staff No.', $name_attributes);
         $mform->setType('staff_no', PARAM_NOTAGS);
