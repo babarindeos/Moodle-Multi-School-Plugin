@@ -17,18 +17,18 @@
         private $lga;
         private $address;
 
-        public function __construct($data){
-            parent::__construct();
-
-            $this->id = $data['school_id'];
-            $this->name = $data['name'];
-            $this->type = $data['type'];
-            $this->state = $data['state'];
-            $this->lga = $data['lga'];
-            $this->address = $data['address'];
-
-
-        }
+        // public function __construct($data){
+        //     parent::__construct();
+        //
+        //     $this->id = $data['school_id'];
+        //     $this->name = $data['name'];
+        //     $this->type = $data['type'];
+        //     $this->state = $data['state'];
+        //     $this->lga = $data['lga'];
+        //     $this->address = $data['address'];
+        //
+        //
+        // }
 
         public function definition(){
 
@@ -38,14 +38,14 @@
 
             // retrieve school data from database
 
-            $mform = $this->_form;        
+            $mform = $this->_form;
 
 
             //school name
             $name_attributes = array('size'=>'100%', 'required'=>'^([0-9]{2}[a-zA-Z]?)?$');
             $mform->addElement('text', 'name', 'School Name', $name_attributes);
             $mform->setType('name', PARAM_NOTAGS);
-            $mform->setDefault('name', $this->name);
+            $mform->setDefault('name', '');
 
 
             // school type
@@ -63,41 +63,42 @@
             // state
             $state = array();
             $state['0'] = "Abia";
-            $state['1'] = "Adamawa";
-            $state['2'] = "Akwa Ibom";
-            $state['3'] = "Anambra";
-            $state['4'] = "Bauchi";
-            $state['5'] = "Bayelsa";
-            $state['6'] = "Benue";
-            $state['7'] = "Borno";
-            $state['8'] = "Cross River";
-            $state['9'] = "Delta";
-            $state['10'] = "Ebonyi";
-            $state['11'] = "Edo";
-            $state['12'] = "Ekiti";
-            $state['13'] = "Enugu";
-            $state['14'] = "Gombe";
-            $state['15'] = "Imo";
-            $state['16'] = "Jigawa";
-            $state['17'] = 'Kaduna';
-            $state['18'] = "Kano";
-            $state['19'] = "Katsina";
-            $state['20'] = "Kebbi";
-            $state['21'] = "Kogi";
-            $state['22'] = "Kwara";
-            $state['23'] = "Lagos";
-            $state['24'] = "Nasarawa";
-            $state['25'] = "Niger";
-            $state['26'] = "Ogun";
-            $state['27'] = "Ondo";
-            $state['28'] = "Osun";
-            $state['29'] = "Oyo";
-            $state['30'] = "Plateau";
-            $state['31'] = "Rivers";
-            $state['32'] = "Sokoto";
-            $state['33'] = "Taraba";
-            $state['34'] = "Yobe";
-            $state['35'] = "Zamfara";
+            $state['1'] = "Abuja";
+            $state['2'] = "Adamawa";
+            $state['3'] = "Akwa Ibom";
+            $state['4'] = "Anambra";
+            $state['5'] = "Bauchi";
+            $state['6'] = "Bayelsa";
+            $state['7'] = "Benue";
+            $state['8'] = "Borno";
+            $state['9'] = "Cross River";
+            $state['10'] = "Delta";
+            $state['11'] = "Ebonyi";
+            $state['12'] = "Edo";
+            $state['13'] = "Ekiti";
+            $state['14'] = "Enugu";
+            $state['15'] = "Gombe";
+            $state['16'] = "Imo";
+            $state['17'] = "Jigawa";
+            $state['18'] = 'Kaduna';
+            $state['19'] = "Kano";
+            $state['20'] = "Katsina";
+            $state['21'] = "Kebbi";
+            $state['22'] = "Kogi";
+            $state['23'] = "Kwara";
+            $state['24'] = "Lagos";
+            $state['25'] = "Nasarawa";
+            $state['26'] = "Niger";
+            $state['27'] = "Ogun";
+            $state['28'] = "Ondo";
+            $state['29'] = "Osun";
+            $state['30'] = "Oyo";
+            $state['31'] = "Plateau";
+            $state['32'] = "Rivers";
+            $state['33'] = "Sokoto";
+            $state['34'] = "Taraba";
+            $state['35'] = "Yobe";
+            $state['36'] = "Zamfara";
 
             $mform->addElement('select', 'state', 'State', $state);
             $mform->setDefault('state', 12);
@@ -112,6 +113,13 @@
             $mform->addElement('textarea', 'address', 'Address', 'wrap="virtual" rows="5" cols="102" required="^([0-9]{2}[a-zA-Z]?)?$"');
             $mform->setType('address', PARAM_NOTAGS);
             $mform->setDefault('address', '');
+
+
+            //school id
+            $mform->addElement('hidden', 'school_id', 'School ID', $name_attributes);
+            $mform->setType('school_id', PARAM_NOTAGS);
+            $mform->setDefault('school_id', '');
+
 
             $this->add_action_buttons();
 

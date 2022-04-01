@@ -9,7 +9,7 @@
 
  require_once("$CFG->libdir/formslib.php");
 
- class createSchoolHead extends moodleform{
+ class updateSchoolHeadAdmin extends moodleform{
 
     public function definition(){
 
@@ -70,9 +70,9 @@
         $mform->setType('phone', PARAM_NOTAGS);
         $mform->setDefault('phone', '');
 
-        //school_id
-        $mform->addElement('hidden', 'school_id', 'School_id');
-        $mform->setType('school_id', PARAM_NOTAGS);
+        //headadmin_id
+        $mform->addElement('hidden', 'headadmin_id', 'Head Admin ID');
+        $mform->setType('headadmin_id', PARAM_NOTAGS);
 
         $this->add_action_buttons();
 
