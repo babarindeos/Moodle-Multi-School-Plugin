@@ -28,9 +28,11 @@
 
      private $sqlQuery;
      private $emailfound;
+     private $output;
 
      public function __construct(){
        $this->sqlQuery = null;
+
 
      }
 
@@ -44,6 +46,17 @@
        return $result;
      }
 
+     public function getMoodleUserId($DB, $email){
+         echo $email;
+         $result = '';
+         $this->sqlQuery = "Select id from {user} where email='{$email}'";
+         $this->output = $DB->get_records_sql($this->sqlQuery);
+         foreach($this->output as $row){
+            $result = $row->id;
+         }
+
+         return $result;
+     }
  }
 
 
