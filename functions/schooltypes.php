@@ -25,19 +25,19 @@
  function schoolTypes($typeId){
       $schoolType = '';
       switch($typeId){
-        case 1:
+        case 0:
           $schoolType = 'Primary School';
           break;
-        case 2:
+        case 1:
           $schoolType = 'Secondary School';
           break;
-        case 3:
+        case 2:
           $schoolType = 'College of Education';
           break;
-        case 4:
+        case 3:
           $schoolType = 'Polytechnic';
           break;
-        case 5:
+        case 4:
           $schoolType = 'University';
           break;
       }
