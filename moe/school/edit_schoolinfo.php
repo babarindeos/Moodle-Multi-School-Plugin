@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle Course Rollover Plugin
+// This file is part of Newwaves Integrator Plugin
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,27 +15,22 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package     local_message
- * @author      Kristian
+ * @package     edit_schoolinfo
+ * @author      Seyibabs
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @var stdClass $plugin
  */
 
 
-  // get _GET variable
-  // Get School Id
-  if (!isset($_GET['q']) || $_GET['q']==''){
-         redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php');
-  }
 
-  $_GET_URL_school_id = explode("-",htmlspecialchars(strip_tags($_GET['q'])));
-  $_GET_URL_school_id = $_GET_URL_school_id[1];
 
 
 
  require_once(__DIR__.'/../../../../config.php');
  require_login();
+ require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
  require_once($CFG->dirroot.'/local/newwaves/classes/form/update_school.php');
+ require_once($CFG->dirroot.'/local/newwaves/functions/state.php');
  require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
  require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
 
@@ -44,6 +39,41 @@
  $PAGE->set_url(new moodle_url('/local/newwaves/moe/edit_schoolinfo.php'));
  $PAGE->set_context(\context_system::instance());
  $PAGE->set_title('Update School Information');
+ $PAGE->set_heading("Update School Information");
+
+ $mform = new updateSchool();
+
+ //isPostBack
+ if ($mform->is_cancelled()){
+      redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php', 'No School Update is performed. The operation is cancelled.');
+ }else if($fromform = $mform->get_data()){
+
+      $recordtoupdate = new stdClass();
+      $recordtoupdate->id = $fromform->school_id;
+      $recordtoupdate->name = $fromform->name;
+      $recordtoupdate->type = $fromform->type;
+      $recordtoupdate->state = $fromform->state;
+      $recordtoupdate->lga = $fromform->lga;
+      $recordtoupdate->address = $fromform->address;
+      $recordtoupdate->timemodified = time();
+
+      $DB->update_record('newwaves_schools', $recordtoupdate);
+
+      $schoolinfo_href = "edit_schoolinfo.php?q=".mask($fromform->school_id);
+      redirect($CFG->wwwroot."/local/newwaves/moe/school/{$schoolinfo_href}", "A School with the name <strong>{$fromform->name}</strong> has been successfully updated.");
+
+ }
+
+
+ // get _GET variable
+ // Get School Id
+ if (!isset($_GET['q']) || $_GET['q']==''){
+        redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php');
+ }
+
+ $_GET_URL_school_id = explode("-",htmlspecialchars(strip_tags($_GET['q'])));
+ $_GET_URL_school_id = $_GET_URL_school_id[1];
+
 
 
 
@@ -62,13 +92,13 @@
  $data_packet = array("school_id"=>$_GET_URL_school_id, "name"=>$school_name, "type"=>$school_type, "state"=>$state,
                      "lga"=>$lga, "address"=>$address);
 
- $mform = new updateSchool(null, $data_packet);
+
  $mform->set_data($data_packet);
 
  echo $OUTPUT->header();
  // display page Header
  $pageHeader = pageHeader("Update School Information");
- echo $pageHeader;
+ //echo $pageHeader;
 
  // include nav bar
   include_once($CFG->dirroot.'/local/newwaves/nav/moe_main_nav.php');

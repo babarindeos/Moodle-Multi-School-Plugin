@@ -60,6 +60,7 @@
                 redirect($CFG->wwwroot."/local/newwaves/moe/school/{$create_school_head_href}", "<strong>[Duplicate Email Error]</strong> A user record with that email <strong>{$email}</strong> already exist.");
 
       }else{
+
                 //write to newwaves_schools_heads
                 $recordtoinsert = new stdClass();
                 $recordtoinsert->schoolid = $fromform->school_id;

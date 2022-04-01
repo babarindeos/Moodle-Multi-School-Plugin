@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package     manage teachers
+ * @package     manage_students
  * @author      Seyibabs
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @var stdClass $plugin
@@ -29,48 +29,48 @@
  global $DB, $USER;
 
  require_login();
- $PAGE->set_url(new moodle_url('/local/newwaves/moe/school/teacher/manage_teachers.php'));
+ $PAGE->set_url(new moodle_url('/local/newwaves/moe/school/student/manage_students.php'));
  $PAGE->set_context(\context_system::instance());
  $PAGE->set_title('Manage Teachers');
 
  echo $OUTPUT->header();
- echo "<div class='mb-5'><h2>Manage Teachers</h2></div>";
+ echo "<div class='mb-5'><h2>Manage Students</h2></div>";
 
 
 
- include_once($CFG->dirroot.'/local/newwaves/nav/moe_school_teacher_nav.php');
+ include_once($CFG->dirroot.'/local/newwaves/nav/moe_school_student_nav.php');
 
  // retrieve Teachers
- $sql = "SELECT u.id, u.schoolid, s.name as schoolname, u.uuid, u.title, u.surname, u.firstname, u.middlename, u.gender, u.email, u.phone, u.role
-        from {newwaves_schools_users} u left join {newwaves_schools} s on u.schoolid=s.id where u.role='teacher' order by u.id desc";
+ $sql = "SELECT u.id, u.schoolid, s.name as schoolname, u.uuid, u.surname, u.firstname, u.middlename, u.gender, u.email, u.phone, u.role
+        from {newwaves_schools_users} u left join {newwaves_schools} s on u.schoolid=s.id where u.role='student' order by u.id desc";
 
- $teachers = $DB->get_records_sql($sql);
+ $students = $DB->get_records_sql($sql);
 
  $sn = 1;
 
  echo "<table class='table table-stripped border' id='tblData'>";
  echo "<thead>";
  echo "<tr class='font-weight-bold' >";
-      echo "<th class='py-3'>SN</th><th>School</th><th>Staff ID</th><th>Names</th><th>Phone</th><th>Email</th><th class='text-center'>Action</th></tr>";
+      echo "<th class='py-3'>SN</th><th>School</th><th>Admission No.</th><th>Names</th><th>Phone</th><th>Email</th><th class='text-center'>Action</th></tr>";
  echo "</thead>";
  echo "<tbody>";
 
-    foreach($teachers as $teacher){
+    foreach($students as $student){
         //$schoolType = schoolTypes($school->type);
 
-        $viewHref = "window.location='view_teacher.php?q=".mask($teacher->id)."'";
-        $editHref = "window.location='edit_teacher.php?q=".mask($teacher->id)."'";
-        $deleteHref = "window.location='delete_teacher.php?q=".mask($teacher->id)."'";
+        $viewHref = "window.location='view_teacher.php?q=".mask($student->id)."'";
+        $editHref = "window.location='edit_teacher.php?q=".mask($student->id)."'";
+        $deleteHref = "window.location='delete_teacher.php?q=".mask($student->id)."'";
         $viewBtn = "<button onclick={$viewHref} class='btn btn-success border rounded'>VIEW</button>";
         $editBtn = "<button onclick={$editHref} class='btn btn-warning border rounded'>EDIT</button>";
         $deleteBtn = "<button onclick={$editHref} class='btn btn-danger border rounded'>DELETE</button>";
         echo "<tr>";
             echo "<td class='text-center'>{$sn}.</td>";
-            echo "<td>{$teacher->schoolname}</td>";
-            echo "<td>{$teacher->uuid}</td>";
-            echo "<td>{$teacher->title} {$teacher->surname} {$teacher->firstname}</td>";
-            echo "<td>{$teacher->phone}</td>";
-            echo "<td>{$teacher->email}</td>";
+            echo "<td>{$student->schoolname}</td>";
+            echo "<td>{$student->uuid}</td>";
+            echo "<td>{$student->surname} {$student->firstname}</td>";
+            echo "<td>{$student->phone}</td>";
+            echo "<td>{$student->email}</td>";
             echo "<td class='text-center'>{$viewBtn} {$editBtn} {$deleteBtn}</td>";
         echo "</tr>";
         $sn++;

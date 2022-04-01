@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle Course Rollover Plugin
+// This file is part of Newwaves Integrator Plugin
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,8 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package     local_message
- * @author      Kristian
+ * @package     manage_headadmin
+ * @author      Seyibabs
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @var stdClass $plugin
  */
@@ -26,9 +26,13 @@
  require_once(__DIR__.'/../../../../config.php');
  require_login();
  require_once($CFG->dirroot.'/local/newwaves/functions/schooltypes.php');
+ require_once($CFG->dirroot.'/local/newwaves/functions/state.php');
+ require_once($CFG->dirroot.'/local/newwaves/functions/title.php');
  require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
  require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
  require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
+ require_once($CFG->dirroot.'/local/newwaves/functions/title.php');
+ require_once($CFG->dirroot.'/local/newwaves/functions/gender.php');
 
 // Get School Id
 if (!isset($_GET['q']) || $_GET['q']==''){
@@ -44,9 +48,10 @@ global $DB;
  $PAGE->set_url(new moodle_url('/local/newwaves/moe/schoolinfo.php'));
  $PAGE->set_context(\context_system::instance());
  $PAGE->set_title('School Information');
+ $PAGE->set_heading('School Information');
 
  echo $OUTPUT->header();
- echo "<h2>School Information <small>[ Head Admin ]</small></h2>";
+ echo "<h2><small>[ Head Admin ]</small></h2>";
  $active_menu_item = 'headadmin';
 
 
@@ -61,10 +66,11 @@ global $DB;
  foreach($school as $row){
     $school_name = $row->name;
     $school_type = schoolTypes($row->type);
+    $state = state($row->state);
     $lga = $row->lga;
     $address = $row->address;
     echo "<h4>{$school_name}</h4>";
-    echo "<div>{$address}, {$lga}</div>";
+    echo "<div>{$state}, {$address}, {$lga}</div>";
  }
 
 
@@ -105,30 +111,20 @@ global $DB;
   echo "</thead>";
   echo "<tbody>";
         foreach($headadmin as $row){
-            $title = '';
-            switch($row->title){
-              case '0':
-                $title = 'Mr.';
-                break;
-              case '1':
-                $title = 'Mrs.';
-                break;
-              case '2':
-                $title = 'Dr.';
-                break;
-              case '3':
-                $title = 'Prof.';
-                break;
-            }
 
-            $btnEdit = "<button class='btn btn-warning btn-sm rounded '>Edit</button>";
+            $title = title($row->title);
+
+            $viewHref = "window.location='view_headadmin.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
+            $editHref = "window.location='edit_headadmin.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
+            $btnView = "<button onclick={$viewHref} class='btn btn-success btn-sm rounded '>View</button>";
+            $btnEdit = "<button onclick={$editHref} class='btn btn-warning btn-sm rounded '>Edit</button>";
             $btnDelete = "<button class='btn btn-danger btn-sm rounded '>Delete</button>";
             echo "<tr>";
                 echo "<td class='text-center'>{$sn}.</td>";
                 echo "<td class='text-left'>{$title} {$row->surname} {$row->firstname}</td>";
-                echo "<td class='text-left'>{$row->email} {$row->firstname}</td>";
+                echo "<td class='text-left'>{$row->email}</td>";
                 echo "<td class='text-left'>{$row->phone}</td>";
-                echo "<td class='text-center'>{$btnEdit} {$btnDelete}</td>";
+                echo "<td class='text-center'>{$btnView} {$btnEdit} {$btnDelete}</td>";
             echo "</tr>";
 
             $sn++;

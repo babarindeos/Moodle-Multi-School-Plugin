@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package     Teacher Dashboard
+ * @package     Student Dashboard
  * @author      Seyibabs
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @var stdClass $plugin
@@ -27,16 +27,16 @@
  require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
 
  require_login();
- $PAGE->set_url(new moodle_url('/local/newwaves/moe/school/teacher/teacher_dashboard.php'));
+ $PAGE->set_url(new moodle_url('/local/newwaves/moe/school/student/student_dashboard.php'));
  $PAGE->set_context(\context_system::instance());
- $PAGE->set_title('Teacher Dashboard');
+ $PAGE->set_title('Students Dashboard');
 
  echo $OUTPUT->header();
- echo "<div class='mb-5'><h2>Teachers Dashboard</h2></div>";
+ echo "<div class='mb-5'><h2>Students Dashboard</h2></div>";
  $active_menu_item='dashboard';
 
 
- include_once($CFG->dirroot.'/local/newwaves/nav/moe_school_teacher_nav.php');
+ include_once($CFG->dirroot.'/local/newwaves/nav/moe_school_student_nav.php');
 
 
 

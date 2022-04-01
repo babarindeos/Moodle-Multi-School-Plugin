@@ -36,6 +36,7 @@
  require_once(__DIR__.'/../../../../config.php');
  require_login();
  require_once($CFG->dirroot.'/local/newwaves/functions/schooltypes.php');
+ require_once($CFG->dirroot.'/local/newwaves/functions/state.php');
  require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
  require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
  require_once($CFG->dirroot.'/local/newwaves/lib/custom.css.php');
@@ -46,9 +47,11 @@
  $PAGE->set_url(new moodle_url('/local/newwaves/moe/schoolinfo.php'));
  $PAGE->set_context(\context_system::instance());
  $PAGE->set_title('School Information');
+ $PAGE->set_heading('School Information');
 
  echo $OUTPUT->header();
- echo "<h2>School Information <small>[ Dashboard ]</small></h2>";
+ //echo "<h2>School Information<small>[ Dashboard ]</small></h2>";
+ echo "<h2><small>[ Dashboard ]</small></h2>";
  $active_menu_item = 'dashboard';
 
 
@@ -64,10 +67,11 @@
  foreach($school as $row){
     $school_name = $row->name;
     $school_type = schoolTypes($row->type);
+    $state = state($row->state);
     $lga = $row->lga;
     $address = $row->address;
     echo "<h4>{$school_name}</h4>";
-    echo "<div>{$address}, {$lga}</div>";
+    echo "<div>{$state}, {$address}, {$lga}</div>";
  }
 
 

@@ -29,6 +29,8 @@
  require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
  require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
  require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
+ require_once($CFG->dirroot.'/local/newwaves/functions/title.php');
+ require_once($CFG->dirroot.'/local/newwaves/functions/gender.php');
 
 // Get School Id
 if (!isset($_GET['q']) || $_GET['q']==''){
@@ -79,10 +81,10 @@ global $DB;
 
  <div class="row d-flex justify-content-right mt-2 mb-4">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-<!--        --><?php
-//           $create_head_href = "create_school_admin.php?q=".mask($_GET_URL_school_id);
-//        ?>
-<!--        <button onClick="window.location='--><?php //echo $create_head_href; ?><!--'" class='btn btn-sm btn-primary rounded'>Create School Admin</button>-->
+       <?php
+          $create_head_href = "create_school_admin.php?q=".mask($_GET_URL_school_id);
+       ?>
+        <button onClick="window.location='<?php echo $create_head_href; ?>'" class='btn btn-sm btn-primary rounded'>Create School Admin</button>
     </div>
  </div>
 
