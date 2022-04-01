@@ -57,7 +57,7 @@
 
 
         //email
-        $email_attributes = array('size'=>'80%');
+        $email_attributes = array('size'=>'80%', 'readonly'=>true);
         $mform->addElement('text', 'email', 'Email', $email_attributes);
         $mform->setType('email', PARAM_NOTAGS);
         $mform->addRule('email', 'Email', 'email', null, 'client');
