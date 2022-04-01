@@ -30,6 +30,7 @@
  require_login();
  require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
  require_once($CFG->dirroot.'/local/newwaves/classes/form/update_headadmin.php');
+ require_once($CFG->dirroot.'/local/newwaves/classes/auth.php');
  require_once($CFG->dirroot.'/local/newwaves/functions/state.php');
  require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
  require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
@@ -49,6 +50,8 @@
     redirect($CFG->wwwroot.'/local/newwaves/moe/school/manage_headadmin.php?q='.mask($_SESSION['school_id']), 'No Update is performed. The operation is cancelled.');
  }else if($fromform = $mform->get_data()){
 
+      $transaction = $DB->start_delegated_transaction();
+
       $recordtoupdate = new stdClass();
       $recordtoupdate->id = $fromform->headadmin_id;
       $recordtoupdate->title = $fromform->title;
@@ -56,11 +59,30 @@
       $recordtoupdate->firstname = $fromform->firstname;
       $recordtoupdate->middlename = $fromform->middlename;
       $recordtoupdate->gender = $fromform->gender;
-      $recordtoupdate->email = $fromform->email;
+      //$recordtoupdate->email = $fromform->email;
       $recordtoupdate->phone = $fromform->phone;
       $recordtoupdate->timemodified = time();
 
-      $DB->update_record('newwaves_schools_users', $recordtoupdate);
+      $update_school_user = $DB->update_record('newwaves_schools_users', $recordtoupdate);
+
+
+      // get id of user in moodle_user tbl
+      $auth = new Auth();
+      $moodleUserId = $auth->getMoodleUserId($DB, $fromform->email);
+
+
+      // update moodle user
+      $tbluserupdate = new stdClass();
+      $tbluserupdate->firstname = $fromform->firstname;
+      $tbluserupdate->lastname = $fromform->surname;
+      $tbluserupdate->id = $moodleUserId;
+
+      $update_user = $DB->update_record('user', $tbluserupdate);
+
+      if ($update_school_user && $update_user){
+          $DB->commit_delegated_transaction($transaction);
+      }
+
 
       $headadmin_href = "edit_headadmin.php?q=".mask($_SESSION['school_id'])."&u=".mask($fromform->headadmin_id);
       redirect($CFG->wwwroot."/local/newwaves/moe/school/{$headadmin_href}", "A Head Admin with the name <strong>{$fromform->surname} {$fromform->firstname}</strong> has been successfully updated.");
@@ -71,7 +93,7 @@
  // get _GET variable
  // Get School Id
  if (!isset($_GET['q']) || $_GET['q']==''){
-        redirect($CFG->wwwroot.'/local/newwaves/moe/school/manage_headadmin.php?q='.$_GET_URL_school_id);
+        redirect($CFG->wwwroot.'/local/newwaves/moe/school/manage_headadmin.php?q='.$_SESSION['school_id']);
  }
 
  $_GET_URL_school_id = explode("-",htmlspecialchars(strip_tags($_GET['q'])));
@@ -82,7 +104,7 @@
 
  // Get HeadAdmin id
  if (!isset($_GET['u']) || $_GET['u']==''){
-        redirect($CFG->wwwroot.'/local/newwaves/moe/school/manage_headadmin.php?q='.$_GET_URL_school_id);
+        redirect($CFG->wwwroot.'/local/newwaves/moe/school/manage_headadmin.php?q='.mask($_GET_URL_school_id));
  }
 
  $_GET_URL_headadmin_id = explode("-",htmlspecialchars(strip_tags($_GET['u'])));
