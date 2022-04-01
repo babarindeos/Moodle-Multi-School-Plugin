@@ -44,9 +44,12 @@
  $sql = "SELECT name, count(id) as schoolcount from {newwaves_schools} group by name";
  $schools = $DB->get_records_sql($sql);
  //var_dump($schools);
+ //die;
 
 
  $chart_data = array();
+
+
  foreach($schools as $row){
      $schools_array = array();
      array_push($schools_array, $row->name, $row->schoolcount);
@@ -54,7 +57,7 @@
  }
 
  $chart_data = json_encode($chart_data);
- //var_dump($chart_data);
+ var_dump($chart_data);
 
 
 
