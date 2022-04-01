@@ -13,11 +13,17 @@
       // instantiates the pie chart, passes in the data and
       // draws it.
       function drawChart() {
-      
+
         // Create the data table.
         var data = google.visualization.arrayToDataTable(
-
-           <?php echo ($chart_data); ?>
+          [
+              ['Task', 'Hours per Day'],
+              ['Work',     11],
+              ['Eat',      2],
+              ['Commute',  2],
+              ['Watch TV', 2],
+              ['Sleep',    7]
+        ]
         );
 
         var options = {
