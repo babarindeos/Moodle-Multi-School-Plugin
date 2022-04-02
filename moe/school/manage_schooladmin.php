@@ -111,7 +111,7 @@ global $DB;
         foreach($headadmin as $row){
             $title = title($row->title);
 
-            $viewHref = "window.location='schooladmin/view_headadmin.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
+            $viewHref = "window.location='schooladmin/view_schooladmin.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
             $editHref = "window.location='edit_schooladmin.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
 
             $btnView = "<button onclick={$viewHref} class='btn btn-success btn-sm rounded '>View</button>";
