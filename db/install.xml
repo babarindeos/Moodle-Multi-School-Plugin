@@ -47,6 +47,9 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
+<!--      <INDEXES>-->
+<!--        <INDEX NAME="email" UNIQUE="true" FIELDS="email"/>-->
+<!--      </INDEXES>-->
     </TABLE>
     <!-- Newwaves School Users//-->
 
@@ -69,9 +72,9 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
-      <INDEXES>
-        <INDEX NAME="userid" UNIQUE="true" FIELDS="userid"/>
-      </INDEXES>
+<!--      <INDEXES>-->
+<!--        <INDEX NAME="userid" UNIQUE="true" FIELDS="userid"/>-->
+<!--      </INDEXES>-->
     </TABLE>
     <!-- Newwaves School Teacher//-->
 
@@ -92,9 +95,9 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
-      <INDEXES>
-        <INDEX NAME="userid" UNIQUE="true" FIELDS="userid"/>
-      </INDEXES>
+<!--      <INDEXES>-->
+<!--        <INDEX NAME="userid" UNIQUE="true" FIELDS="userid"/>-->
+<!--      </INDEXES>-->
     </TABLE>
     <!-- Newwaves School Students//-->
 
