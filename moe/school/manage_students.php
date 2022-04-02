@@ -110,18 +110,16 @@ global $DB;
   echo "<tbody>";
         foreach($student as $row){
 
-
-
             $viewHref = "window.location='student/view_student.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
             $editHref = "window.location='edit_student.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
-            $btnView = "<button onclick={$viewHref} class='btn btn-success btn-sm rounded '>View</button>";
-            $btnEdit = "<button onclick={$editHref} class='btn btn-warning btn-sm rounded '>Edit</button>";
-            $btnDelete = "<button class='btn btn-danger btn-sm rounded '>Delete</button>";
+            $btnView = "<button onclick={$viewHref} class='btn btn-success btn-sm rounded' >View</button>";
+            $btnEdit = "<button onclick={$editHref} class='btn btn-warning btn-sm rounded'>Edit</button>";
+            $btnDelete = "<button id='btn{$row->id}' class='btn btn-danger btn-sm rounded btn-delete' data-toggle='modal' data-target='#deleteModalCenter'>Delete</button>";
             echo "<tr>";
                 echo "<td class='text-center'>{$sn}.</td>";
                 echo "<td>{$row->uuid}</td>";
                 echo "<td class='text-left'>{$row->surname} {$row->firstname}</td>";
-                echo "<td class='text-left'>{$row->email} {$row->firstname}</td>";
+                echo "<td class='text-left'>{$row->email}</td>";
                 echo "<td class='text-left'>{$row->phone}</td>";
                 echo "<td class='text-center'>{$btnView} {$btnEdit} {$btnDelete}</td>";
             echo "</tr>";
@@ -138,6 +136,49 @@ global $DB;
 
 
  <?php
+  $page = "manage_students.php";
+
+  echo "<input id='select_delete_record' type='hidden' value='' />";
+  echo "<input id='school_id' type='hidden' value='{$_GET_URL_school_id}' />";
+  echo "<input id='page' type='hidden' value='{$page}' />";
+  require_once($CFG->dirroot.'/local/newwaves/includes/modal_delete.inc.php');
   require_once($CFG->dirroot.'/local/newwaves/lib/mdb.js.php');
+  //require_once($CFG->dirroot.'/local/newwaves/lib/mask.js');
   echo $OUTPUT->footer();
+
 ?>
+
+<script>
+  $(document).ready(function(){
+      $(".btn-delete").on("click", function(){
+          var selectedBtnId = $(this).attr('id');
+          var userId = $(this).attr('id').replace(/\D/g,'');
+          $('#select_delete_record').val(userId);
+      });
+
+      $("#btn-delete-modal").on("click", function(){
+          var school_id = $("#school_id").val();
+          var userId = $("#select_delete_record").val();
+          var qcode = generateMask(60);
+          var zcode = generateMask(60);
+          var page = 'manage_students.php';
+
+          window.location='student/delete_student.php?q='+qcode+'&uid='+userId+'&z='+zcode+'&sid='+school_id+'&pg='+page+'&j='+qcode;
+      });
+  });
+
+  function generateMask(length){
+      // declare all characters
+      const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      let result = ' ';
+      const charactersLength = characters.length;
+        for ( let i = 0; i < length; i++ ) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+  }
+
+
+
+
+</script>
