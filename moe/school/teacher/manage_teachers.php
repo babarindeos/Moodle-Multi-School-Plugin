@@ -65,9 +65,9 @@
 
         $editHref = "window.location='".$CFG->wwwroot."/local/newwaves/moe/school/edit_teacher.php?q=".mask($teacher->schoolid)."&u=".mask($teacher->id)."'";
         $deleteHref = "window.location='delete_teacher.php?q=".mask($teacher->id)."'";
-        $viewBtn = "<button onclick={$viewHref} class='btn btn-success border rounded'>VIEW</button>";
-        $editBtn = "<button onclick={$editHref} class='btn btn-warning border rounded'>EDIT</button>";
-        $deleteBtn = "<button id='btn{$teacher->id}' class='btn btn-danger border rounded btn-delete'  data-toggle='modal' data-target='#deleteModalCenter'>DELETE</button>";
+        $viewBtn = "<button onclick={$viewHref} class='btn btn-sm btn-success rounded'>VIEW</button>";
+        $editBtn = "<button onclick={$editHref} class='btn btn-sm btn-warning rounded'>EDIT</button>";
+        $deleteBtn = "<button id='btn{$teacher->id}' class='btn btn-sm btn-danger rounded btn-delete'  data-toggle='modal' data-target='#deleteModalCenter'>DELETE</button>";
         echo "<tr>";
             echo "<td class='text-center'>{$sn}.</td>";
             echo "<td>{$teacher->schoolname}</td>";
