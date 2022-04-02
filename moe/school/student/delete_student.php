@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Newwaves Integrator Plugin
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -29,6 +30,11 @@
  require_once($CFG->dirroot.'/local/newwaves/functions/gender.php');
  require_once($CFG->dirroot.'/local/newwaves/functions/acadclass.php');
  require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
+
+
+ if (!isset($_SERVER['HTTP_REFERER'])){
+      redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php', 'Unauthorised access.');
+ }
 
 
  $PAGE->set_url(new moodle_url('/local/newwaves/moe/school/student/delete_student.php'));
