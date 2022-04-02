@@ -102,21 +102,7 @@ global $DB;
   echo "</thead>";
   echo "<tbody>";
         foreach($headadmin as $row){
-            $title = '';
-            switch($row->title){
-              case '0':
-                $title = 'Mr.';
-                break;
-              case '1':
-                $title = 'Mrs.';
-                break;
-              case '2':
-                $title = 'Dr.';
-                break;
-              case '3':
-                $title = 'Prof.';
-                break;
-            }
+            $title = title($row->title);
 
             $btnEdit = "<button class='btn btn-warning btn-sm rounded '>Edit</button>";
             $btnDelete = "<button class='btn btn-danger btn-sm rounded '>Delete</button>";

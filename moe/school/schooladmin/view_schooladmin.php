@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package     view_teacher
+ * @package     view_schooladmin
  * @author      Seyibab
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @var stdClass $plugin
@@ -23,7 +23,7 @@
 
 require_once(__DIR__.'/../../../../../config.php');
 require_login();
-require_once($CFG->dirroot.'/local/newwaves/classes/teacher.php');
+require_once($CFG->dirroot.'/local/newwaves/classes/schooladmin.php');
 require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
 require_once($CFG->dirroot.'/local/newwaves/functions/gender.php');
 require_once($CFG->dirroot.'/local/newwaves/functions/acadclass.php');
@@ -32,8 +32,8 @@ require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
 
 $PAGE->set_url(new moodle_url('/local/newwaves/moe/moe_dashboard.php'));
 $PAGE->set_context(\context_system::instance());
-$PAGE->set_title('Teacher Profile');
-$PAGE->set_heading('Teacher');
+$PAGE->set_title('School Admin Profile');
+$PAGE->set_heading('School Admin');
 
 global $DB, $USER;
 
@@ -47,20 +47,20 @@ if (!isset($_GET['q']) || $_GET['q']==''){
 }
 
 
-// Teacher id
+// Schooladmin id
 if (!isset($_GET['u']) || $_GET['u']==''){
     redirect($CFG->wwwroot.'/local/newwaves/moe/school/manage_schools.php');
 }else{
-    $_GET_URL_teacher_id = explode("-",htmlspecialchars(strip_tags($_GET['u'])));
-    $_GET_URL_teacher_id = $_GET_URL_teacher_id[1];
+    $_GET_URL_schooladmin_id = explode("-",htmlspecialchars(strip_tags($_GET['u'])));
+    $_GET_URL_schooladmin_id = $_GET_URL_schooladmin_id[1];
 }
 
 // retrieve user data
-$teacher = new Teacher();
-$getTeacher = $teacher->getTeacherProfileById($DB, $_GET_URL_teacher_id);
+$schooladmin = new Schooladmin();
+$getschooladmin = $schooladmin->getSchooladminProfileById($DB, $_GET_URL_schooladmin_id);
 
-// read teacherData object
-foreach($getTeacher as $row){
+// read schooladminData object
+foreach($getschooladmin as $row){
     $admission_no = $row->uuid;
     $surname = $row->surname;
     $firstname = $row->firstname;
@@ -79,7 +79,7 @@ $user_avatar_small = $CFG->wwwroot.'/local/newwaves/assets/images/user_avatar_sm
 
 
 echo $OUTPUT->header();
-echo "<div class='mb-5'><h2><small> [Teacher Profile ]</small></h2></div>";
+echo "<div class='mb-5'><h2><small> [School Admin Profile ]</small></h2></div>";
 
 include_once($CFG->dirroot.'/local/newwaves/nav/moe_main_nav.php');
 
