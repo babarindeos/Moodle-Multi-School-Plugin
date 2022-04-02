@@ -23,6 +23,7 @@
 
  require_once(__DIR__.'/../../../../../config.php');
  require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
+ require_once($CFG->dirroot.'/local/newwaves/functions/title.php');
  require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
  require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
 
@@ -32,9 +33,10 @@
  $PAGE->set_url(new moodle_url('/local/newwaves/moe/school/teacher/manage_teachers.php'));
  $PAGE->set_context(\context_system::instance());
  $PAGE->set_title('Manage Teachers');
+ $PAGE->set_heading('Teachers');
 
  echo $OUTPUT->header();
- echo "<div class='mb-5'><h2>Manage Teachers</h2></div>";
+ echo "<div class='mb-5'><h2><small> [Manage Teachers ]</small></h2></div>";
 
 
 
@@ -57,18 +59,20 @@
 
     foreach($teachers as $teacher){
         //$schoolType = schoolTypes($school->type);
+        $schoolid = $teacher->schoolid;
+        $viewHref = "window.location='".$CFG->wwwroot."/local/newwaves/moe/school/teacher/view_teacher.php?q=".mask($teacher->schoolid)."&u=".mask($teacher->id)."'";
 
-        $viewHref = "window.location='view_teacher.php?q=".mask($teacher->id)."'";
-        $editHref = "window.location='edit_teacher.php?q=".mask($teacher->id)."'";
+
+        $editHref = "window.location='".$CFG->wwwroot."/local/newwaves/moe/school/edit_teacher.php?q=".mask($teacher->schoolid)."&u=".mask($teacher->id)."'";
         $deleteHref = "window.location='delete_teacher.php?q=".mask($teacher->id)."'";
         $viewBtn = "<button onclick={$viewHref} class='btn btn-success border rounded'>VIEW</button>";
         $editBtn = "<button onclick={$editHref} class='btn btn-warning border rounded'>EDIT</button>";
-        $deleteBtn = "<button onclick={$editHref} class='btn btn-danger border rounded'>DELETE</button>";
+        $deleteBtn = "<button id='btn{$teacher->id}' class='btn btn-danger border rounded btn-delete'  data-toggle='modal' data-target='#deleteModalCenter'>DELETE</button>";
         echo "<tr>";
             echo "<td class='text-center'>{$sn}.</td>";
             echo "<td>{$teacher->schoolname}</td>";
             echo "<td>{$teacher->uuid}</td>";
-            echo "<td>{$teacher->title} {$teacher->surname} {$teacher->firstname}</td>";
+            echo "<td>".title($teacher->title)." {$teacher->surname} {$teacher->firstname}</td>";
             echo "<td>{$teacher->phone}</td>";
             echo "<td>{$teacher->email}</td>";
             echo "<td class='text-center'>{$viewBtn} {$editBtn} {$deleteBtn}</td>";
@@ -86,7 +90,46 @@
 
 
 
-
+ echo "<input id='select_delete_record' type='hidden' value='' />";
+ echo "<input id='school_id' type='hidden' value='{$schoolid}' />";
 
  require_once($CFG->dirroot.'/local/newwaves/lib/mdb.js.php');
+ require_once($CFG->dirroot.'/local/newwaves/includes/modal_delete.inc.php');
  echo $OUTPUT->footer();
+
+?>
+
+<script>
+ $(document).ready(function(){
+     $(".btn-delete").on("click", function(){
+         var selectedBtnId = $(this).attr('id');
+         var userId = $(this).attr('id').replace(/\D/g,'');
+         $('#select_delete_record').val(userId);
+     });
+
+     $("#btn-delete-modal").on("click", function(){
+         var school_id = $("#school_id").val();
+         var userId = $("#select_delete_record").val();
+         var qcode = generateMask(60);
+         var zcode = generateMask(60);
+         var page = 'manage_teachers.php';
+
+         window.location='../teacher/delete_teacher.php?q='+qcode+'&uid='+userId+'&z='+zcode+'&sid='+school_id+'&pg='+page+'&j='+qcode;
+     });
+ });
+
+ function generateMask(length){
+     // declare all characters
+     const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+     let result = ' ';
+     const charactersLength = characters.length;
+       for ( let i = 0; i < length; i++ ) {
+           result += characters.charAt(Math.floor(Math.random() * charactersLength));
+       }
+       return result;
+ }
+
+
+
+
+</script>
