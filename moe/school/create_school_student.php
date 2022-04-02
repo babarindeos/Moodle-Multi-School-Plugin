@@ -28,6 +28,7 @@ require_login();
 require_once($CFG->dirroot.'/local/newwaves/classes/form/create_school_student.php');
 require_once($CFG->dirroot.'/local/newwaves/functions/schooltypes.php');
 require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
+require_once($CFG->dirroot.'/local/newwaves/functions/gender.php');
 require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
 require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
 require_once($CFG->dirroot.'/local/newwaves/classes/auth.php');
@@ -180,8 +181,6 @@ foreach($school as $row){
 
           $mform->set_data($data_packet);
           $mform->display();
-
-
 
           ?>
     </div><!-- end of column //-->

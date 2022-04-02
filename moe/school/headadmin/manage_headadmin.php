@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle Course Rollover Plugin
+// This file is part of Newwaves Integrator Plugin
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package     manage_schooladmin
+ * @package     manage_headadmin
  * @author      Seyibabs
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @var stdClass $plugin
@@ -26,8 +26,9 @@
  require_once(__DIR__.'/../../../../config.php');
  require_login();
  require_once($CFG->dirroot.'/local/newwaves/functions/schooltypes.php');
- require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
+ require_once($CFG->dirroot.'/local/newwaves/functions/state.php');
  require_once($CFG->dirroot.'/local/newwaves/functions/title.php');
+ require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
  require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
  require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
  require_once($CFG->dirroot.'/local/newwaves/functions/title.php');
@@ -50,8 +51,8 @@ global $DB;
  $PAGE->set_heading('School Information');
 
  echo $OUTPUT->header();
- echo "<h2><small>[ Manage School Admin ]</small></h2>";
- $active_menu_item = 'schooladmins';
+ echo "<h2><small>[ Head Admin ]</small></h2>";
+ $active_menu_item = 'headadmin';
 
 
  // navigation  bar
@@ -65,10 +66,11 @@ global $DB;
  foreach($school as $row){
     $school_name = $row->name;
     $school_type = schoolTypes($row->type);
+    $state = state($row->state);
     $lga = $row->lga;
     $address = $row->address;
     echo "<h4>{$school_name}</h4>";
-    echo "<div>{$address}, {$lga}</div>";
+    echo "<div>{$state}, {$address}, {$lga}</div>";
  }
 
 
@@ -83,17 +85,17 @@ global $DB;
 
  <div class="row d-flex justify-content-right mt-2 mb-4">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-       <?php
-          $create_head_href = "create_school_admin.php?q=".mask($_GET_URL_school_id);
-       ?>
-        <button onClick="window.location='<?php echo $create_head_href; ?>'" class='btn btn-sm btn-primary rounded'>Create School Admin</button>
+        <?php
+           $create_head_href = "create_school_head.php?q=".mask($_GET_URL_school_id);
+        ?>
+        <button onClick="window.location='<?php echo $create_head_href; ?>'" class='btn btn-sm btn-primary rounded'>Create School Head</button>
     </div>
  </div>
 
 
  <?php
   $sql = "SELECT id, title, surname, firstname, middlename , gender, email, phone, role FROM
-          {newwaves_schools_users} where role='schooladmin' order by id desc";
+          {newwaves_schools_users} where role='headadmin' order by id desc";
 
   $headadmin = $DB->get_records_sql($sql);
 
@@ -109,18 +111,18 @@ global $DB;
   echo "</thead>";
   echo "<tbody>";
         foreach($headadmin as $row){
+
             $title = title($row->title);
 
-            $viewHref = "window.location='schooladmin/view_headadmin.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
-            $editHref = "window.location='edit_schooladmin.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
-
+            $viewHref = "window.location='view_headadmin.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
+            $editHref = "window.location='edit_headadmin.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
             $btnView = "<button onclick={$viewHref} class='btn btn-success btn-sm rounded '>View</button>";
             $btnEdit = "<button onclick={$editHref} class='btn btn-warning btn-sm rounded '>Edit</button>";
             $btnDelete = "<button class='btn btn-danger btn-sm rounded '>Delete</button>";
             echo "<tr>";
                 echo "<td class='text-center'>{$sn}.</td>";
                 echo "<td class='text-left'>{$title} {$row->surname} {$row->firstname}</td>";
-                echo "<td class='text-left'>{$row->email} {$row->firstname}</td>";
+                echo "<td class='text-left'>{$row->email}</td>";
                 echo "<td class='text-left'>{$row->phone}</td>";
                 echo "<td class='text-center'>{$btnView} {$btnEdit} {$btnDelete}</td>";
             echo "</tr>";

@@ -26,6 +26,8 @@
 require_login();
  require_once($CFG->dirroot.'/local/newwaves/classes/form/create_school_admin.php');
  require_once($CFG->dirroot.'/local/newwaves/functions/schooltypes.php');
+ require_once($CFG->dirroot.'/local/newwaves/functions/title.php');
+ require_once($CFG->dirroot.'/local/newwaves/functions/gender.php');
  require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
  require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
  require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
