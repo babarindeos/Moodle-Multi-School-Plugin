@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle Course Rollover Plugin
+// This file is part of Newwaves Integrator Plugin
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,8 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package     local_message
- * @author      Kristian
+ * @package     create_school_student
+ * @author      Seyibabs
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @var stdClass $plugin
  */
@@ -40,6 +40,7 @@ require_once($CFG->dirroot.'/local/newwaves/classes/auth.php');
 $PAGE->set_url(new moodle_url('/local/newwaves/moe/school/schoolinfo_student.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Create School Student');
+$PAGE->set_heading('Student');
 
 
 $mform = new createSchoolStudent();
@@ -59,8 +60,7 @@ if ($mform->is_cancelled()){
             redirect($CFG->wwwroot."/local/newwaves/moe/school/{$create_school_student_href}", "<strong>[Duplicate Email Error]</strong> A user record with that email <strong>{$email}</strong> already exist.");
 
     }else{
-            
-            $gender = gender($fromform->gender);
+
 
             $recordtoinsert = new stdClass();
             $recordtoinsert->schoolid = $fromform->school_id;
@@ -68,7 +68,7 @@ if ($mform->is_cancelled()){
             $recordtoinsert->surname = $fromform->surname;
             $recordtoinsert->firstname = $fromform->firstname;
             $recordtoinsert->middlename = $fromform->middlename;
-            $recordtoinsert->gender = $gender;
+            $recordtoinsert->gender = $fromform->gender;
             $recordtoinsert->email = $fromform->email;
             $recordtoinsert->phone = $fromform->phone;
             $recordtoinsert->role = "student";
@@ -126,7 +126,7 @@ if ($mform->is_cancelled()){
 }
 
  echo $OUTPUT->header();
- echo "<h2>School Information</h2>";
+ echo "<h2><small>[ School Information ]</small></h2>";
  $active_menu_item = "students";
 
 
