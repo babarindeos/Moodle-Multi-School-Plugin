@@ -1,4 +1,4 @@
-<?php
+  <?php
 // This file is part of Newwaves Integrator Plugin
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -30,9 +30,10 @@
  $PAGE->set_url(new moodle_url('/local/newwaves/moe/school/teacher/teacher_dashboard.php'));
  $PAGE->set_context(\context_system::instance());
  $PAGE->set_title('Teacher Dashboard');
+ $PAGE->set_heading('Teachers');
 
  echo $OUTPUT->header();
- echo "<div class='mb-5'><h2>Teachers Dashboard</h2></div>";
+ echo "<div class='mb-5'><h2><small>[ Teachers Dashboard ]</small></h2></div>";
  $active_menu_item='dashboard';
 
 
