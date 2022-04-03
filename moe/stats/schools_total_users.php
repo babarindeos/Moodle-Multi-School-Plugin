@@ -16,10 +16,10 @@
 
         // Create the data table.
         var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ["Anglican Grammar School 7",1],["Ebenezer Grammar School",1],["Ekiti State Grammar School",1]
-
-        ]);
+           ['Task', 'Hours per Day'],
+          <?php echo $schools_array; ?>
+        ]
+        );
 
         var options = {
           title: 'Schools with Number of Users',
