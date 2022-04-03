@@ -34,6 +34,7 @@
  require_once($CFG->dirroot.'/local/newwaves/functions/gender.php');
  require_once($CFG->dirroot.'/local/newwaves/classes/form/search_transfer_user.php');
  require_once($CFG->dirroot.'/local/newwaves/classes/transfer.php');
+ require_once($CFG->dirroot.'/local/newwaves/classes/form/transfer_user.php');
 
 
 
@@ -45,40 +46,80 @@
   $PAGE->set_heading('Transfer');
 
   echo $OUTPUT->header();
-  echo "<h2><small>[ Transfer Request ]</small></h2>";
+  echo "<h2><small>[ Transfer User ]</small></h2>";
   $active_menu_item = "";
 
+
+  // Get Transfer type
+  if (!isset($_GET['type']) || $_GET['type']==''){
+      redirect($CFG->wwwroot.'/local/newwaves/moe/transfer/transfer_user.php');
+  }else{
+      $_GET_URL_transfer_type = explode("-",htmlspecialchars(strip_tags($_GET['type'])));
+      $_GET_URL_transfer_type = $_GET_URL_transfer_type[1];
+  }
+
+  // Get User ID
+  if (!isset($_GET['ui']) || $_GET['ui']==''){
+      redirect($CFG->wwwroot.'/local/newwaves/moe/transfer/transfer_user.php');
+  }else{
+      $_GET_URL_user_id = explode("-",htmlspecialchars(strip_tags($_GET['ui'])));
+      $_GET_URL_user_id = $_GET_URL_user_id[1];
+  }
+
+  // Get User ID
+  if (!isset($_GET['umail']) || $_GET['umail']==''){
+      redirect($CFG->wwwroot.'/local/newwaves/moe/transfer/transfer_user.php');
+  }else{
+      $_GET_URL_user_email = explode("-",htmlspecialchars(strip_tags($_GET['umail'])));
+      $_GET_URL_user_email = $_GET_URL_user_email[1];
+  }
 
   // navigation  bar
   include_once($CFG->dirroot.'/local/newwaves/nav/moe_transfer_nav.php');
 
+  $user_avatar_small = $CFG->wwwroot.'/local/newwaves/assets/images/user_avatar_small.png';
+
+
+  $transfer = new Transfer();
+  $getUserData = $transfer->searchUser($DB, $_GET_URL_user_email);
+
+  foreach($getUserData as $row){
+      $surname = $row->surname;
+      $firstname = $row->firstname;
+      $middlename = $row->middlename;
+      $uuid = $row->uuid;
+      $schoolname = $row->name;
+  }
+
+
+
+
   echo "<div class='container-fluid'>";
-      echo "<div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>";
-
-      echo "<table class='table table-stripped border' id='tblData'>";
-      echo "<thead>";
-      echo "<tr class='font-weight-bold' >";
-           echo "<th class='py-3'>SN</th><th>Applying School</th><th>Applicant</th><th>Transfer School</th><th>Document</th><th>Date</th><th class='text-center'>Action</th></tr>";
-      echo "</thead>";
-      echo "<tbody>";
-
-             echo "<tr>";
-                 echo "<td class='text-center'></td>";
-                 echo "<td></td>";
-                 echo "<td></td>";
-                 echo "<td></td>";
-                 echo "<td></td>";
-                 echo "<td></td>";
-                 echo "<td class='text-center'></td>";
-             echo "</tr>";
-
-      echo "</tbody>";
-      echo "</table>";
+      echo "<div class='row'>";
+              echo "<div class='col-xs-12 col-sm-12 col-md-8 col-lg-8'>";
+                echo "<div><strong>School Transfering from</strong></div>";
+                echo "<div class='py-2 px-2 mt-2 px-1 border rounded' style='background-color:#f1f1f1;'>{$schoolname}</div>";
 
 
+                $mform = new TransferUser();
 
+                echo "<div class='mt-4'>";
+                      echo "<strong>Select the School Candidate is transfering to</strong>";
+                echo "</div>";
+                echo "<div class='mt-2'>";
+                  $mform->display();
+                echo "</div>";
+
+
+              echo "</div>";
+              echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 text-center'>";
+                        echo "<img src='{$user_avatar_small}' width='60%' />";
+                        echo "<div class='mt-2 font-weight-weight'><strong>{$surname} {$firstname} {$middlename}</strong></div>";
+                        echo "<div>{$uuid}</div>";
+              echo "</div>";
       echo "</div>";
   echo "</div>";
+
 
   require_once($CFG->dirroot.'/local/newwaves/lib/mdb.js.php');
   echo $OUTPUT->footer();
