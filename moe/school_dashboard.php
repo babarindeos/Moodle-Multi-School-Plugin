@@ -33,9 +33,10 @@
 
  $PAGE->set_context(\context_system::instance());
  $PAGE->set_title('School Dashboard');
+ $PAGE->set_heading('School Dashboard');
 
  echo $OUTPUT->header();
- echo "<div class='mb-5'><h2>School Dashboard</h2></div>";
+ //echo "<div class='mb-5'><h2>School Dashboard</h2></div>";
 
  include_once($CFG->dirroot.'/local/newwaves/nav/moe_main_nav.php');
 
