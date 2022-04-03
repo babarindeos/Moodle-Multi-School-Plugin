@@ -56,7 +56,7 @@
  foreach($schools as $row){
      $schools_array = array();
      array_push($schools_array, $row->name, intval($row->schoolcount));
-     array_push($chart_data, $schools_array);
+     // array_push($chart_data, $schools_array);
  }
 
  $chart_data = json_encode($chart_data);

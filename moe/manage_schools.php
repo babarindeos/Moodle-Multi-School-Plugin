@@ -74,8 +74,8 @@
 
         $viewHref = "window.location='school/schoolinfo.php?q=".mask($school->id)."'";
         $editHref = "window.location='school/edit_schoolinfo.php?q=".mask($school->id)."'";
-        $viewBtn = "<button onclick={$viewHref} class='btn btn-success border rounded'>VIEW</button>";
-        $editBtn = "<button onclick={$editHref} class='btn btn-warning border rounded'>EDIT</button>";
+        $viewBtn = "<button onclick={$viewHref} class='btn btn-sm btn-success rounded'>VIEW</button>";
+        $editBtn = "<button onclick={$editHref} class='btn btn-sm btn-warning rounded'>EDIT</button>";
         echo "<tr>";
             echo "<td class='text-center'>{$sn}.</td>";
             echo "<td>{$school->name}</td>";
