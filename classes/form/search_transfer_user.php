@@ -2,8 +2,8 @@
 <?php
 
 /**
- * @package     local_message
- * @author      Kristian
+ * @package     SearchUserTransfer
+ * @author      Seyibabs
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
  */
