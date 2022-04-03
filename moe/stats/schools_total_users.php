@@ -1,52 +1,3 @@
-<?php
-// This file is part of Moodle Integrator Plugin
-//
-// Moodle is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
-/**
- * @package     School Dashboard
- * @author      Kristian
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @var stdClass $plugin
- */
-
-// retrieve school information from DB
-$sql = "SELECT type, count(id) as schoolcount from {newwaves_schools} group by type";
-$reports = $DB->get_records_sql($sql);
-//var_dump($schools);
-//die;
-
-function convertType($type){
-    switch ($type){
-        case "0":
-            return "Primary School";
-        case "1":
-            return "Secondary School";
-        case "2":
-            return "College of Education";
-        case "3":
-            return "Polytechnic";
-        case "4":
-            return "University";
-        default:
-            return "unknown";
-    }
-}
-
-?>
-
-
 <h4>Schools Stats</h4>
 <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -64,10 +15,8 @@ function convertType($type){
       function drawChart() {
 
         // Create the data table.
-        var data = google.visualization.arrayToDataTable([
-           ['Task', 'Hours per Day'],
-          <?php echo $schools_array; ?>
-        ]
+        var data = google.visualization.arrayToDataTable(
+            <?php echo $chart_data; ?>
         );
 
         var options = {
