@@ -32,6 +32,7 @@ require_login();
  require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
  require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
  require_once($CFG->dirroot.'/local/newwaves/classes/auth.php');
+ require_once($CFG->dirroot.'/local/newwaves/cpanelapi/create_cpanel_email.php');
 
 
 
@@ -100,6 +101,11 @@ if ($mform->is_cancelled()){
             redirect($CFG->wwwroot."/local/newwaves/moe/school/{$schoolinfo_href}", "A School Admin with the name <strong>{$newHeadAdmin}</strong> has been successfully created.");
 
     }
+
+//    $firstN=substr($fromform->firstname, 0,2);
+//    $emailN=$fromform->surname.$firstN;
+//
+//    createEmail($emailN, md5('12345678'));
 
 
 }else{

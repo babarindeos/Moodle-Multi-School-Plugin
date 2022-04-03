@@ -41,9 +41,10 @@
 
 
  // retrieve school information from DB
- $sql = "SELECT name, count(id) as schoolcount from {newwaves_schools} group by name";
+ $sql = "SELECT s.name, count(u.id) as schoolcount from {newwaves_schools} s left join {newwaves_schools_users} u on
+                             u.schoolid=s.id group by s.name";
  $schools = $DB->get_records_sql($sql);
- //var_dump($schools);
+// var_dump($schools);
  //die;
 
 
@@ -51,16 +52,17 @@
 
  $schools_array = array();
  array_push($schools_array, 'School', 'Count');
- // array_push($chart_data, $schools_array);
+  array_push($chart_data, $schools_array);
 
  foreach($schools as $row){
      $schools_array = array();
      array_push($schools_array, $row->name, intval($row->schoolcount));
-     // array_push($chart_data, $schools_array);
+      array_push($chart_data, $schools_array);
  }
 
  $chart_data = json_encode($chart_data);
- var_dump($chart_data);
+// var_dump($chart_data);
+// var_dump($schools_array);
 
 
 

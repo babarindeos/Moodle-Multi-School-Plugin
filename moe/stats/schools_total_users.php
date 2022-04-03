@@ -15,10 +15,8 @@
       function drawChart() {
 
         // Create the data table.
-        var data = google.visualization.arrayToDataTable([
-           ['Task', 'Hours per Day'],
-          <?php echo $schools_array; ?>
-        ]
+        var data = google.visualization.arrayToDataTable(
+            <?php echo $chart_data; ?>
         );
 
         var options = {
