@@ -68,7 +68,7 @@
      // col 1
      echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 py-1 text-center'
            style='border:1px solid #f1f1f1;background-color:#A569BD ;color:#ffffff;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
-           href='#' title='Manage Transfers'>";
+           href='transfer/initiate_transfer.php' title='Manage Transfers'>";
                echo "<h2 class='mt-2'>Transfers</h2>";
      echo "</div>";
      // end of col 1
