@@ -127,8 +127,13 @@
                                   <!-- //-->
                             </div>
                       <?php
+
+                            $transfer_user_href = "window.location='transfer_user.php?type=".mask('ini')."&ui=".mask($userId)."&umail=".mask($email)."&usertype=".mask($roleLabel)."'";
+                            //echo $transfer_user_href;
+
+
                             echo "<center>";
-                                  echo "<button class='btn btn-primary'>Initiate {$roleLabel} transfer</button>";
+                                  echo "<button onclick={$transfer_user_href} class='btn btn-primary'>Initiate {$roleLabel} transfer</button>";
                             echo "</center>";
                 }else{
                       echo "<div class='alert alert-warning'>There is no user with that email.</div>";
