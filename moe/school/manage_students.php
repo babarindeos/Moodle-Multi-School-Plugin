@@ -93,7 +93,7 @@ global $DB;
 
  <?php
   $sql = "SELECT id, uuid, surname, firstname, middlename , gender, email, phone, role FROM
-          {newwaves_schools_users} where role='student' and schoolid = $_GET_URL_school_id order by id desc";
+          {newwaves_schools_users} where role='student' and schoolid ={$_GET_URL_school_id} order by id desc";
 
   $student = $DB->get_records_sql($sql);
 
