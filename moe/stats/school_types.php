@@ -64,14 +64,20 @@ function convertType($type){
       function drawChart() {
 
         // Create the data table.
-        var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ["Anglican Grammar School 7",1],["Ebenezer Grammar School",1],["Ekiti State Grammar School",1]
+        var data = google.visualization.arrayToDataTable(
+          [
+              ['Task', 'Hours per Day'],
 
-        ]);
+              <?php
+                  foreach ($reports as $report){
+                      echo "['".convertType($report->type)."',     ".$report->schoolcount."],";
+                  }
+              ?>
+        ]
+        );
 
         var options = {
-          title: 'Schools with Number of Users',
+          title: 'School Types',
           width:'600',
           height:'400'
         };

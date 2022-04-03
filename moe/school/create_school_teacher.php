@@ -40,6 +40,7 @@ global $DB;
 $PAGE->set_url(new moodle_url('/local/newwaves/moe/school/schoolinfo_teachers.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Create School Teacher');
+$PAGE->set_heading('Schools');
 
 
 $mform = new createSchoolTeacher();
@@ -60,7 +61,7 @@ if ($mform->is_cancelled()){
     }else{
           $title = title($fromform->title);
           $gender = gender($fromform->gender);
-          
+
           $recordtoinsert = new stdClass();
           $recordtoinsert->schoolid = $fromform->school_id;
           $recordtoinsert->uuid = $fromform->staff_no;

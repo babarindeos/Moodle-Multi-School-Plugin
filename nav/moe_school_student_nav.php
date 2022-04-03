@@ -11,7 +11,7 @@
   <button onclick="window.location='<?php echo $moe_dashboard; ?>'" border='0' class='btn btn-success btn-sm'>MOE Dashboard</button>
   <button onclick="window.location='<?php echo $student_dashboard; ?>'" border='0' class='btn btn-info btn-sm'>Students Dashboard</button>
   <button onclick="window.location='<?php echo $manage_students; ?>'" border='0' class='btn btn-warning btn-sm'>Manage Students</button>
-  <button onclick="window.location='<?php echo $create_student; ?>'" border='0' class='btn btn-primary btn-sm'>Create Student</button>
+  
 </div>
 
 <hr/>
