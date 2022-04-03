@@ -49,10 +49,13 @@
 
  $chart_data = array();
 
+ $schools_array = array();
+ array_push($schools_array, 'School', 'Count');
+ // array_push($chart_data, $schools_array);
 
  foreach($schools as $row){
      $schools_array = array();
-     array_push($schools_array, $row->name, $row->schoolcount);
+     array_push($schools_array, $row->name, intval($row->schoolcount));
      array_push($chart_data, $schools_array);
  }
 
