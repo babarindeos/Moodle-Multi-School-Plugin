@@ -74,7 +74,7 @@
                 $recordtoinsert->email = $fromform->email;
                 $recordtoinsert->phone = $fromform->phone;
                 $recordtoinsert->role = "headadmin";
-                $recordtoinsert->role = "active";                
+                $recordtoinsert->status = "active";                
                 $recordtoinsert->creator = $USER->id;
                 $recordtoinsert->timecreated = time();
                 $recordtoinsert->timemodified = time();

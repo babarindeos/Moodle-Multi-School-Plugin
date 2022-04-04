@@ -75,6 +75,15 @@ if (!isset($_GET['u']) || $_GET['u']==''){
 
  $user_avatar_small = $CFG->wwwroot.'/local/newwaves/assets/images/user_avatar_small.png';
 
+ // get status
+ $sql = "Select id, suspended from {user} where email='{$email}'";
+ $getUserSuspendedStatus = $DB->get_records_sql($sql);
+
+ foreach($getUserSuspendedStatus as $row){
+    $currentUserMoodleId= $row->id;
+    $suspendedStatus = $row->suspended;
+ }
+
 
 
 
@@ -93,7 +102,29 @@ if (!isset($_GET['u']) || $_GET['u']==''){
           </div>
           <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
                   <div class='text-right'>
-                          <button class='btn btn-danger btn-sm rounded'>Suspend</button>
+                    <?php
+                        if ($suspendedStatus==0){
+                              $pg = 'view_student.php';
+                              $suspendhref = $CFG->wwwroot.'/local/newwaves/utility/suspend.php?q='.mask($_GET_URL_school_id).'&h='.mask($_GET_URL_student_id).'&pg='.mask($pg).'&mu='.mask($currentUserMoodleId);
+                              if (!isset($_GET['q']) || $_GET['q']==''){
+                                  redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php');
+                              }else{
+                                $_GET_URL_school_id = explode("-",htmlspecialchars(strip_tags($_GET['q'])));
+                                $_GET_URL_school_id = $_GET_URL_school_id[1];
+                              };
+                    ?>
+                              <button onclick="window.location='<?php echo $suspendhref; ?>'" class='btn btn-danger btn-sm rounded'>Suspend</button>
+                     <?php
+                        }else{
+
+                              $pg = 'view_student.php';
+                              $suspendhref = $CFG->wwwroot.'/local/newwaves/utility/unsuspend.php?q='.mask($_GET_URL_school_id).'&h='.mask($_GET_URL_student_id).'&pg='.mask($pg).'&mu='.mask($currentUserMoodleId);
+                     ?>
+
+                              <button onclick="window.location='<?php echo $suspendhref; ?>'" class='btn btn-warning btn-sm rounded'>UnSuspended</button>
+                     <?php
+                        }
+                     ?>
                   </div>
 
                   <table class="table table-stripped table-hover">
