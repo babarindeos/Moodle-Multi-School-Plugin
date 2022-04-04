@@ -29,7 +29,8 @@
              $choices = array();
              foreach($getSchools as $school){
                 $schoolname = $school->name;
-                array_push($choices, $schoolname);
+                $schoolid = $school->id;
+                $choices[$schoolid] = $schoolname;
              }
 
              $mform->addElement('select', 'school_name', 'Name of School', $choices);
