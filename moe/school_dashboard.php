@@ -26,6 +26,7 @@
  require_once(__DIR__.'/../../../config.php');
  require_login();
  require_once($CFG->dirroot.'/local/newwaves/functions/schooltypes.php');
+ require_once($CFG->dirroot.'/local/newwaves/functions/convertType.php');
  require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
  require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
  require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
@@ -40,9 +41,6 @@
 
  include_once($CFG->dirroot.'/local/newwaves/nav/moe_main_nav.php');
 
-
-// var_dump($chart_data);
-// var_dump($schools_array);
 
 
 
