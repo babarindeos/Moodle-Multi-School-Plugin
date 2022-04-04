@@ -29,11 +29,12 @@
              $choices = array();
              foreach($getSchools as $school){
                 $schoolname = $school->name;
-                array_push($choices, $schoolname);
+                $schoolid = $school->id;
+                $choices[$schoolid] = $schoolname;
              }
 
              $mform->addElement('select', 'school_name', 'Name of School', $choices);
-             $mform->setDefault('type', '1');
+             $mform->setDefault('school_name', '1');
 
 
              // Remark

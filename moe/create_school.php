@@ -45,7 +45,8 @@
      $recordtoinsert->lga = $fromform->lga;
      $recordtoinsert->address = $fromform->address;
      $recordtoinsert->creator = $USER->id;
-     $recordtoinsert->timestamp =  time();
+     $recordtoinsert->timecreated =  time();
+     $recordtoinsert->timemodified = time();
 
 
      $DB->insert_record('newwaves_schools', $recordtoinsert);
