@@ -69,6 +69,17 @@
      }
 
 
+     public function getSuspendedStatus($DB, $moodleUserId){
+        $result = '';
+        $this->sqlQuery = "Select id, suspended from {user} where id={$moodleUserId}";
+        $this->output = $DB->get_records_sql($this->sqlQuery);
+        foreach($this->output as $row){
+          $result = $row->id;
+        }
+        return $result;
+     }
+
+
  }
 
 
