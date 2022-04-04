@@ -47,7 +47,6 @@ function convertType($type){
 ?>
 
 
-<h4>Schools Stats</h4>
 <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
@@ -82,9 +81,9 @@ function convertType($type){
           height:'400'
         };
 
-        var chart = new google.visualization.PieChart(document.getElementById('school_users'));
+        var chart = new google.visualization.PieChart(document.getElementById('school_types'));
         chart.draw(data, options);
       }
     </script>
 
-<div id="school_users"></div>
+<div id="school_types"></div>

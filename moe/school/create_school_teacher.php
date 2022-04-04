@@ -59,17 +59,17 @@ if ($mform->is_cancelled()){
           $email = $fromform->email;
           redirect($CFG->wwwroot."/local/newwaves/moe/school/{$create_school_student_href}", "<strong>[Duplicate Email Error]</strong> A user record with that email <strong>{$email}</strong> already exist.");
     }else{
-          $title = title($fromform->title);
-          $gender = gender($fromform->gender);
+//          $title = title($fromform->title);
+//          $gender = gender($fromform->gender);
 
           $recordtoinsert = new stdClass();
           $recordtoinsert->schoolid = $fromform->school_id;
           $recordtoinsert->uuid = $fromform->staff_no;
-          $recordtoinsert->title = $title;
+          $recordtoinsert->title = $fromform->title;
           $recordtoinsert->surname = $fromform->surname;
           $recordtoinsert->firstname = $fromform->firstname;
           $recordtoinsert->middlename = $fromform->middlename;
-          $recordtoinsert->gender = $gender;
+          $recordtoinsert->gender = $fromform->gender;
           $recordtoinsert->email = $fromform->email;
           $recordtoinsert->phone = $fromform->phone;
           $recordtoinsert->role = "teacher";

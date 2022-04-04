@@ -41,27 +41,6 @@
  include_once($CFG->dirroot.'/local/newwaves/nav/moe_main_nav.php');
 
 
- // retrieve school information from DB
- $sql = "SELECT s.name, count(u.id) as schoolcount from {newwaves_schools} s left join {newwaves_schools_users} u on
-                             u.schoolid=s.id group by s.name";
- $schools = $DB->get_records_sql($sql);
-// var_dump($schools);
- //die;
-
-
- $chart_data = array();
-
- $schools_array = array();
- array_push($schools_array, 'School', 'Count');
-  array_push($chart_data, $schools_array);
-
- foreach($schools as $row){
-     $schools_array = array();
-     array_push($schools_array, $row->name, intval($row->schoolcount));
-      array_push($chart_data, $schools_array);
- }
-
- $chart_data = json_encode($chart_data);
 // var_dump($chart_data);
 // var_dump($schools_array);
 
@@ -75,11 +54,23 @@
  <div class="row mt-3"><!-- beginning of row //-->
  <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 border"><!-- column 1 //-->
 
+     <h4>Schools Stats</h4>
+
           <?php
+
                 include_once('stats/schools_total_users.php');
+                include_once('stats/school_types.php');
+                include_once('stats/schools_total_headadmin.php');
+                include_once('stats/schools_total_schooladmin.php');
+                include_once('stats/schools_total_teachers.php');
+          include_once('stats/schools_total_teachers_gender.php');
+                include_once('stats/schools_total_students.php');
+                include_once('stats/schools_total_students_gender.php');
+
            ?>
 
  </div><!-- end of column 1 //-->
+
  <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
     <h4>Number of Users</h4>
 
