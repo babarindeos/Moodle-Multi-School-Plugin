@@ -73,7 +73,8 @@
  <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 border"><!-- column 1 //-->
 
           <?php
-                include_once('stats/schools_total_users.php');
+//                include_once('stats/schools_total_users.php');
+                include_once('stats/school_types.php');
            ?>
 
  </div><!-- end of column 1 //-->

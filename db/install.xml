@@ -40,6 +40,7 @@
         <FIELD NAME="email" TYPE="text" LENGTH="50" NOTNULL="true" />
         <FIELD NAME="phone" TYPE="text" LENGTH="50" NOTNULL="true" />
         <FIELD NAME="role" TYPE="text" LENGTH="50" NOTNULL="true" />
+        <FIELD NAME="bvn" TYPE="text" LENGTH="50" NOTNULL="false" />
         <FIELD NAME="creator" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="timecreated" TYPE="int" NOTNULL="true" LENGTH="15" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timemodified" TYPE="int" NOTNULL="true" LENGTH="15" DEFAULT="0" SEQUENCE="false"/>
