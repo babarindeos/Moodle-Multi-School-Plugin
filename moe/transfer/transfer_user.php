@@ -59,8 +59,9 @@
 
       $auth = new Auth();
       $getMoodleUserId = $auth->getMoodleUserId($DB, $_SESSION['email']);
-
       $getNESUserId = $_SESSION['user_id'];
+
+      $transaction = $DB->start_delegated_transaction();
 
       $recordtoinsert = new stdClass();
       $recordtoinsert->mdl_userid = $getMoodleUserId;
@@ -72,7 +73,17 @@
       $recordtoinsert->timecreated = time();
       $recordtoinsert->timemodified = time();
 
-      $DB->insert_record("newwaves_transfers", $recordtoinsert);
+      $insert_into_transfer_user = $DB->insert_record("newwaves_transfers", $recordtoinsert);
+
+      $recordtoupdate = new stdClass();
+      $recordtoupdate->id = $getNESUserId;
+      $recordtoupdate->schoolid = $fromform->school_name;
+
+      $update_newwaves_schools_users = $DB->update_record("newwaves_schools_users", $recordtoupdate);
+
+      if ($insert_into_transfer_user && $update_newwaves_schools_users){
+          $DB->commit_delegated_transaction($transaction);
+      }
 
       redirect($CFG->wwwroot.'/local/newwaves/moe/transfer/initiate_transfer.php', 'The Candidate has been successfully transfered.');
   }

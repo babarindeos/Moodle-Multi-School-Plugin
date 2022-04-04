@@ -48,7 +48,8 @@
   echo "<h2><small>[ Transfer History ]</small></h2>";
   $active_menu_item = "";
 
-  $sql = "SELECT t.id, t.mdl_userid, t.nes_userid, nw.surname, nw.firstname, nw.middlename, sf.name as school_from, st.name as school_to, t.purpose, t.document, t.creator, t.timecreated, t.timemodified
+  $sql = "SELECT t.id, t.mdl_userid, t.nes_userid, nw.surname, nw.firstname, nw.middlename, nw.role, t.school_from as schoolfrom_id,
+          t.school_to as schoolto_id, sf.name as school_from, st.name as school_to, t.purpose, t.document, t.creator, t.timecreated, t.timemodified
           from {newwaves_transfers} t inner join {newwaves_schools_users} nw on t.nes_userid=nw.id left join {newwaves_schools} sf
           on t.school_from = sf.id left join {newwaves_schools} st on t.school_to = st.id  order by t.id desc";
   $getTransfers = $DB->get_records_sql($sql);
@@ -67,14 +68,26 @@
 
       $sn = 1;
       foreach($getTransfers as $row){
+              $datecreated = date('D. jS M., Y', $row->timecreated);
+              $timecreated = date('g:i a', $row->timecreated);
+
+              $school_from_link = "<a class='text-info' href='".$CFG->wwwroot."/local/newwaves/moe/school/schoolinfo.php?q=".mask($row->schoolfrom_id)."'>".$row->school_from."</a>";
+
+              $school_to_link = "<a class='text-info' href='".$CFG->wwwroot."/local/newwaves/moe/school/schoolinfo.php?q=".mask($row->schoolto_id)."'>".$row->school_to."</a>";
+
+              if ($row->role='teacher'){
+                  $user_link = "<a class='text-info' href='".$CFG->wwwroot."/local/newwaves/moe/school/teacher/view_teacher.php?q=".mask($row->schoolto_id).'&u='.mask($row->nes_userid)."'>{$row->surname} {$row->firstname} {$row->middlename}</a>";
+              }else{
+
+              }
 
              echo "<tr>";
                  echo "<td class='text-center'>{$sn}</td>";
-                 echo "<td>{$row->school_from}</td>";
-                 echo "<td>{$row->surname} {$row->firstname} {$row->middlename}</td>";
-                 echo "<td>{$row->school_to}</td>";
+                 echo "<td>{$school_from_link}</td>";
+                 echo "<td>{$user_link}</td>";
+                 echo "<td>{$school_to_link}</td>";
                  echo "<td></td>";
-                 echo "<td></td>";
+                 echo "<td>{$datecreated}<br/><small>{$timecreated}</small></td>";
                  echo "<td class='text-center'></td>";
              echo "</tr>";
             $sn++;
