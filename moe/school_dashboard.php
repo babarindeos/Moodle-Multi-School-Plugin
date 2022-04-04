@@ -27,6 +27,7 @@
  require_login();
  require_once($CFG->dirroot.'/local/newwaves/functions/schooltypes.php');
  require_once($CFG->dirroot.'/local/newwaves/functions/convertType.php');
+ require_once($CFG->dirroot.'/local/newwaves/functions/gender.php');
  require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
  require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
  require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
@@ -61,7 +62,8 @@
                 include_once('stats/schools_total_headadmin.php');
                 include_once('stats/schools_total_schooladmin.php');
                 include_once('stats/schools_total_teachers.php');
-          include_once('stats/schools_total_teachers_gender.php');
+
+                include_once('stats/schools_total_teachers_gender.php');
                 include_once('stats/schools_total_students.php');
                 include_once('stats/schools_total_students_gender.php');
 
