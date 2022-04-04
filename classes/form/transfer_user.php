@@ -33,7 +33,7 @@
              }
 
              $mform->addElement('select', 'school_name', 'Name of School', $choices);
-             $mform->setDefault('type', '1');
+             $mform->setDefault('school_name', '1');
 
 
              // Remark

@@ -48,7 +48,10 @@
   echo "<h2><small>[ Transfer History ]</small></h2>";
   $active_menu_item = "";
 
-
+  $sql = "SELECT t.id, t.mdl_userid, t.nes_userid, nw.surname, nw.firstname, nw.middlename, sf.name as school_from, st.name as school_to, t.purpose, t.document, t.creator, t.timecreated, t.timemodified
+          from {newwaves_transfers} t inner join {newwaves_schools_users} nw on t.nes_userid=nw.id left join {newwaves_schools} sf
+          on t.school_from = sf.id left join {newwaves_schools} st on t.school_to = st.id  order by t.id desc";
+  $getTransfers = $DB->get_records_sql($sql);
   // navigation  bar
   include_once($CFG->dirroot.'/local/newwaves/nav/moe_transfer_nav.php');
 
@@ -62,15 +65,20 @@
       echo "</thead>";
       echo "<tbody>";
 
+      $sn = 1;
+      foreach($getTransfers as $row){
+
              echo "<tr>";
-                 echo "<td class='text-center'></td>";
-                 echo "<td></td>";
-                 echo "<td></td>";
-                 echo "<td></td>";
+                 echo "<td class='text-center'>{$sn}</td>";
+                 echo "<td>{$row->school_from}</td>";
+                 echo "<td>{$row->surname} {$row->firstname} {$row->middlename}</td>";
+                 echo "<td>{$row->school_to}</td>";
                  echo "<td></td>";
                  echo "<td></td>";
                  echo "<td class='text-center'></td>";
              echo "</tr>";
+            $sn++;
+      }
 
       echo "</tbody>";
       echo "</table>";
