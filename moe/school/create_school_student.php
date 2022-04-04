@@ -73,6 +73,7 @@ if ($mform->is_cancelled()){
             $recordtoinsert->email = $fromform->email;
             $recordtoinsert->phone = $fromform->phone;
             $recordtoinsert->role = "student";
+            $recordtoinsert->status = "active";
             $recordtoinsert->creator = $USER->id;
             $recordtoinsert->timecreated = time();
             $recordtoinsert->timemodified = time();
@@ -104,6 +105,22 @@ if ($mform->is_cancelled()){
             $createstudent->timestamp = time();
 
             $DB->insert_record("newwaves_schools_students", $createstudent);
+
+
+            //------------------------Get moodle user id -------------------------------------------------
+            $auth = new Auth();
+            $getMoodleUserId = $auth->getMoodleUserId($DB, $fromform->email);
+
+            //------------------------Get newwaves user id -------------------------------------------------
+            $auth = new Auth();
+            $getNESUserId = $auth->getNESUserId($DB, $fromform->email);
+
+            //----------------------- Update mdl_user_id on newwaves table -------------------------------
+            $update_newwaves_user = new stdClass();
+            $update_newwaves_user->id = $getNESUserId;
+            $update_newwaves_user->mdl_userid = $getMoodleUserId;
+
+            $DB->update_record('newwaves_schools_users', $update_newwaves_user);
 
 
 

@@ -93,7 +93,7 @@ global $DB;
 
 
  <?php
-  $sql = "SELECT id, title, surname, firstname, middlename , gender, email, phone, role FROM
+  $sql = "SELECT id, title, surname, firstname, middlename , gender, email, phone, role, status FROM
           {newwaves_schools_users} where role='schooladmin' and schoolid = {$_GET_URL_school_id} order by id desc";
 
   $headadmin = $DB->get_records_sql($sql);
@@ -106,11 +106,18 @@ global $DB;
   echo "<table class='table table-stripped border' id='tblData'>";
   echo "<thead>";
   echo "<tr class='font-weight-bold' >";
-       echo "<th class='py-3'>SN</th><th>Name</th><th>Email</th><th>Phone</th><th class='text-center'>Action</th></tr>";
+       echo "<th class='py-3'>SN</th><th>Name</th><th>Email</th><th>Phone</th><th>Status</th><th class='text-center'>Action</th></tr>";
   echo "</thead>";
   echo "<tbody>";
         foreach($headadmin as $row){
             $title = title($row->title);
+
+            $statusPane = '';
+            if ($row->status=='active'){
+                $statusPane = "<span class='badge badge-pill badge-success px-3 py-1'>Active</span>";
+            }else if($row->status=='suspended'){
+                $statusPane = "<span class='badge badge-pill badge-danger px-3 py-1'>Suspended</span>";
+            }
 
             $viewHref = "window.location='schooladmin/view_schooladmin.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
             $editHref = "window.location='edit_schooladmin.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
@@ -121,8 +128,9 @@ global $DB;
             echo "<tr>";
                 echo "<td class='text-center'>{$sn}.</td>";
                 echo "<td class='text-left'>{$title} {$row->surname} {$row->firstname}</td>";
-                echo "<td class='text-left'>{$row->email} {$row->firstname}</td>";
+                echo "<td class='text-left'>{$row->email}</td>";
                 echo "<td class='text-left'>{$row->phone}</td>";
+                echo "<td class='text-left'>{$statusPane}</td>";
                 echo "<td class='text-center'>{$btnView} {$btnEdit} {$btnDelete}</td>";
             echo "</tr>";
 
