@@ -105,3 +105,17 @@
   echo $OUTPUT->footer();
 
   ?>
+
+  //create course
+  //full name of the corse
+  //short code of the course
+  //select categories
+  //description
+
+  //categories
+  //categories name
+  //code
+  //summary
+
+  newwaves course table
+  creator
