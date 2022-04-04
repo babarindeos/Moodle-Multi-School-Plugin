@@ -1,15 +1,15 @@
 <?php
 
 /**
- * @package     local_message
- * @author      Kristian
+ * @package     VerifySchool
+ * @author      Seyibabs
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
  */
 
  require_once("$CFG->libdir/formslib.php");
 
- class VerifySchoolId extends moodleform{
+ class VerifySchool extends moodleform{
 
     public function definition(){
 
@@ -21,7 +21,7 @@
         // admission no
 
         $name_attributes = array('size'=>'30%', 'required'=>'^([0-9]{2}[a-zA-Z]?)?$');
-        $mform->addElement('text', 'enter_school_code', 'Enter School Code.', $name_attributes);
+        $mform->addElement('text', 'enter_school_code', 'Enter School Code ', $name_attributes);
         $mform->setType('enter_school_code', PARAM_NOTAGS);
         $mform->setDefault('enter_school_code', '');
 

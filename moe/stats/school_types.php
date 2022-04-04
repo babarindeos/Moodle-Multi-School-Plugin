@@ -27,27 +27,11 @@ $reports = $DB->get_records_sql($sql);
 //var_dump($schools);
 //die;
 
-function convertType($type){
-    switch ($type){
-        case "0":
-            return "Primary School";
-        case "1":
-            return "Secondary School";
-        case "2":
-            return "College of Education";
-        case "3":
-            return "Polytechnic";
-        case "4":
-            return "University";
-        default:
-            return "unknown";
-    }
-}
+
 
 ?>
 
 
-<h4>Schools Stats</h4>
 <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
@@ -82,9 +66,9 @@ function convertType($type){
           height:'400'
         };
 
-        var chart = new google.visualization.PieChart(document.getElementById('school_users'));
+        var chart = new google.visualization.PieChart(document.getElementById('school_types'));
         chart.draw(data, options);
       }
     </script>
 
-<div id="school_users"></div>
+<div id="school_types"></div>

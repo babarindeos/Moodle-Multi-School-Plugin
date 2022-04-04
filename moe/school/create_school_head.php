@@ -61,6 +61,8 @@
 
       }else{
 
+                $transaction = $DB->start_delegated_transaction();
+
                 //write to newwaves_schools_heads
                 $recordtoinsert = new stdClass();
                 $recordtoinsert->schoolid = $fromform->school_id;
@@ -72,11 +74,12 @@
                 $recordtoinsert->email = $fromform->email;
                 $recordtoinsert->phone = $fromform->phone;
                 $recordtoinsert->role = "headadmin";
+                $recordtoinsert->role = "active";                
                 $recordtoinsert->creator = $USER->id;
                 $recordtoinsert->timecreated = time();
                 $recordtoinsert->timemodified = time();
 
-                $DB->insert_record('newwaves_schools_users', $recordtoinsert);
+                $create_newwaves_user = $DB->insert_record('newwaves_schools_users', $recordtoinsert);
 
 
                 // write to moodle_users
@@ -93,7 +96,28 @@
                 $createlogin->lastname = $fromform->surname;
                 $createlogin->email = $fromform->email;
 
-                $DB->insert_record("user", $createlogin);
+                $create_moodle_user = $DB->insert_record("user", $createlogin);
+
+
+                if ($create_newwaves_user && $create_moodle_user){
+                    $DB->commit_delegated_transaction($transaction);
+                }
+
+                //------------------------Get moodle user id -------------------------------------------------
+                $auth = new Auth();
+                $getMoodleUserId = $auth->getMoodleUserId($DB, $fromform->email);
+
+                //------------------------Get newwaves user id -------------------------------------------------
+                $auth = new Auth();
+                $getNESUserId = $auth->getNESUserId($DB, $fromform->email);
+
+                //----------------------- Update mdl_user_id on newwaves table -------------------------------
+                $update_newwaves_user = new stdClass();
+                $update_newwaves_user->id = $getNESUserId;
+                $update_newwaves_user->mdl_userid = $getMoodleUserId;
+
+                $DB->update_record('newwaves_schools_users', $update_newwaves_user);
+
 
 
                 $schoolinfo_href = "manage_headadmin.php?q=".mask($fromform->school_id);

@@ -76,7 +76,7 @@
 
 
  // get number of registered school heads
- $sql = "SELECT count(id) as headcount from {newwaves_schools_users} where role='headadmin'";
+ $sql = "SELECT count(id) as headcount from {newwaves_schools_users} where role='headadmin' and schoolid = {$_GET_URL_school_id} ";
  $headadmin = $DB->get_records_sql($sql);
  foreach($headadmin as $row){
     $headadmincount = $row->headcount;
@@ -84,7 +84,7 @@
 
 
  // get number of registered school admins
- $sql = "SELECT count(id) as schooladmincount from {newwaves_schools_users} where role='schooladmin'";
+ $sql = "SELECT count(id) as schooladmincount from {newwaves_schools_users} where role='schooladmin' and schoolid = {$_GET_URL_school_id} ";
  $schooladmin = $DB->get_records_sql($sql);
  foreach($schooladmin as $row){
     $schooladmincount = $row->schooladmincount;
@@ -92,7 +92,7 @@
 
 
  // get number of registered teachers
- $sql = "SELECT count(id) as teachercount from {newwaves_schools_users} where role='teacher'";
+ $sql = "SELECT count(id) as teachercount from {newwaves_schools_users} where role='teacher' and schoolid = {$_GET_URL_school_id} ";
  $teacher = $DB->get_records_sql($sql);
  foreach($teacher as $row){
     $teachercount = $row->teachercount;
@@ -100,7 +100,7 @@
 
 
  // get number of registered students
- $sql = "SELECT count(id) as studentcount from {newwaves_schools_users} where role='student'";
+ $sql = "SELECT count(id) as studentcount from {newwaves_schools_users} where role='student' and schoolid = {$_GET_URL_school_id} ";
  $student = $DB->get_records_sql($sql);
  foreach($student as $row){
     $studentcount = $row->studentcount;

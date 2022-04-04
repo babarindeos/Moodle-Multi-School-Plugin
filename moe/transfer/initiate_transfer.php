@@ -93,9 +93,11 @@
                                         <?php
                                               if ($role=='teacher'){
                                                   echo "<h3>Teacher Information</h3>";
+                                                  $roleLabel = 'Teacher';
 
                                               }else{
                                                   echo "<h3>Student Information</h3>";
+                                                  $roleLabel = 'Student';
                                               }
                                         ?>
                                    </div>
@@ -125,9 +127,14 @@
                                   <!-- //-->
                             </div>
                       <?php
-                            echo "<div>";
-                                  echo "<button>Initiate {$}</button>";
-                            echo "</div>";
+
+                            $transfer_user_href = "window.location='transfer_user.php?type=".mask('ini')."&ui=".mask($userId)."&umail=".mask($email)."&usertype=".mask($roleLabel)."'";
+                            //echo $transfer_user_href;
+
+
+                            echo "<center>";
+                                  echo "<button onclick={$transfer_user_href} class='btn btn-primary'>Initiate {$roleLabel} transfer</button>";
+                            echo "</center>";
                 }else{
                       echo "<div class='alert alert-warning'>There is no user with that email.</div>";
                 }

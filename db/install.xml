@@ -41,6 +41,9 @@
         <FIELD NAME="phone" TYPE="text" LENGTH="50" NOTNULL="true" />
         <FIELD NAME="role" TYPE="text" LENGTH="50" NOTNULL="true" />
         <FIELD NAME="bvn" TYPE="text" LENGTH="50" NOTNULL="false" />
+        <FIELD NAME="photo" TYPE="text" LENGTH="100" NOTNULL="false" />
+        <FIELD NAME="status" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="mdl_userid" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="creator" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="timecreated" TYPE="int" NOTNULL="true" LENGTH="15" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timemodified" TYPE="int" NOTNULL="true" LENGTH="15" DEFAULT="0" SEQUENCE="false"/>
@@ -60,12 +63,29 @@
     <TABLE NAME="newwaves_schools_teachers" COMMENT="each record is the teacher of a school">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="schoolid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="mdl_userid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="nes_userid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="bvn" TYPE="text" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="staff_no" TYPE="text" LENGTH="50" NOTNULL="false" />
         <FIELD NAME="dob" TYPE="int" LENGTH="15" NOTNULL="false" />
-        <FIELD NAME="institution" TYPE="text" LENGTH="1000" NOTNULL="false" />
-        <FIELD NAME="qualification" TYPE="text" LENGTH="1000" NOTNULL="false" />
+        <FIELD NAME="timecreated" TYPE="int" NOTNULL="true" LENGTH="15" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" NOTNULL="true" LENGTH="15" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <!-- Newwaves School Teacher//-->
+
+
+    <!--Newwaves School Teacher Qualifications //-->
+    <TABLE NAME="newwaves_qualifications" COMMENT="each record is the qualification of a teacher">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="mdl_id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="nes_id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="qualification" TYPE="text" LENGTH="50" NOTNULL="false" />
+        <FIELD NAME="institution" TYPE="text" LENGTH="50" NOTNULL="false" />
         <FIELD NAME="year_obtained" TYPE="text" LENGTH="1000" NOTNULL="false" />
         <FIELD NAME="timecreated" TYPE="int" NOTNULL="true" LENGTH="15" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timemodified" TYPE="int" NOTNULL="true" LENGTH="15" DEFAULT="0" SEQUENCE="false"/>
@@ -73,9 +93,6 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
-<!--      <INDEXES>-->
-<!--        <INDEX NAME="userid" UNIQUE="true" FIELDS="userid"/>-->
-<!--      </INDEXES>-->
     </TABLE>
     <!-- Newwaves School Teacher//-->
 
@@ -96,11 +113,51 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
-<!--      <INDEXES>-->
-<!--        <INDEX NAME="userid" UNIQUE="true" FIELDS="userid"/>-->
-<!--      </INDEXES>-->
     </TABLE>
     <!-- Newwaves School Students//-->
+
+
+    <!--Newwaves Transfer  Request//-->
+    <TABLE NAME="newwaves_transfer_request" COMMENT="each record is the transfer of a teacher or student">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="mdl_userid" TYPE="int" LENGTH="10" NOTNULL="true" />
+        <FIELD NAME="nes_userid" TYPE="int" LENGTH="10" NOTNULL="true" />
+        <FIELD NAME="school_from" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="school_to" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="purpose" TYPE="text" LENGTH="50" NOTNULL="false" />
+        <FIELD NAME="document" TYPE="text" LENGTH="50" NOTNULL="false" />
+        <FIELD NAME="creator" TYPE="int" LENGTH="9" NOTNULL="false" />
+        <FIELD NAME="timecreated" TYPE="int" NOTNULL="true" LENGTH="15" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" NOTNULL="true" LENGTH="15" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <!-- Newwaves Transfer Request//-->
+
+
+    <!--Newwaves Transfers //-->
+    <TABLE NAME="newwaves_transfers" COMMENT="each record is the transfer of a teacher or student">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="mdl_userid" TYPE="int" LENGTH="10" NOTNULL="true" />
+        <FIELD NAME="nes_userid" TYPE="int" LENGTH="10" NOTNULL="true" />
+        <FIELD NAME="school_from" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="school_to" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="purpose" TYPE="text" LENGTH="50" NOTNULL="false" />
+        <FIELD NAME="document" TYPE="text" LENGTH="50" NOTNULL="false" />
+        <FIELD NAME="creator" TYPE="int" LENGTH="9" NOTNULL="false" />
+        <FIELD NAME="timecreated" TYPE="int" NOTNULL="true" LENGTH="15" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" NOTNULL="true" LENGTH="15" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+
+    </TABLE>
+    <!-- Newwaves Transfers//-->
 
 
   </TABLES>

@@ -21,30 +21,96 @@
  * @var stdClass $plugin
  */
 
- require_once(__DIR__.'/../../../../../config.php');
- require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
- require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
- require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
+require_once(__DIR__.'/../../../../../config.php');
+require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
+require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
+require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
+require_once($CFG->dirroot.'/local/newwaves/functions/gender.php');
+require_login();
+$PAGE->set_url(new moodle_url('/local/newwaves/moe/school/student/student_dashboard.php'));
+$PAGE->set_context(\context_system::instance());
+$PAGE->set_title('Student Dashboard');
+$PAGE->set_heading('Students');
 
- require_login();
- $PAGE->set_url(new moodle_url('/local/newwaves/moe/school/student/student_dashboard.php'));
- $PAGE->set_context(\context_system::instance());
- $PAGE->set_title('Students Dashboard');
-
- echo $OUTPUT->header();
- echo "<div class='mb-5'><h2>Students Dashboard</h2></div>";
- $active_menu_item='dashboard';
-
-
- include_once($CFG->dirroot.'/local/newwaves/nav/moe_school_student_nav.php');
+echo $OUTPUT->header();
+echo "<div class='mb-5'><h2><small>[ Students Dashboard ]</small></h2></div>";
+$active_menu_item='dashboard';
 
 
+include_once($CFG->dirroot.'/local/newwaves/nav/moe_school_student_nav.php');
+
+
+//// retrieve school information from DB
+//$sql = "SELECT s.name, count(u.id) as schoolcount from {newwaves_schools} s left join {newwaves_schools_users} u on
+//                             u.schoolid=s.id where role='student' group by s.name";
+//$schools = $DB->get_records_sql($sql);
+//// var_dump($schools);
+////die;
+//
+//
+//$chart_data = array();
+//
+//$schools_array = array();
+//array_push($schools_array, 'School', 'Count');
+//array_push($chart_data, $schools_array);
+//
+//foreach($schools as $row){
+//    $schools_array = array();
+//    array_push($schools_array, $row->name, 2);
+//    array_push($chart_data, $schools_array);
+//}
+//
+//$chart_data = json_encode($chart_data);
+////var_dump($chart_data);
+//// var_dump($schools_array);
 
 
 
+?>
+
+<div class="row mt-3"><!-- beginning of row //-->
+    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 border"><!-- column 1 //-->
+
+        <?php
+        include_once('../../stats/schools_total_students.php');
+        include_once('../../stats/schools_total_students_gender.php');
+        ?>
+
+    </div><!-- end of column 1 //-->
+    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+        <h4>Number of Students</h4>
 
 
+        <table class='table table-stripped mt-5 border rounded'>
+            <?php
+            $sql = "SELECT name, id from {newwaves_schools} ";
+            $schoollist = $DB->get_records_sql($sql);
+            foreach($schoollist as $row) {
+                $sql = "SELECT * from {newwaves_schools_users} where schoolid = {$row->id} and role='student'";
+                $schoolcountid = count($DB->get_records_sql($sql));
+                echo "<tr>";
+                echo " <td class='font-weight:bold;'><strong>{$row->name}</strong></td><td>{$schoolcountid}</td>";
+                echo "</td>";
+                echo "</tr>";
+            }
+            ?>
+
+        </table>
 
 
- require_once($CFG->dirroot.'/local/newwaves/lib/mdb.js.php');
- echo $OUTPUT->footer();
+    </div><!-- end of column 2 //-->
+</div><!-- end of row //-->
+
+
+<?php
+echo $OUTPUT->footer();
+
+?>
+
+//total number of user
+// total number of school admin per school,
+// total number of teachers per school,
+// gender ratio for teacher,
+//total number of student per school,
+//gender ration for student
+

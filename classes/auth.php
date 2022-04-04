@@ -47,16 +47,28 @@
      }
 
      public function getMoodleUserId($DB, $email){
-         
+
          $result = '';
          $this->sqlQuery = "Select id from {user} where email='{$email}'";
          $this->output = $DB->get_records_sql($this->sqlQuery);
          foreach($this->output as $row){
             $result = $row->id;
          }
-
          return $result;
      }
+
+     public function getNESUserId($DB, $email){
+
+         $result = '';
+         $this->sqlQuery = "Select id from {newwaves_schools_users} where email='{$email}'";
+         $this->output = $DB->get_records_sql($this->sqlQuery);
+         foreach($this->output as $row){
+            $result = $row->id;
+         }
+         return $result;
+     }
+
+
  }
 
 
