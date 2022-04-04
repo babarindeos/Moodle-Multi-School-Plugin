@@ -1,25 +1,26 @@
+
 <?php
-    // retrieve school information from DB
-    $sql = "SELECT s.name, count(u.id) as schoolcount from {newwaves_schools} s left join {newwaves_schools_users} u on
-                                 u.schoolid=s.id group by s.name";
-    $schools = $DB->get_records_sql($sql);
-    // var_dump($schools);
-    //die;
+// retrieve school information from DB
+$sql = "SELECT s.name, count(u.id) as schoolcount from {newwaves_schools} s left join {newwaves_schools_users} u on
+                             u.schoolid=s.id where role = 'student' group by s.name";
+$schools = $DB->get_records_sql($sql);
+// var_dump($schools);
+//die;
 
 
-    $chart_data = array();
+$chart_data = array();
 
+$schools_array = array();
+array_push($schools_array, 'School', 'Count');
+array_push($chart_data, $schools_array);
+
+foreach($schools as $row){
     $schools_array = array();
-    array_push($schools_array, 'School', 'Count');
+    array_push($schools_array, $row->name, intval($row->schoolcount));
     array_push($chart_data, $schools_array);
+}
 
-    foreach($schools as $row){
-        $schools_array = array();
-        array_push($schools_array, $row->name, intval($row->schoolcount));
-        array_push($chart_data, $schools_array);
-    }
-
-    $chart_data = json_encode($chart_data);
+$chart_data = json_encode($chart_data);
 ?>
 <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -42,14 +43,14 @@
         );
 
         var options = {
-          title: 'Schools with Number of Users',
+          title: 'Schools with Number of Students',
           width:'600',
           height:'400'
         };
 
-        var chart = new google.visualization.PieChart(document.getElementById('school_users'));
+        var chart = new google.visualization.PieChart(document.getElementById('school_students'));
         chart.draw(data, options);
       }
     </script>
 
-<div id="school_users"></div>
+<div id="school_students"></div>
