@@ -159,6 +159,43 @@
     </TABLE>
     <!-- Newwaves Transfers//-->
 
+ <!--Newwaves Course Categories //-->
+    <TABLE NAME="newwaves_course_categories" COMMENT="each record is the transfer of a teacher or student">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="creator_id" TYPE="int" LENGTH="10" NOTNULL="true" />
+        <FIELD NAME="name" TYPE="text" LENGTH="50" NOTNULL="false" />
+        <FIELD NAME="code" TYPE="text" LENGTH="50" NOTNULL="false" />
+        <FIELD NAME="summary" TYPE="text" LENGTH="50" NOTNULL="false" />
+        <FIELD NAME="timecreated" TYPE="int" NOTNULL="true" LENGTH="15" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" NOTNULL="true" LENGTH="15" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+
+    </TABLE>
+    <!-- Newwaves Course Categories//-->
+
+<!--Newwaves Course  //-->
+    <TABLE NAME="newwaves_course" COMMENT="each record is the transfer of a teacher or student">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="creator_id" TYPE="int" LENGTH="10" NOTNULL="true" />
+        <FIELD NAME="full_name" TYPE="text" LENGTH="50" NOTNULL="false" />
+        <FIELD NAME="short_code" TYPE="text" LENGTH="50" NOTNULL="false" />
+        <FIELD NAME="description" TYPE="text" LENGTH="50" NOTNULL="false" />
+        <FIELD NAME="category_id" TYPE="int" LENGTH="10" NOTNULL="false" />
+        <FIELD NAME="timecreated" TYPE="int" NOTNULL="true" LENGTH="15" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" NOTNULL="true" LENGTH="15" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+
+    </TABLE>
+    <!-- Newwaves Course //-->
+
 
   </TABLES>
 </XMLDB>

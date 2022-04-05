@@ -94,8 +94,8 @@ global $DB;
 
 
  <?php
-  $sql = "SELECT id, title, surname, firstname, middlename , gender, email, phone, role, status FROM
-          {newwaves_schools_users} where role='headadmin' and schoolid = {$_GET_URL_school_id}  order by id desc";
+  $sql = "SELECT id, title, surname, firstname, middlename ,gender, email, phone, role, status FROM
+          {newwaves_schools_users} where role='headadmin' and schoolid={$_GET_URL_school_id}  order by id desc";
 
   $headadmin = $DB->get_records_sql($sql);
 

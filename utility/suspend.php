@@ -56,8 +56,8 @@
  if (!isset($_GET['h']) || $_GET['h']==''){
      redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php');
  }else{
-   $_GET_URL_headadmin_id = explode("-",htmlspecialchars(strip_tags($_GET['h'])));
-   $_GET_URL_headadmin_id = $_GET_URL_headadmin_id[1];
+   $_GET_URL_user_id = explode("-",htmlspecialchars(strip_tags($_GET['h'])));
+   $_GET_URL_user_id = $_GET_URL_user_id[1];
  }
 
 
@@ -74,8 +74,9 @@
      redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php');
  }else{
    $_GET_URL_mu_id = explode("-",htmlspecialchars(strip_tags($_GET['mu'])));
-   $_GET_URL_mu_id = $_GET_URL_page[1];
+   $_GET_URL_mu_id = $_GET_URL_mu_id[1];
  }
+
 
  $transaction = $DB->start_delegated_transaction();
  //update
@@ -91,10 +92,13 @@
 
 
  if ($_GET_URL_page=='view_headadmin.php'){
-
-   $page = "headadmin/view_headadmin.php?q=".mask($_GET_URL_school_id)."&u=".mask($_GET_URL_headadmin_id);
- }else{
-
+   $page = "headadmin/view_headadmin.php?q=".mask($_GET_URL_school_id)."&u=".mask($_GET_URL_user_id);
+ }else if ($_GET_URL_page=='view_schooladmin.php'){
+   $page = "schooladmin/view_schooladmin.php?q=".mask($_GET_URL_school_id)."&u=".mask($_GET_URL_user_id);
+ }else if ($_GET_URL_page=='view_teacher.php'){
+   $page = "teacher/view_teacher.php?q=".mask($_GET_URL_school_id)."&u=".mask($_GET_URL_user_id);
+ }if ($_GET_URL_page=='view_student.php'){
+   $page = "student/view_student.php?q=".mask($_GET_URL_school_id)."&u=".mask($_GET_URL_user_id);
  }
 
  redirect($CFG->wwwroot."/local/newwaves/moe/school/".$page, 'User has been suspended.');
