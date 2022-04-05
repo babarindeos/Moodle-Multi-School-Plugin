@@ -48,62 +48,9 @@ if ($mform->is_cancelled()){
 
 }else if($fromform = $mform->get_data()){
 
-//    $auth = new Auth();
-//    $isEmailExist = $auth->isEmailExist($DB, $fromform->email);
-//
-//    if ($isEmailExist>0){
-//        $create_school_student_href = "preregistration1.php?q=".mask(1);
-//        redirect($CFG->wwwroot."/local/newwaves/moe/{$create_school_student_href}", "<strong>[Duplicate Email Error]</strong> A user record with that email <strong>{$email}</strong> already exist.");
-//
-//    }else{
-
-
-//        $recordtoinsert = new stdClass();
-//        $recordtoinsert->schoolid = $fromform->school_id;
-//        $recordtoinsert->uuid = $fromform->admission_no;
-//        $recordtoinsert->surname = $fromform->surname;
-//        $recordtoinsert->firstname = $fromform->firstname;
-//        $recordtoinsert->middlename = $fromform->middlename;
-//        $recordtoinsert->gender = $fromform->gender;
-//        $recordtoinsert->email = $fromform->email;
-//        $recordtoinsert->phone = $fromform->phone;
-//        $recordtoinsert->role = "student";
-//        $recordtoinsert->creator = $USER->id;
-//        $recordtoinsert->timecreated = time();
-//        $recordtoinsert->timemodified = time();
-//
-//        $DB->insert_record('newwaves_schools_users', $recordtoinsert);
-//
-//        // write to moodle_users
-//        $createlogin = new stdClass();
-//        $createlogin->auth = 'manual';
-//        $createlogin->confirmed = '1';
-//        $createlogin->policyagreed = '0';
-//        $createlogin->deleted = '0';
-//        $createlogin->suspended = '0';
-//        $createlogin->mnethostid = '1';
-//        $createlogin->username = $fromform->email;
-//        $createlogin->password = md5('12345678');
-//        $createlogin->firstname = $fromform->firstname;
-//        $createlogin->lastname = $fromform->surname;
-//        $createlogin->email = $fromform->email;
-//
-//        $DB->insert_record("user", $createlogin);
-//
-//
-//        // write to student table
-//        $createstudent = new stdClass();
-//        $createstudent->admission_no = $fromform->admission_no;
-//        $createstudent->schoolid = $fromform->school_id;
-//        $createstudent->class = $fromform->class;
-//        $createstudent->timestamp = time();
-//
-//        $DB->insert_record("newwaves_schools_students", $createstudent);
-//
-
 
         $registration_href = "pre_registration2.php?q=".mask(1);
-        redirect($CFG->wwwroot."/local/newwaves/student_selfregistration/{$registration_href}");
+        redirect($CFG->wwwroot."/local/newwaves/student_selfregistration/{$registration_href}", " STEP 2 of 3 - Complete Registration Form");
 //    }
 
 

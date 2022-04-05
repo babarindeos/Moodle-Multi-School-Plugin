@@ -170,7 +170,7 @@ foreach($school as $row){
 <div class="row mt-4">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <?php
-                $submit_href = "window.location='complete_registration.php=".mask($_SESSION['schoolId'])."'";
+                $submit_href = "window.location='complete_registration.php?q=".mask($_SESSION['schoolId'])."'";
             ?>
             <button  onclick="<?php echo $submit_href; ?>"  id='btnSubmit' style='display:none;' class='btn btn-success btn-primary'>Submit Registration</button>
     </div>

@@ -59,7 +59,7 @@ if ($mform->is_cancelled()){
           $phone = $fromform->phone;
           $class = $fromform->class;
 
-
+          
 
           $_SESSION['admission_no'] = $admission_no;
           $_SESSION['surname'] = $surname;
@@ -74,7 +74,7 @@ if ($mform->is_cancelled()){
 
           $registration_href = "pre_registration3.php?q=".mask(1);
           $newStudent = $fromform->surname.' '.$fromform->firstname;
-          redirect($CFG->wwwroot."/local/newwaves/student_selfregistration/{$registration_href}", " Proceed to Step 3 of 3 to Complete Registration.");
+          redirect($CFG->wwwroot."/local/newwaves/student_selfregistration/{$registration_href}", " STEP 3 of 3 - Upload a recent clear, plain-background photograph of yourself.");
 
 
 }else {
