@@ -107,7 +107,7 @@
   ?>
 
   //create course
-  //full name of the corse
+  //full naoollme of the corse
   //short code of the course
   //select categories
   //description
