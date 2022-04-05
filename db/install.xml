@@ -40,6 +40,7 @@
         <FIELD NAME="email" TYPE="text" LENGTH="50" NOTNULL="true" />
         <FIELD NAME="phone" TYPE="text" LENGTH="50" NOTNULL="true" />
         <FIELD NAME="role" TYPE="text" LENGTH="50" NOTNULL="true" />
+        <FIELD NAME="bvn" TYPE="text" LENGTH="50" NOTNULL="false" />
         <FIELD NAME="photo" TYPE="text" LENGTH="100" NOTNULL="false" />
         <FIELD NAME="status" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="mdl_userid" TYPE="text" NOTNULL="false" SEQUENCE="false"/>

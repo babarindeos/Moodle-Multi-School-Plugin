@@ -59,22 +59,21 @@ if ($mform->is_cancelled()){
           $email = $fromform->email;
           redirect($CFG->wwwroot."/local/newwaves/moe/school/{$create_school_student_href}", "<strong>[Duplicate Email Error]</strong> A user record with that email <strong>{$email}</strong> already exist.");
     }else{
-//          $title = title($fromform->title);
-//          $gender = gender($fromform->gender);
+          $title = title($fromform->title);
+          $gender = gender($fromform->gender);
 
           $recordtoinsert = new stdClass();
           $recordtoinsert->schoolid = $fromform->school_id;
           $recordtoinsert->uuid = $fromform->staff_no;
-          $recordtoinsert->title = $fromform->title;
+          $recordtoinsert->title = $title;
           $recordtoinsert->surname = $fromform->surname;
           $recordtoinsert->firstname = $fromform->firstname;
           $recordtoinsert->middlename = $fromform->middlename;
-          $recordtoinsert->gender = $fromform->gender;
+          $recordtoinsert->gender = $gender;
           $recordtoinsert->email = $fromform->email;
           $recordtoinsert->phone = $fromform->phone;
           $recordtoinsert->bvn = $fromform->bvn;
           $recordtoinsert->role = "teacher";
-          $recordtoinsert->status = "active";
           $recordtoinsert->creator = $USER->id;
           $recordtoinsert->timecreated = time();
           $recordtoinsert->timemodified = time();
@@ -107,22 +106,6 @@ if ($mform->is_cancelled()){
           $createteacher->timemodified = time();
 
           $DB->insert_record("newwaves_schools_teachers", $createteacher);
-
-
-          //------------------------Get moodle user id -------------------------------------------------
-          $auth = new Auth();
-          $getMoodleUserId = $auth->getMoodleUserId($DB, $fromform->email);
-
-          //------------------------Get newwaves user id -------------------------------------------------
-          $auth = new Auth();
-          $getNESUserId = $auth->getNESUserId($DB, $fromform->email);
-
-          //----------------------- Update mdl_user_id on newwaves table -------------------------------
-          $update_newwaves_user = new stdClass();
-          $update_newwaves_user->id = $getNESUserId;
-          $update_newwaves_user->mdl_userid = $getMoodleUserId;
-
-          $DB->update_record('newwaves_schools_users', $update_newwaves_user);
 
 
           $schoolinfo_href = "manage_teachers.php?q=".mask($fromform->school_id);

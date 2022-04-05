@@ -56,7 +56,6 @@
      <h4>Schools Stats</h4>
 
           <?php
-
                 include_once('stats/schools_total_users.php');
                 include_once('stats/school_types.php');
                 include_once('stats/schools_total_headadmin.php');
@@ -66,7 +65,6 @@
                 include_once('stats/schools_total_teachers_gender.php');
                 include_once('stats/schools_total_students.php');
                 include_once('stats/schools_total_students_gender.php');
-
            ?>
 
  </div><!-- end of column 1 //-->

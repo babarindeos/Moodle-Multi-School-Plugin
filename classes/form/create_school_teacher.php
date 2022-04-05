@@ -75,6 +75,12 @@
         $mform->setType('phone', PARAM_NOTAGS);
         $mform->setDefault('phone', '');
 
+        // phone
+        $phone_attributes = array('size'=>'80%');
+        $mform->addElement('text', 'bvn', 'BVN', $phone_attributes);
+        $mform->setType('bvn', PARAM_NOTAGS);
+        $mform->setDefault('bvn', '');
+
         //school_id
         $mform->addElement('hidden', 'school_id', 'School_id');
         $mform->setType('school_id', PARAM_NOTAGS);
