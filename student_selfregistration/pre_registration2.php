@@ -21,7 +21,6 @@
  * @var stdClass $plugin
  */
 
-
 require_once(__DIR__.'/../../../config.php');
 
 require_once($CFG->dirroot.'/local/newwaves/classes/form/create_school_student.php');
@@ -37,13 +36,11 @@ require_once($CFG->dirroot.'/local/newwaves/classes/auth.php');
 
 global $DB;
 
-$PAGE->set_url(new moodle_url('/local/newwaves/studentselfregistration/preregistration.php'));
+$PAGE->set_url(new moodle_url('/local/newwaves/student_selfregistration/pre_registration2.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Student Registration');
 $PAGE->set_heading('Student Registration');
 
-$_GET_URL_school_id = explode("-", htmlspecialchars(strip_tags($_GET['q'])));
-$_GET_URL_school_id = $_GET_URL_school_id[1];
 
 $mform = new createSchoolStudent();
 
@@ -62,6 +59,8 @@ if ($mform->is_cancelled()){
           $phone = $fromform->phone;
           $class = $fromform->class;
 
+
+
           $_SESSION['admission_no'] = $admission_no;
           $_SESSION['surname'] = $surname;
           $_SESSION['firstname'] = $firstname;
@@ -70,16 +69,12 @@ if ($mform->is_cancelled()){
           $_SESSION['email'] = $email;
           $_SESSION['phone'] = $phone;
           $_SESSION['class'] = $class;
-          $_SESSION['schoolId'] = $_GET_URL_school_id;
+          $_SESSION['schoolId'] = $_SESSION['school_id'];
 
 
           $registration_href = "pre_registration3.php?q=".mask(1);
           $newStudent = $fromform->surname.' '.$fromform->firstname;
           redirect($CFG->wwwroot."/local/newwaves/student_selfregistration/{$registration_href}", " Proceed to Step 3 of 3 to Complete Registration.");
-//    }
-
-
-
 
 
 }else {
@@ -88,8 +83,15 @@ if ($mform->is_cancelled()){
         redirect($CFG->wwwroot . '/local/newwaves/student_selfregistration/pre_registration1.php', 'Sorry, the page is not fully formed with the required information.');
     }
 
-
 }
+
+
+$_GET_URL_school_id = explode("-", htmlspecialchars(strip_tags($_GET['q'])));
+$_GET_URL_school_id = $_GET_URL_school_id[1];
+$_SESSION['school_id'] = $_GET_URL_school_id;
+
+
+
 
 echo $OUTPUT->header();
 //echo "<h2><small>[ School Information ]</small></h2>";
@@ -143,6 +145,7 @@ foreach($school as $row){
         ?>
     </div><!-- end of column //-->
 </div><!-- end of row //-->
+
 
 
 

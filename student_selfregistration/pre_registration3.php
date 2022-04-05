@@ -35,81 +35,43 @@ require_once($CFG->dirroot.'/local/newwaves/classes/auth.php');
 
 //------------------------------------------------------------------------------
 
-global $DB;
+global $DB, $USER;
 
-$PAGE->set_url(new moodle_url('/local/newwaves/studentselfregistration/preregistration.php'));
+
+
+$PAGE->set_url(new moodle_url('/local/newwaves/student_selfregistration/pre_registration.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Create School Student');
-$PAGE->set_heading('Student');
+$PAGE->set_heading('Student Registration');
 
 
 $mform = new Uploadpictures();
 
 
+
+
+
+
+
 if ($mform->is_cancelled()){
-    redirect($CFG->wwwroot.'/local/newwaves/studentselfregistration/preregistration1.php', 'No School Student is created. You cancelled the operation.');
+    redirect($CFG->wwwroot.'/local/newwaves/student_selfregistration/pre_registration1.php', 'No School Student is created. You cancelled the operation.');
 
 }else if($fromform = $mform->get_data()){
 
-//    $auth = new Auth();
-//    $isEmailExist = $auth->isEmailExist($DB, $fromform->email);
-//
-//    if ($isEmailExist>0){
-//        $create_school_student_href = "preregistration2.php?q=".mask($fromform->school_id);
-//        $email = $fromform->email;
-//        redirect($CFG->wwwroot."/local/newwaves/studentselfregistration/{$create_school_student_href}", "<strong>[Duplicate Email Error]</strong> A user record with that email <strong>{$email}</strong> already exist.");
-//
-//    }else{
-//
-//
-//        $recordtoinsert = new stdClass();
-//        $recordtoinsert->schoolid = $fromform->school_id;
-//        $recordtoinsert->uuid = $fromform->admission_no;
-//        $recordtoinsert->surname = $fromform->surname;
-//        $recordtoinsert->firstname = $fromform->firstname;
-//        $recordtoinsert->middlename = $fromform->middlename;
-//        $recordtoinsert->gender = $fromform->gender;
-//        $recordtoinsert->email = $fromform->email;
-//        $recordtoinsert->phone = $fromform->phone;
-//        $recordtoinsert->role = "student";
-//        $recordtoinsert->creator = $USER->id;
-//        $recordtoinsert->timecreated = time();
-//        $recordtoinsert->timemodified = time();
-//
-//        $DB->insert_record('newwaves_schools_users', $recordtoinsert);
-//
-//        // write to moodle_users
-//        $createlogin = new stdClass();
-//        $createlogin->auth = 'manual';
-//        $createlogin->confirmed = '1';
-//        $createlogin->policyagreed = '0';
-//        $createlogin->deleted = '0';
-//        $createlogin->suspended = '0';
-//        $createlogin->mnethostid = '1';
-//        $createlogin->username = $fromform->email;
-//        $createlogin->password = md5('12345678');
-//        $createlogin->firstname = $fromform->firstname;
-//        $createlogin->lastname = $fromform->surname;
-//        $createlogin->email = $fromform->email;
-//
-//        $DB->insert_record("user", $createlogin);
-//
-//
-//        // write to student table
-//        $createstudent = new stdClass();
-//        $createstudent->admission_no = $fromform->admission_no;
-//        $createstudent->schoolid = $fromform->school_id;
-//        $createstudent->class = $fromform->class;
-//        $createstudent->timestamp = time();
-//
-//        $DB->insert_record("newwaves_schools_students", $createstudent);
-
-
+    $name = $fromform->userfile;
+    $tempfile = '/path/to/photos/' . $name . '.JPG';
+    if (file_exists($tempfile)) {
+          $usericonid = process_new_icon( context_user::instance( $user->id, MUST_EXIST ), 'user', 'icon', 0, $tempfile );
+          if ( $usericonid ) {
+                        $DB->set_field( 'user', 'picture', $usericonid, array( 'id' => $USER->id ) );
+          }
+    }
+    die;
 
     $schoolinfo_href = "preregistration3.php?q=".mask(1);
     $newStudent = $fromform->surname.' '.$fromform->firstname;
     redirect($CFG->wwwroot."/local/newwaves/studentselfregistration/{$schoolinfo_href}", "A Student with the name <strong>{$newStudent}</strong> has been successfully created.");
-//    }
+
 
 
 
@@ -118,7 +80,7 @@ if ($mform->is_cancelled()){
 }else {
     // Get School Id if not redirect page
     if (!isset($_GET['q']) || $_GET['q'] == '') {
-        redirect($CFG->wwwroot . '/local/newwaves/studentselfregistration/preregistration1.php', 'Sorry, the page is not fully formed with the required information.');
+        redirect($CFG->wwwroot. '/local/newwaves/studentselfregistration/preregistration1.php', 'Sorry, the page is not fully formed with the required information.');
     }
     $_GET_URL_school_id = explode("-", htmlspecialchars(strip_tags($_GET['q'])));
     $_GET_URL_school_id = $_GET_URL_school_id[1];
@@ -126,7 +88,7 @@ if ($mform->is_cancelled()){
 }
 
 echo $OUTPUT->header();
-echo "<h2><small>[ School Information ]</small></h2>";
+
 $active_menu_item = "students";
 
 // retrieve school information from DB
@@ -150,7 +112,7 @@ foreach($school as $row){
 
 <div class="row d-flex justify-content-right mt-4">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-        <h4 class='font-weight-normal'>Create School Student</h4>
+        <h4 class='font-weight-normal'>Step 3 of 3 - Upload Photograph</h4>
     </div>
 </div>
 
@@ -169,14 +131,49 @@ foreach($school as $row){
             $_GET_URL_school_id = $_GET_URL_school_id[1];
         }
 
-        $data_packet = array("school_id"=>$_GET_URL_school_id);
+        //$data_packet = array("school_id"=>$_GET_URL_school_id);
 
-        $mform->set_data($data_packet);
-        $mform->display();
-
+        //$mform->set_data($data_packet);
+        $avatar = $CFG->wwwroot.'/local/newwaves/assets/images/user_avatar_small.png';
+        //echo $avatar;
         ?>
+
+        <!-- Picture upload //-->
+                      <div class="form col-xs-12">
+                          <label for="file">
+                              <div class="card-image">
+                                  <img src="<?php echo $avatar; ?>" id='previewImage' class="img-responsive" width="250px"
+                                  style='border:2px solid #f1f1f1;border-radius:5px;padding:10px;'>
+                              </div>
+                              <input type="file" name="file" id="file" style="display:none"/>
+                              <div class="btn btn-primary btn-sm" id='btn_mpicture_upload' style="margin-top:10px;border-radius:5px;">
+                                  <i class="fa fa-image"></i> Upload Picture
+                              </div>
+
+                          </label>
+                      </div>
+                      <div>
+
+                          <!-- remove uploaded picture //-->
+                          <div class="btn btn-sm btn-danger" id='btn_mpicture_remove' style="margin-top:10px;border-radius:5px;display:none">
+                                  <i class="fa fa-trash"></i> Remove Picture
+                          </div>
+                          <!-- end of remove uploaded picture //-->
+
+                       </div>
+                      <!-- end of picture //-->
+
     </div><!-- end of column //-->
 </div><!-- end of row //-->
+
+
+<div class="row mt-4">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <button id='btnSubmit' style='display:none;' class='btn btn-success btn-primary'>Submit Registration</button>
+    </div>
+</div>
+
+
 
 
 
@@ -187,3 +184,82 @@ foreach($school as $row){
 require_once($CFG->dirroot.'/local/newwaves/lib/mdb.js.php');
 echo $OUTPUT->footer();
 ?>
+
+<script>
+    $(document).ready(function(){
+          $(document).on('change', '#file', function(){
+                var property = document.getElementById("file").files[0];
+                var image_name = property.name;
+                var image_extension = image_name.split('.').pop().toLowerCase(1);
+
+
+                if (jQuery.inArray(image_extension,['gif', 'png', 'jpg', 'jpeg'])==-1)
+                {
+                    alert("The selected file is invalid for upload as a picture");
+                }else{
+                    var image_size = property.size;
+
+                    if (image_size>5000000){
+                            alert("The selected picture is larger than the required picture size. Please resize the picture.");
+                    }else{
+                            $("#previewImage").attr('src','../assets/images/spinner.gif');
+                            var form_data = new FormData();
+                            form_data.append("file", property);
+                            $.ajax({
+                                url: '../server/upload_userpicture.php',
+                                method: 'POST',
+                                data: form_data,
+                                dataType: 'json',
+                                contentType: false,
+                                processData: false,
+                                beforeSend: function(){
+
+                                },
+                                success: function(data){
+                                    //console.log(data);
+                                    var  status = data.status;
+                                    var location = data.location;
+                                    var name = data.name;
+
+
+                                    if (status==true)
+                                    {
+                                        $('#previewImage').attr('src','../assets/'+location);
+                                        $('#btn_mpicture_upload').hide();
+                                        $('#btn_mpicture_remove').show();
+                                        $("#btnSubmit").show();
+                                    }
+
+                                }
+                            })
+                        } // end of if statement for image
+                } // end of if statement jQuery
+
+
+
+
+
+
+                $('#btn_mpicture_remove').on('click', function(){
+
+                        $.ajax({
+                            url: '../server/delete_uploaded_mpicture.php',
+                            method: 'POST',
+                            success: function(data){
+                                console.log(data);
+                                $('#btn_mpicture_remove').hide();
+                                $('#btn_mpicture_upload').show();
+                                $("#btnSubmit").hide();
+                                $("#previewImage").attr('src','../assets/images/user_avatar_small.png');
+
+                            }
+                        });
+                });
+
+
+
+
+          });
+    });
+
+</script>

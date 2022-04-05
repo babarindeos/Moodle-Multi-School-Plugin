@@ -33,12 +33,13 @@ require_once($CFG->dirroot.'/local/newwaves/classes/auth.php');
 
 //------------------------------------------------------------------------------
 
-global $DB;
+global $DB, $USER;
 
 $PAGE->set_url(new moodle_url('/local/newwaves/student_selfregistration/pre_registration.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Student Registration');
 $PAGE->set_heading('Student Registration');
+
 
 
 $mform = new VerifySchool();

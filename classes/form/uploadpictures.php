@@ -19,11 +19,12 @@
 
 
         // admission no
+        $maxbytes = 200000;
 
-        $name_attributes = array('size'=>'30%', 'required'=>'^([0-9]{2}[a-zA-Z]?)?$');
-        $mform->addElement('text', 'enter_school_code', 'Upload your Picture.', $name_attributes);
-        $mform->setType('enter_school_code', PARAM_NOTAGS);
-        $mform->setDefault('enter_school_code', '');
+        //$name_attributes = array('size'=>'30%', 'required'=>'^([0-9]{2}[a-zA-Z]?)?$');
+        $mform->addElement('filepicker', 'userfile', 'Upload your Picture.', null, array('maxbytes'=>$maxbytes, 'accepted_types'=>'*'));
+        $mform->setType('userfile', PARAM_NOTAGS);
+
 
 
 
