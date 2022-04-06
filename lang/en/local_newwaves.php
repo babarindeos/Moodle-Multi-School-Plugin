@@ -27,3 +27,4 @@ $string['moeschooldashboard'] = 'School Dashboard';
 $string['moedashboard'] = 'MOE Dashboard';
 $string['moemanageschools'] = 'Manage Schools';
 $string['moecreateschool'] = 'Create School';
+$string['moeschoolinfo'] = 'School Information';
