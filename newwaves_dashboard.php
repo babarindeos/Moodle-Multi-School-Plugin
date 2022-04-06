@@ -25,11 +25,11 @@
  require_login();
  $PAGE->set_url(new moodle_url('/local/newwaves/newwaves_dashboard.php'));
  $PAGE->set_context(\context_system::instance());
- $PAGE->set_title('Newwaves Learning Management System Administrative Dashboard');
+ $PAGE->set_title('Newwaves Multi-School Learning Management System Administrative Dashboard');
  ;
 
  echo $OUTPUT->header();
- echo "<div class='mb-5'><h2>Newwaves Learning Management System<br/><small>Administrative Dashboard</small>  </h2></div>";
+ echo "<div class='mb-5'><h2>Newwaves Multi-School Learning Management System<br/><small>Administrative Dashboard</small>  </h2></div>";
 
 
  // container
