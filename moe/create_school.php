@@ -33,25 +33,45 @@
  $PAGE->set_context(\context_system::instance());
  $PAGE->set_title('Create School');
 
+$PAGE->navbar->ignore_active();
+$PAGE->navbar->add(get_string('moedashboard', 'local_newwaves'), new moodle_url('/local/newwaves/moe/moe_dashboard.php'));
+$PAGE->navbar->add(get_string('moecreateschool', 'local_newwaves'), new moodle_url('/local/newwaves/moe/create_school.php'));
+
+
  $mform = new createSchool();
 
  if ($mform->is_cancelled()){
      redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php', 'No school is created. You cancelled the creation of a school.');
  }else if ($fromform = $mform->get_data()){
-     $recordtoinsert = new stdClass();
-     $recordtoinsert->name = $fromform->name;
-     $recordtoinsert->type = $fromform->type;
-     $recordtoinsert->state = $fromform->state;
-     $recordtoinsert->lga = $fromform->lga;
-     $recordtoinsert->address = $fromform->address;
-     $recordtoinsert->creator = $USER->id;
-     $recordtoinsert->timecreated =  time();
-     $recordtoinsert->timemodified = time();
+     if ($fromform->type==0){
+         \core\notification::add('School Type has not been selected. Please select a School option.', \core\output\notification::NOTIFY_WARNING);
+     }
+
+     if ($fromform->state==0){
+         \core\notification::add('State has not been selected. Please select a State option.', \core\output\notification::NOTIFY_WARNING);
+     }
+
+     if ($fromform->type!=0 && $fromform->state!=0){
+          $recordtoinsert = new stdClass();
+          $recordtoinsert->name = $fromform->name;
+          $recordtoinsert->type = $fromform->type;
+          $recordtoinsert->state = $fromform->state;
+          $recordtoinsert->lga = $fromform->lga;
+          $recordtoinsert->address = $fromform->address;
+          $recordtoinsert->regcode = '';
+          $recordtoinsert->creator = $USER->id;
+          $recordtoinsert->timecreated =  time();
+          $recordtoinsert->timemodified = time();
+
+          $DB->insert_record('newwaves_schools', $recordtoinsert);
+          redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php', 'A school <strong>'.$fromform->name.'</strong> has been successfully created.');
+     }
 
 
-     $DB->insert_record('newwaves_schools', $recordtoinsert);
 
-     redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php', 'A school <strong>'.$fromform->name.'</strong> has been successfully created.');
+
+
+
  }
 
  echo $OUTPUT->header();
