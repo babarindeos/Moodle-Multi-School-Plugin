@@ -35,10 +35,16 @@
 
  $PAGE->set_context(\context_system::instance());
  $PAGE->set_title('School Dashboard');
- $PAGE->set_heading('School Dashboard');
+ $PAGE->navbar->ignore_active();
+ $PAGE->navbar->add(get_string('moedashboard', 'local_newwaves'), new moodle_url('/local/newwaves/moe/moe_dashboard.php'));
+ $PAGE->navbar->add(get_string('moeschooldashboard', 'local_newwaves'), new moodle_url('/local/newwaves/moe/school_dashboard.php'));
+
+
+
+ //$PAGE->set_heading('School Dashboard');
 
  echo $OUTPUT->header();
- //echo "<div class='mb-5'><h2>School Dashboard</h2></div>";
+ echo "<div class='mb-2'><h2>School Dashboard</h2></div>";
 
  include_once($CFG->dirroot.'/local/newwaves/nav/moe_main_nav.php');
 
