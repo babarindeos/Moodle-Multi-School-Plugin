@@ -39,7 +39,10 @@
  $PAGE->set_url(new moodle_url('/local/newwaves/moe/edit_schoolinfo.php'));
  $PAGE->set_context(\context_system::instance());
  $PAGE->set_title('Update School Information');
- $PAGE->set_heading("Update School Information");
+ //$PAGE->set_heading("Update School Information");
+ $PAGE->navbar->ignore_active();
+ $PAGE->navbar->add(get_string('moedashboard', 'local_newwaves'), new moodle_url('/local/newwaves/moe/moe_dashboard.php'));
+ $PAGE->navbar->add(get_string('moemanageschools', 'local_newwaves'), new moodle_url('/local/newwaves/manage_schools.php'));
 
  $mform = new updateSchool();
 
@@ -48,20 +51,30 @@
       redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php', 'No School Update is performed. The operation is cancelled.');
  }else if($fromform = $mform->get_data()){
 
-      $recordtoupdate = new stdClass();
-      $recordtoupdate->id = $fromform->school_id;
-      $recordtoupdate->name = $fromform->name;
-      $recordtoupdate->type = $fromform->type;
-      $recordtoupdate->state = $fromform->state;
-      $recordtoupdate->lga = $fromform->lga;
-      $recordtoupdate->address = $fromform->address;
-      $recordtoupdate->timemodified = time();
+      if ($fromform->type==0){
+            \core\notification::add('School Type has not been selected. Please select a School Type option.', \core\output\notification::NOTIFY_ERROR);
+      }
 
-      $DB->update_record('newwaves_schools', $recordtoupdate);
+      if ($fromform->state==0){
+            \core\notification::add('State has not been selected. Please select a State option.', \core\output\notification::NOTIFY_ERROR);
+      }
 
-      $schoolinfo_href = "edit_schoolinfo.php?q=".mask($fromform->school_id);
-      redirect($CFG->wwwroot."/local/newwaves/moe/school/{$schoolinfo_href}", "A School with the name <strong>{$fromform->name}</strong> has been successfully updated.");
+      if ($fromform->type!=0 && $fromform->state!=0){
+            $recordtoupdate = new stdClass();
+            $recordtoupdate->id = $fromform->school_id;
+            $recordtoupdate->name = $fromform->name;
+            $recordtoupdate->type = $fromform->type;
+            $recordtoupdate->state = $fromform->state;
+            $recordtoupdate->lga = $fromform->lga;
+            $recordtoupdate->address = $fromform->address;
+            $recordtoupdate->timemodified = time();
 
+            $DB->update_record('newwaves_schools', $recordtoupdate);
+
+            $schoolinfo_href = "edit_schoolinfo.php?q=".mask($fromform->school_id);
+            redirect($CFG->wwwroot."/local/newwaves/moe/school/{$schoolinfo_href}", "A School with the name <strong>{$fromform->name}</strong> has been successfully updated.");
+
+      }
  }
 
 
@@ -98,7 +111,7 @@
  echo $OUTPUT->header();
  // display page Header
  $pageHeader = pageHeader("Update School Information");
- //echo $pageHeader;
+ echo $pageHeader;
 
  // include nav bar
   include_once($CFG->dirroot.'/local/newwaves/nav/moe_main_nav.php');

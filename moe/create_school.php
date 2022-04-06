@@ -44,11 +44,11 @@ $PAGE->navbar->add(get_string('moecreateschool', 'local_newwaves'), new moodle_u
      redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php', 'No school is created. You cancelled the creation of a school.');
  }else if ($fromform = $mform->get_data()){
      if ($fromform->type==0){
-         \core\notification::add('School Type has not been selected. Please select a School option.', \core\output\notification::NOTIFY_WARNING);
+         \core\notification::add('School Type has not been selected. Please select a School option.', \core\output\notification::NOTIFY_ERROR);
      }
 
      if ($fromform->state==0){
-         \core\notification::add('State has not been selected. Please select a State option.', \core\output\notification::NOTIFY_WARNING);
+         \core\notification::add('State has not been selected. Please select a State option.', \core\output\notification::NOTIFY_ERROR);
      }
 
      if ($fromform->type!=0 && $fromform->state!=0){

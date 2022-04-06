@@ -48,10 +48,14 @@ global $DB;
  $PAGE->set_url(new moodle_url('/local/newwaves/moe/schoolinfo.php'));
  $PAGE->set_context(\context_system::instance());
  $PAGE->set_title('School Information');
- $PAGE->set_heading('School Information');
+ //$PAGE->set_heading('School Information');
+
+ $PAGE->navbar->ignore_active();
+ $PAGE->navbar->add(get_string('moedashboard', 'local_newwaves'), new moodle_url('/local/newwaves/moe/moe_dashboard.php'));
+ $PAGE->navbar->add(get_string('moemanageschools', 'local_newwaves'), new moodle_url('/local/newwaves/manage_schools.php'));
 
  echo $OUTPUT->header();
- echo "<h2><small>[ Head Admin ]</small></h2>";
+ echo "<h2>School Information <small>[ Head Admin ]</small></h2>";
  $active_menu_item = 'headadmin';
 
 

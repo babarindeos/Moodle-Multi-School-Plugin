@@ -37,6 +37,11 @@
  $PAGE->set_context(\context_system::instance());
  $PAGE->set_title('Create School Head Admin');
 
+ $PAGE->navbar->ignore_active();
+ $PAGE->navbar->add(get_string('moedashboard', 'local_newwaves'), new moodle_url('/local/newwaves/moe/moe_dashboard.php'));
+ $PAGE->navbar->add(get_string('moemanageschools', 'local_newwaves'), new moodle_url('/local/newwaves/manage_schools.php'));
+
+
 
  // ------------------     Form ------------------------------------------------
 
@@ -60,69 +65,81 @@
                 redirect($CFG->wwwroot."/local/newwaves/moe/school/{$create_school_head_href}", "<strong>[Duplicate Email Error]</strong> A user record with that email <strong>{$email}</strong> already exist.");
 
       }else{
-
-                $transaction = $DB->start_delegated_transaction();
-
-                //write to newwaves_schools_heads
-                $recordtoinsert = new stdClass();
-                $recordtoinsert->schoolid = $fromform->school_id;
-                $recordtoinsert->title = $fromform->title;
-                $recordtoinsert->surname = $fromform->surname;
-                $recordtoinsert->firstname = $fromform->firstname;
-                $recordtoinsert->middlename = $fromform->middlename;
-                $recordtoinsert->gender = $fromform->gender;
-                $recordtoinsert->email = $fromform->email;
-                $recordtoinsert->phone = $fromform->phone;
-                $recordtoinsert->role = "headadmin";
-                $recordtoinsert->status = "active";                
-                $recordtoinsert->creator = $USER->id;
-                $recordtoinsert->timecreated = time();
-                $recordtoinsert->timemodified = time();
-
-                $create_newwaves_user = $DB->insert_record('newwaves_schools_users', $recordtoinsert);
-
-
-                // write to moodle_users
-                $createlogin = new stdClass();
-                $createlogin->auth = 'manual';
-                $createlogin->confirmed = '1';
-                $createlogin->policyagreed = '0';
-                $createlogin->deleted = '0';
-                $createlogin->suspended = '0';
-                $createlogin->mnethostid = '1';
-                $createlogin->username = $fromform->email;
-                $createlogin->password = md5('12345678');
-                $createlogin->firstname = $fromform->firstname;
-                $createlogin->lastname = $fromform->surname;
-                $createlogin->email = $fromform->email;
-
-                $create_moodle_user = $DB->insert_record("user", $createlogin);
-
-
-                if ($create_newwaves_user && $create_moodle_user){
-                    $DB->commit_delegated_transaction($transaction);
+                if ($fromform->title==0){
+                    \core\notification::add('Title has not been selected. Please select Title option.', \core\output\notification::NOTIFY_ERROR);
+                    $_GET_URL_school_id = $fromform->school_id;
                 }
 
-                //------------------------Get moodle user id -------------------------------------------------
-                $auth = new Auth();
-                $getMoodleUserId = $auth->getMoodleUserId($DB, $fromform->email);
+                if ($fromform->gender==0){
+                    \core\notification::add('Gender has not been selected. Please select a Gender option.', \core\output\notification::NOTIFY_ERROR);
+                    $_GET_URL_school_id = $fromform->school_id;
+                }
 
-                //------------------------Get newwaves user id -------------------------------------------------
-                $auth = new Auth();
-                $getNESUserId = $auth->getNESUserId($DB, $fromform->email);
+                if ($fromform->title!=0 && $fromform->gender!=0){
+                          $transaction = $DB->start_delegated_transaction();
 
-                //----------------------- Update mdl_user_id on newwaves table -------------------------------
-                $update_newwaves_user = new stdClass();
-                $update_newwaves_user->id = $getNESUserId;
-                $update_newwaves_user->mdl_userid = $getMoodleUserId;
+                          //write to newwaves_schools_heads
+                          $recordtoinsert = new stdClass();
+                          $recordtoinsert->schoolid = $fromform->school_id;
+                          $recordtoinsert->title = $fromform->title;
+                          $recordtoinsert->surname = $fromform->surname;
+                          $recordtoinsert->firstname = $fromform->firstname;
+                          $recordtoinsert->middlename = $fromform->middlename;
+                          $recordtoinsert->gender = $fromform->gender;
+                          $recordtoinsert->email = $fromform->email;
+                          $recordtoinsert->phone = $fromform->phone;
+                          $recordtoinsert->role = "headadmin";
+                          $recordtoinsert->status = "active";
+                          $recordtoinsert->creator = $USER->id;
+                          $recordtoinsert->timecreated = time();
+                          $recordtoinsert->timemodified = time();
 
-                $DB->update_record('newwaves_schools_users', $update_newwaves_user);
+                          $create_newwaves_user = $DB->insert_record('newwaves_schools_users', $recordtoinsert);
+
+
+                          // write to moodle_users
+                          $createlogin = new stdClass();
+                          $createlogin->auth = 'manual';
+                          $createlogin->confirmed = '1';
+                          $createlogin->policyagreed = '0';
+                          $createlogin->deleted = '0';
+                          $createlogin->suspended = '0';
+                          $createlogin->mnethostid = '1';
+                          $createlogin->username = $fromform->email;
+                          $createlogin->password = md5('12345678');
+                          $createlogin->firstname = $fromform->firstname;
+                          $createlogin->lastname = $fromform->surname;
+                          $createlogin->email = $fromform->email;
+
+                          $create_moodle_user = $DB->insert_record("user", $createlogin);
+
+
+                          if ($create_newwaves_user && $create_moodle_user){
+                              $DB->commit_delegated_transaction($transaction);
+                          }
+
+                          //------------------------Get moodle user id -------------------------------------------------
+                          $auth = new Auth();
+                          $getMoodleUserId = $auth->getMoodleUserId($DB, $fromform->email);
+
+                          //------------------------Get newwaves user id -------------------------------------------------
+                          $auth = new Auth();
+                          $getNESUserId = $auth->getNESUserId($DB, $fromform->email);
+
+                          //----------------------- Update mdl_user_id on newwaves table -------------------------------
+                          $update_newwaves_user = new stdClass();
+                          $update_newwaves_user->id = $getNESUserId;
+                          $update_newwaves_user->mdl_userid = $getMoodleUserId;
+
+                          $DB->update_record('newwaves_schools_users', $update_newwaves_user);
 
 
 
-                $schoolinfo_href = "manage_headadmin.php?q=".mask($fromform->school_id);
-                $newHeadAdmin = $fromform->surname.' '.$fromform->firstname;
-                redirect($CFG->wwwroot."/local/newwaves/moe/school/{$schoolinfo_href}", "A School Head Admin with the name <strong>{$newHeadAdmin}</strong>. has been successfully created");
+                          $schoolinfo_href = "manage_headadmin.php?q=".mask($fromform->school_id);
+                          $newHeadAdmin = $fromform->surname.' '.$fromform->firstname;
+                          redirect($CFG->wwwroot."/local/newwaves/moe/school/{$schoolinfo_href}", "A School Head Admin with the name <strong>{$newHeadAdmin}</strong>. has been successfully created");
+                }
+
 
       }
       // end of email verification if email already exist
