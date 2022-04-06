@@ -26,6 +26,8 @@
  $PAGE->set_url(new moodle_url('/local/newwaves/moe/moe_dashboard.php'));
  $PAGE->set_context(\context_system::instance());
  $PAGE->set_title('Ministry of Education Dashboard');
+ $PAGE->navbar->ignore_active();
+ $PAGE->navbar->add(get_string('moedashboard', 'local_newwaves'), new moodle_url('/local/newwaves/moe/moe_dashboard.php'));
 
  echo $OUTPUT->header();
  echo "<div class='mb-5'><h2>Ministry of Education Dashboard</h2></div>";
