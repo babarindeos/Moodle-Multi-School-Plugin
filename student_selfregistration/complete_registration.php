@@ -1,7 +1,7 @@
 <?php
 
-          
-          echo $_SESSION['admission_no'];
+
+          var_dump($_SESSION);
 
 
 ?>
