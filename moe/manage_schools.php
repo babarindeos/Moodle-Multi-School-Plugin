@@ -37,13 +37,17 @@
  $PAGE->set_url(new moodle_url('/local/newwaves/moe/manage_schools.php'));
  $PAGE->set_context(\context_system::instance());
  $PAGE->set_title('Manage Schools');
- $PAGE->set_heading('Manage Schools');
+ $PAGE->navbar->ignore_active();
+ $PAGE->navbar->add(get_string('moedashboard', 'local_newwaves'), new moodle_url('/local/newwaves/moe/moe_dashboard.php'));
+ $PAGE->navbar->add(get_string('moemanageschools', 'local_newwaves'), new moodle_url('/local/newwaves/moe/manage_schools.php'));
+
+ //$PAGE->set_heading('Manage Schools');
 
  echo $OUTPUT->header();
 
 
  $pageTitle = pageHeader("Manage Schools");
- //echo $pageTitle;
+ echo $pageTitle;
 
  // nav bar
  include_once($CFG->dirroot.'/local/newwaves/nav/moe_main_nav.php');
