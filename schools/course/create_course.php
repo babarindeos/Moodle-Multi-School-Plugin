@@ -22,7 +22,7 @@
  */
 
 
-require_once(__DIR__.'/../../../config.php');
+require_once(__DIR__.'/../../../../config.php');
 
 require_once($CFG->dirroot.'/local/newwaves/classes/form/create_course.php');
 require_once($CFG->dirroot.'/local/newwaves/functions/schooltypes.php');
