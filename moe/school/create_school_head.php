@@ -66,13 +66,18 @@
 
       }else{
                 if ($fromform->title==0){
-                    \core\notification::add('Title has not been selected. Please select Title option.', \core\output\notification::NOTIFY_ERROR);
+                    //\core\notification::add('Title has not been selected. Please select Title option.', \core\output\notification::NOTIFY_ERROR);
                     $_GET_URL_school_id = $fromform->school_id;
+                    $create_school_head_href = "create_school_head.php?q=".mask($fromform->school_id);
+                    redirect($CFG->wwwroot."/local/newwaves/moe/school/{$create_school_head_href}", 'Title has not been selected. Please select Title option.', null, \core\output\notification::NOTIFY_ERROR );
                 }
 
                 if ($fromform->gender==0){
-                    \core\notification::add('Gender has not been selected. Please select a Gender option.', \core\output\notification::NOTIFY_ERROR);
+                    //\core\notification::add('Gender has not been selected. Please select a Gender option.', \core\output\notification::NOTIFY_ERROR);
                     $_GET_URL_school_id = $fromform->school_id;
+                    $create_school_head_href = "create_school_head.php?q=".mask($fromform->school_id);
+                    redirect($CFG->wwwroot."/local/newwaves/moe/school/{$create_school_head_href}", 'Gender has not been selected. Please select Gender option.', null, \core\output\notification::NOTIFY_ERROR );
+
                 }
 
                 if ($fromform->title!=0 && $fromform->gender!=0){
@@ -137,7 +142,7 @@
 
                           $schoolinfo_href = "manage_headadmin.php?q=".mask($fromform->school_id);
                           $newHeadAdmin = $fromform->surname.' '.$fromform->firstname;
-                          redirect($CFG->wwwroot."/local/newwaves/moe/school/{$schoolinfo_href}", "A School Head Admin with the name <strong>{$newHeadAdmin}</strong>. has been successfully created");
+                          redirect($CFG->wwwroot."/local/newwaves/moe/school/{$schoolinfo_href}", "A School Head Admin with the name <strong>{$newHeadAdmin}</strong> has been successfully created");
                 }
 
 

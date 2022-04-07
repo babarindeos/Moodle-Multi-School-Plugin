@@ -45,7 +45,7 @@
 
 
         // Middlename
-        $mform->addElement('text', 'middlename', 'Middlename');
+        $mform->addElement('text', 'middlename', 'Middlename', $name_attributes);
         $mform->setType('middlename', PARAM_NOTAGS);
         $mform->setDefault('middlename', '');
 

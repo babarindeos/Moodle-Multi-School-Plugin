@@ -37,10 +37,11 @@
 // Get School Id
 if (!isset($_GET['q']) || $_GET['q']==''){
     redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php');
+}else{  
+  $_GET_URL_school_id = explode("-",htmlspecialchars(strip_tags($_GET['q'])));
+  $_GET_URL_school_id = $_GET_URL_school_id[1];
 }
 
-$_GET_URL_school_id = explode("-",htmlspecialchars(strip_tags($_GET['q'])));
-$_GET_URL_school_id = $_GET_URL_school_id[1];
 
 
 global $DB;

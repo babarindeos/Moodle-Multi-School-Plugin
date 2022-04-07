@@ -43,14 +43,15 @@
 
 
         // Middlename
-        $mform->addElement('text', 'middlename', 'Middlename');
+        $mform->addElement('text', 'middlename', 'Middlename', $name_attributes);
         $mform->setType('middlename', PARAM_NOTAGS);
         $mform->setDefault('middlename', '');
 
         //gender
         $gender = array();
-        $gender[0] = 'Male';
-        $gender[1] = 'Female';
+        $gender[0] = '-- Select Gender --';
+        $gender[1] = 'Male';
+        $gender[2] = 'Female';
         $mform->addElement('select', 'gender', 'Gender', $gender);
         $mform->setDefault('gender', '0');
 

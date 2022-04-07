@@ -41,6 +41,10 @@ require_login();
 $PAGE->set_url(new moodle_url('/local/newwaves/moe/school/schoolinfo_schooladmin.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Create School Admin');
+$PAGE->navbar->ignore_active();
+$PAGE->navbar->add(get_string('moedashboard', 'local_newwaves'), new moodle_url('/local/newwaves/moe/moe_dashboard.php'));
+$PAGE->navbar->add(get_string('moemanageschools', 'local_newwaves'), new moodle_url('/local/newwaves/manage_schools.php'));
+
 
 
 $mform = new createSchoolAdmin();
@@ -62,60 +66,77 @@ if ($mform->is_cancelled()){
     }else{
 //            $title = title($fromform->title);
 //            $gender = gender($fromform->gender);
+            if ($fromform->title==0){
+                //\core\notification::add('Title has not been selected. Please select Title option.', \core\output\notification::NOTIFY_ERROR);
+                //$_GET_URL_school_id = $fromform->school_id;
+                $create_school_admin_href = "create_school_admin.php?q=".mask($fromform->school_id);
+                redirect($CFG->wwwroot."/local/newwaves/moe/school/{$create_school_admin_href}", 'Title has not been selected. Please select Title option.', null, \core\output\notification::NOTIFY_ERROR );
+            }
 
-            $recordtoinsert = new stdClass();
-            $recordtoinsert->schoolid = $fromform->school_id;
-            $recordtoinsert->title = $fromform->title;
-            $recordtoinsert->surname = $fromform->surname;
-            $recordtoinsert->firstname = $fromform->firstname;
-            $recordtoinsert->middlename = $fromform->middlename;
-            $recordtoinsert->gender = $fromform->gender;
-            $recordtoinsert->email = $fromform->email;
-            $recordtoinsert->phone = $fromform->phone;
-            $recordtoinsert->role = "schooladmin";
-            $recordtoinsert->status = "active";
-            $recordtoinsert->creator = $USER->id;
-            $recordtoinsert->timecreated = time();
-            $recordtoinsert->timemodified = time();
+            if ($fromform->gender==0){
+                //\core\notification::add('Gender has not been selected. Please select a Gender option.', \core\output\notification::NOTIFY_ERROR);
+                //$_GET_URL_school_id = $fromform->school_id;
+                $create_school_admin_href = "create_school_admin.php?q=".mask($fromform->school_id);
+                redirect($CFG->wwwroot."/local/newwaves/moe/school/{$create_school_admin_href}", 'Gender has not been selected. Please select Gender option.', null, \core\output\notification::NOTIFY_ERROR );
 
-            $DB->insert_record('newwaves_schools_users', $recordtoinsert);
+            }
 
-            // write to moodle_users
-            $createlogin = new stdClass();
-            $createlogin->auth = 'manual';
-            $createlogin->confirmed = '1';
-            $createlogin->policyagreed = '0';
-            $createlogin->deleted = '0';
-            $createlogin->suspended = '0';
-            $createlogin->mnethostid = '1';
-            $createlogin->username = $fromform->email;
-            $createlogin->password = md5('12345678');
-            $createlogin->firstname = $fromform->firstname;
-            $createlogin->lastname = $fromform->surname;
-            $createlogin->email = $fromform->email;
+            if ($fromform->title!=0 && $fromform->gender!=0){
 
-            $DB->insert_record("user", $createlogin);
+                      $recordtoinsert = new stdClass();
+                      $recordtoinsert->schoolid = $fromform->school_id;
+                      $recordtoinsert->title = $fromform->title;
+                      $recordtoinsert->surname = $fromform->surname;
+                      $recordtoinsert->firstname = $fromform->firstname;
+                      $recordtoinsert->middlename = $fromform->middlename;
+                      $recordtoinsert->gender = $fromform->gender;
+                      $recordtoinsert->email = $fromform->email;
+                      $recordtoinsert->phone = $fromform->phone;
+                      $recordtoinsert->role = "schooladmin";
+                      $recordtoinsert->status = "active";
+                      $recordtoinsert->creator = $USER->id;
+                      $recordtoinsert->timecreated = time();
+                      $recordtoinsert->timemodified = time();
 
-            //------------------------Get moodle user id -------------------------------------------------
-            $auth = new Auth();
-            $getMoodleUserId = $auth->getMoodleUserId($DB, $fromform->email);
+                      $DB->insert_record('newwaves_schools_users', $recordtoinsert);
 
-            //------------------------Get newwaves user id -------------------------------------------------
-            $auth = new Auth();
-            $getNESUserId = $auth->getNESUserId($DB, $fromform->email);
+                      // write to moodle_users
+                      $createlogin = new stdClass();
+                      $createlogin->auth = 'manual';
+                      $createlogin->confirmed = '1';
+                      $createlogin->policyagreed = '0';
+                      $createlogin->deleted = '0';
+                      $createlogin->suspended = '0';
+                      $createlogin->mnethostid = '1';
+                      $createlogin->username = $fromform->email;
+                      $createlogin->password = md5('12345678');
+                      $createlogin->firstname = $fromform->firstname;
+                      $createlogin->lastname = $fromform->surname;
+                      $createlogin->email = $fromform->email;
 
-            //----------------------- Update mdl_user_id on newwaves table -------------------------------
-            $update_newwaves_user = new stdClass();
-            $update_newwaves_user->id = $getNESUserId;
-            $update_newwaves_user->mdl_userid = $getMoodleUserId;
+                      $DB->insert_record("user", $createlogin);
 
-            $DB->update_record('newwaves_schools_users', $update_newwaves_user);
+                      //------------------------Get moodle user id -------------------------------------------------
+                      $auth = new Auth();
+                      $getMoodleUserId = $auth->getMoodleUserId($DB, $fromform->email);
+
+                      //------------------------Get newwaves user id -------------------------------------------------
+                      $auth = new Auth();
+                      $getNESUserId = $auth->getNESUserId($DB, $fromform->email);
+
+                      //----------------------- Update mdl_user_id on newwaves table -------------------------------
+                      $update_newwaves_user = new stdClass();
+                      $update_newwaves_user->id = $getNESUserId;
+                      $update_newwaves_user->mdl_userid = $getMoodleUserId;
+
+                      $DB->update_record('newwaves_schools_users', $update_newwaves_user);
 
 
-            $schoolinfo_href = "manage_schooladmin.php?q=".mask($fromform->school_id);
-            $newHeadAdmin = $fromform->surname.' '.$fromform->firstname;
-            redirect($CFG->wwwroot."/local/newwaves/moe/school/{$schoolinfo_href}", "A School Admin with the name <strong>{$newHeadAdmin}</strong> has been successfully created.");
+                      $schoolinfo_href = "manage_schooladmin.php?q=".mask($fromform->school_id);
+                      $newHeadAdmin = $fromform->surname.' '.$fromform->firstname;
+                      redirect($CFG->wwwroot."/local/newwaves/moe/school/{$schoolinfo_href}", "A School Admin with the name <strong>{$newHeadAdmin}</strong> has been successfully created.");
 
+                } // end of if statement
     }
 
 //    $firstN=substr($fromform->firstname, 0,2);

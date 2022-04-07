@@ -20,11 +20,12 @@
 
         // title
         $title = array();
-        $title['0'] = 'Mr.';
-        $title['1'] = 'Mrs.';
-        $title['2'] = 'Ms.';
-        $title['3'] = 'Dr.';
-        $title['4'] = 'Prof.';
+        $title['0'] = '-- Select Title --';
+        $title['1'] = 'Mr.';
+        $title['2'] = 'Mrs.';
+        $title['3'] = 'Ms.';
+        $title['4'] = 'Dr.';
+        $title['5'] = 'Prof.';
         $mform->addElement('select', 'title', 'Title', $title);
         $mform->setDefault('title', '0');
 
@@ -51,14 +52,15 @@
 
 
         // Middlename
-        $mform->addElement('text', 'middlename', 'Middlename');
+        $mform->addElement('text', 'middlename', 'Middlename', $name_attributes);
         $mform->setType('middlename', PARAM_NOTAGS);
         $mform->setDefault('middlename', '');
 
         //gender
         $gender = array();
-        $gender[0] = 'Male';
-        $gender[1] = 'Female';
+        $gender[0] = '-- Select Gender --';
+        $gender[1] = 'Male';
+        $gender[2] = 'Female';
         $mform->addElement('select', 'gender', 'Gender', $gender);
         $mform->setDefault('gender', '0');
 
@@ -80,6 +82,12 @@
         //school_id
         $mform->addElement('hidden', 'teacher_id', 'Teacher ID');
         $mform->setType('teacher_id', PARAM_NOTAGS);
+
+        // school_id
+
+        $mform->addElement('hidden', 'school_id', 'School ID');
+        $mform->setType('school_id', PARAM_NOTAGS);
+
 
         $this->add_action_buttons();
 

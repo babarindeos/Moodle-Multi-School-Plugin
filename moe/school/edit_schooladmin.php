@@ -40,7 +40,11 @@
  $PAGE->set_url(new moodle_url('/local/newwaves/moe/school/edit_schooladmin.php'));
  $PAGE->set_context(\context_system::instance());
  $PAGE->set_title('Update School Admin Information');
- $PAGE->set_heading("Update School Admin Information");
+ //$PAGE->set_heading("Update School Admin Information");
+ $PAGE->navbar->ignore_active();
+ $PAGE->navbar->add(get_string('moedashboard', 'local_newwaves'), new moodle_url('/local/newwaves/moe/moe_dashboard.php'));
+ $PAGE->navbar->add(get_string('moemanageschools', 'local_newwaves'), new moodle_url('/local/newwaves/manage_schools.php'));
+
 
 
  $mform = new updateSchoolAdmin();
@@ -53,44 +57,62 @@
     redirect($CFG->wwwroot.'/local/newwaves/moe/school/manage_schooladmin.php?q='.mask($_SESSION['school_id']), 'No Update is performed. The operation is cancelled.');
  }else if($fromform = $mform->get_data()){
 
-      $transaction = $DB->start_delegated_transaction();
+       if ($fromform->title==0){
+           //\core\notification::add('Title has not been selected. Please select Title option.', \core\output\notification::NOTIFY_ERROR);
 
-      // update newwaves_schools_users
-      $recordtoupdate = new stdClass();
-      $recordtoupdate->id = $fromform->school_admin_id;
-      $recordtoupdate->title = $fromform->title;
-      $recordtoupdate->surname = $fromform->surname;
-      $recordtoupdate->firstname = $fromform->firstname;
-      $recordtoupdate->middlename = $fromform->middlename;
-      $recordtoupdate->gender = $fromform->gender;
-      //$recordtoupdate->email = $fromform->email;
-      $recordtoupdate->phone = $fromform->phone;
-      $recordtoupdate->timemodified = time();
+           $edit_school_admin_href = "edit_schooladmin.php?q=".mask($fromform->school_id);
+           redirect($CFG->wwwroot."/local/newwaves/moe/school/{$edit_school_admin_href}", 'Title has not been selected. Please select Title option.', null, \core\output\notification::NOTIFY_ERROR );
+       }
 
-      $update_school_users = $DB->update_record('newwaves_schools_users', $recordtoupdate);
+       if ($fromform->gender==0){
+           //\core\notification::add('Gender has not been selected. Please select a Gender option.', \core\output\notification::NOTIFY_ERROR);
+           //$_GET_URL_school_id = $fromform->school_id;
+           $edit_school_admin_href = "edit_schooladmin.php?q=".mask($fromform->school_id);
+           redirect($CFG->wwwroot."/local/newwaves/moe/school/{$edit_school_admin_href}", 'Gender has not been selected. Please select Gender option.', null, \core\output\notification::NOTIFY_ERROR );
 
+       }
 
+       if ($fromform->title!=0 && $fromform->gender!=0){
 
-      // get id of user in moodle_user tbl
-      $auth = new Auth();
-      $moodleUserId = $auth->getMoodleUserId($DB, $fromform->email);
+              $transaction = $DB->start_delegated_transaction();
 
+              // update newwaves_schools_users
+              $recordtoupdate = new stdClass();
+              $recordtoupdate->id = $fromform->school_admin_id;
+              $recordtoupdate->title = $fromform->title;
+              $recordtoupdate->surname = $fromform->surname;
+              $recordtoupdate->firstname = $fromform->firstname;
+              $recordtoupdate->middlename = $fromform->middlename;
+              $recordtoupdate->gender = $fromform->gender;
+              //$recordtoupdate->email = $fromform->email;
+              $recordtoupdate->phone = $fromform->phone;
+              $recordtoupdate->timemodified = time();
 
-      // update moodle user
-      $tbluserupdate = new stdClass();
-      $tbluserupdate->firstname = $fromform->firstname;
-      $tbluserupdate->lastname = $fromform->surname;
-      $tbluserupdate->id = $moodleUserId;
-
-      $update_user = $DB->update_record('user', $tbluserupdate);
-
-      if ($update_school_users && $update_user){
-          $DB->commit_delegated_transaction($transaction);
-      }
+              $update_school_users = $DB->update_record('newwaves_schools_users', $recordtoupdate);
 
 
-      $schooladmin_href = "edit_schooladmin.php?q=".mask($_SESSION['school_id'])."&u=".mask($fromform->school_admin_id);
-      redirect($CFG->wwwroot."/local/newwaves/moe/school/{$schooladmin_href}", "A School Admin with the name <strong>{$fromform->surname} {$fromform->firstname}</strong> has been successfully updated.");
+
+              // get id of user in moodle_user tbl
+              $auth = new Auth();
+              $moodleUserId = $auth->getMoodleUserId($DB, $fromform->email);
+
+
+              // update moodle user
+              $tbluserupdate = new stdClass();
+              $tbluserupdate->firstname = $fromform->firstname;
+              $tbluserupdate->lastname = $fromform->surname;
+              $tbluserupdate->id = $moodleUserId;
+
+              $update_user = $DB->update_record('user', $tbluserupdate);
+
+              if ($update_school_users && $update_user){
+                  $DB->commit_delegated_transaction($transaction);
+              }
+
+
+              $schooladmin_href = "edit_schooladmin.php?q=".mask($_SESSION['school_id'])."&u=".mask($fromform->school_admin_id);
+              redirect($CFG->wwwroot."/local/newwaves/moe/school/{$schooladmin_href}", "A School Admin with the name <strong>{$fromform->surname} {$fromform->firstname}</strong> has been successfully updated.");
+         } // end of if statement
 
  }
 
@@ -143,8 +165,8 @@
 
 
  // display page Header
- $pageHeader = pageHeader("Update HeadAdmin Information");
- //echo $pageHeader;
+ $pageHeader = pageHeader("Update School Admin Information");
+ echo $pageHeader;
 
  // include nav bar
   include_once($CFG->dirroot.'/local/newwaves/nav/moe_main_nav.php');

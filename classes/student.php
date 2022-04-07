@@ -21,6 +21,9 @@
           return $studentData;
       }
 
+      public function getStudentInfoBySchoolAndAdmissionNo($DB, $schoolId, $admission_no){
+          
+      }
 
 
   }

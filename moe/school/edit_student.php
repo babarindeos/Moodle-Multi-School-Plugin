@@ -40,7 +40,11 @@
  $PAGE->set_url(new moodle_url('/local/newwaves/moe/school/edit_student.php'));
  $PAGE->set_context(\context_system::instance());
  $PAGE->set_title('Update Student Profile');
- $PAGE->set_heading("Update Student Profile");
+ //$PAGE->set_heading("Update Student Profile");
+ $PAGE->navbar->ignore_active();
+ $PAGE->navbar->add(get_string('moedashboard', 'local_newwaves'), new moodle_url('/local/newwaves/moe/moe_dashboard.php'));
+ $PAGE->navbar->add(get_string('moemanageschools', 'local_newwaves'), new moodle_url('/local/newwaves/manage_schools.php'));
+
 
 
  $mform = new updateSchoolStudent();
@@ -117,6 +121,7 @@
 
 
  echo $OUTPUT->header();
+ echo "<h2>School Information <small> [ Update Student Profile ] </small></h2>";
 
  $sql = "SELECT id, uuid, surname, firstname, middlename, gender, email, phone FROM {newwaves_schools_users}
          where id={$_GET_URL_student_id}";
@@ -133,6 +138,8 @@
    $phone = $row->phone;
  }
 
+ // get student class
+ 
 
  $data_packet = array("student_id"=>$_GET_URL_student_id, "admission_no"=>$staff_no, "surname"=>$surname, "firstname"=>$firstname, "middlename"=>$middlename,
                      "gender"=>$gender, "email"=>$email, "phone"=>$phone);
