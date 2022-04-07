@@ -23,7 +23,7 @@
 
 
 
-require_once(__DIR__.'/../../../config.php');
+require_once(__DIR__.'/../../../../config.php');
  require_login();
  require_once($CFG->dirroot.'/local/newwaves/functions/schooltypes.php');
  require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
@@ -107,11 +107,10 @@ global $DB;
 //                $statusPane = "<span class='badge badge-pill badge-danger px-3 py-1'>Suspended</span>";
 //            }
 
-//            $viewHref = "window.location='student/view_student.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
-            $viewHref = "";
+            $viewHref = "window.location='assign_course.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
 //            $editHref = "window.location='edit_student.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
             $editHref = "";
-            $btnView = "<button onclick={$viewHref} class='btn btn-success btn-sm rounded' >View</button>";
+            $btnView = "<button onclick={$viewHref} class='btn btn-success btn-sm rounded' >Assign course</button>";
             $btnEdit = "<button onclick={$editHref} class='btn btn-warning btn-sm rounded'>Edit</button>";
             $btnDelete = "<button id='btn{$row->id}' class='btn btn-danger btn-sm rounded btn-delete' data-toggle='modal' data-target='#deleteModalCenter'>Delete</button>";
             echo "<tr>";
