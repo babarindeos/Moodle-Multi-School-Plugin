@@ -25,10 +25,10 @@
     $gender = '';
 
     switch($option){
-      case 0:
+      case 1:
         $gender = 'Male';
         break;
-      case 1:
+      case 2:
         $gender = "Female";
         break;
     }

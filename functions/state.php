@@ -24,115 +24,115 @@
  function state($option){
    $state = '';
    switch($option){
-     case 0:
+     case 1:
         $state = 'Abia';
         break;
-     case 1:
+     case 2:
         $state = 'Abuja';
         break;
-     case 2:
+     case 3:
         $state = 'Adamawa';
         break;
-      case 3:
+      case 4:
         $state = 'Akwa Ibom';
         break;
-      case 4:
+      case 5:
         $state = 'Anambra';
         break;
-      case 5:
+      case 6:
         $state = 'Bauchi';
         break;
-      case 6:
+      case 7:
         $state = 'Bayelsa';
         break;
-      case 7:
+      case 8:
         $state = 'Benue';
         break;
-      case 8:
+      case 9:
         $state = 'Borno';
         break;
-      case 9:
+      case 10:
         $state = 'Cross River';
         break;
-      case 10:
+      case 11:
         $state = 'Delta';
         break;
-      case 11:
+      case 12:
         $state = 'Ebonyi';
         break;
-      case 12:
+      case 13:
         $state = 'Edo';
         break;
-      case 13:
+      case 14:
         $state = 'Ekiti';
         break;
-      case 14:
+      case 15:
         $state = 'Enugu';
         break;
-      case 15:
+      case 16:
         $state = 'Gombe';
         break;
-      case 16:
+      case 17:
         $state = 'Imo';
         break;
-      case 17:
+      case 18:
         $state = 'Jigawa';
         break;
-      case 18:
+      case 19:
         $state = 'Kaduna';
         break;
-      case 19:
+      case 20:
         $state = 'Kano';
         break;
-      case 20:
+      case 21:
         $state = 'Katsina';
         break;
-      case 21:
+      case 22:
         $state = 'Kebbi';
         break;
-      case 22:
+      case 23:
         $state = 'Kogi';
         break;
-      case 23:
+      case 24:
         $state = 'Kwara';
         break;
-      case 24:
+      case 25:
         $state = 'Lagos';
         break;
-      case 25:
+      case 26:
         $state = 'Nasarawa';
         break;
-      case 26:
+      case 27:
         $state = 'Niger';
         break;
-      case 27:
+      case 28:
         $state = 'Ogun';
         break;
-      case 28:
+      case 29:
         $state = 'Ondo';
         break;
-      case 29:
+      case 30:
         $state = 'Osun';
         break;
-      case 30:
+      case 31:
         $state = 'Oyo';
         break;
-      case 31:
+      case 32:
         $state = 'Plateau';
         break;
-      case 32:
+      case 33:
         $state = 'Rivers';
         break;
-      case 33:
+      case 34:
         $state = 'Sokoto';
         break;
-      case 34:
+      case 35:
         $state = 'Taraba';
         break;
-      case 35:
+      case 36:
         $state = 'Yobe';
         break;
-      case 36:
+      case 37:
         $state = 'Zamfara';
    }
 
