@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package     moe_dashboard
+ * @package     headadmin_dashboard
  * @author      Seyibabs
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @var stdClass $plugin
@@ -23,30 +23,53 @@
 
  require_once(__DIR__.'/../../../../config.php');
  require_login();
- $PAGE->set_url(new moodle_url('/local/newwaves/moe/schooladmin_dashboard.php'));
+ $PAGE->set_url(new moodle_url('/local/newwaves/myschool/headadmin/headadmin_dashboard.php'));
  $PAGE->set_context(\context_system::instance());
- $PAGE->set_title('School Admin Dashboard');
+ $PAGE->set_title('Head Admin Dashboard');
+
+ require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
+
+ $PAGE->navbar->ignore_active();
+ $PAGE->navbar->add(get_string('myschoolheadadmindashboard', 'local_newwaves'), new moodle_url('/local/newwaves/myschool/headadmin/headadmin_dashboard.php'));
 
  echo $OUTPUT->header();
- echo "<div class='mb-5'><h2>School Admin Dashboard</h2></div>";
+ echo "<div class='mb-5'><h2>Head Admin Dashboard</h2></div>";
 
 
  // row 1
  echo "<div class='row px-3'>";
 
-    // col 2
+     // col 1
+     $manage_schooladmin = "manage_schooladmin.php?q=".mask($_SESSION['schoolid']);
+     echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 px-1 py-1 text-center'
+           style='border:1px solid #f1f1f1;background-color:#E67E22;color:#ffffff;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
+           href='{$manage_schooladmin}' title='Manage School Admins'>";
+               echo "<h2 class='mt-2'>School Admins</h2>";
+     echo "</a></div>";
+     // end of col 1
+
+    // col 1
     echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 px-1 py-1 text-center'
           style='border:1px solid #f1f1f1;background-color:#3498DB;color:#ffffff;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
-          href='school/teacher/teacher_dashboard.php' title='Manage Teachers'>";
+          href='manage_schooladmin.php' title='Manage School Admins'>";
               echo "<h2 class='mt-2'>Teachers</h2>";
     echo "</a></div>";
+    // end of col 1
+
+
+    // col 2
+    echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 px-1 py-1 text-center'
+                    style='border:1px solid #f1f1f1;background-color:#F1C40F ;color:#ffffff;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
+                    href='manage_students.php' title='Manage Students'>";
+                        echo "<h2 class='mt-2'>Students</h2>";
+    echo "</a></div>";
     // end of col 2
-echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 px-1 py-1 text-center'>  </div>";
+
     // col 3
     echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 px-1 py-1 text-center'
-          style='border:1px solid #f1f1f1;background-color:#F1C40F ;color:#ffffff;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
-          href='school/student/student_dashboard.php' title='Manage Students'>";
-              echo "<h2 class='mt-2'>Students</h2>";
+                    style='border:1px solid #f1f1f1;background-color:#2ECC71;color:#ffffff;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
+                    href='manage_schools.php' title='Manage Courses'>";
+                        echo "<h2 class='mt-2'>Courses</h2>";
     echo "</a></div>";
     // end of col 3
 

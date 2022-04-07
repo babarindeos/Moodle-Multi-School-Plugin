@@ -36,11 +36,11 @@
 
 // Get School Id
 if (!isset($_GET['q']) || $_GET['q']==''){
-    redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php');
+    redirect($CFG->wwwroot.'/local/newwaves/myschool/headadmin/headadmin_dashboard.php');
+}else{
+    $_GET_URL_school_id = explode("-",htmlspecialchars(strip_tags($_GET['q'])));
+    $_GET_URL_school_id = $_GET_URL_school_id[1];
 }
-
-$_GET_URL_school_id = explode("-",htmlspecialchars(strip_tags($_GET['q'])));
-$_GET_URL_school_id = $_GET_URL_school_id[1];
 
 
 global $DB;
@@ -48,16 +48,17 @@ global $DB;
  $PAGE->set_url(new moodle_url('/local/newwaves/moe/schoolinfo.php'));
  $PAGE->set_context(\context_system::instance());
  $PAGE->set_title('School Information');
- $PAGE->set_heading('School Information');
+ //$PAGE->set_heading('School Information');
+
+ $PAGE->navbar->ignore_active();
+ $PAGE->navbar->add(get_string('myschoolheadadmindashboard', 'local_newwaves'), new moodle_url('/local/newwaves/myschool/headadmin/headadmin_dashboard.php?q='.$_GET_URL_school_id));
+ $PAGE->navbar->add(get_string('myschoolheadadminmanageschooladmin', 'local_newwaves'), new moodle_url('/local/newwaves/myschool/headadmin/manage_schooladmin.php?q='.$_GET_URL_school_id));
 
  echo $OUTPUT->header();
- echo "<h2><small>[ Head Admin ]</small></h2>";
+ echo "<h2>Manage School Admin</h2>";
  $active_menu_item = 'headadmin';
 
-
- // navigation  bar
- include_once($CFG->dirroot.'/local/newwaves/nav/moe_main_nav.php');
-
+ echo "<hr/>";
 
  // retrieve school information from DB
  $sql = "SELECT * from {newwaves_schools} where id={$_GET_URL_school_id}";
@@ -69,7 +70,7 @@ global $DB;
     $state = state($row->state);
     $lga = $row->lga;
     $address = $row->address;
-    echo "<h4>{$school_name}</h4>";
+    echo "<h4><strong>{$school_name}</strong></h4>";
     echo "<div>{$state}, {$address}, {$lga}</div>";
  }
 
@@ -77,18 +78,14 @@ global $DB;
  ?>
 
  <hr/>
- <!-- Navigation //-->
- <?php
-    include_once($CFG->dirroot.'/local/newwaves/nav/moe_school_nav.php');
- ?>
- <!-- end of navigation //-->
+
 
  <div class="row d-flex justify-content-right mt-2 mb-4">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <?php
-           $create_head_href = "create_school_head.php?q=".mask($_GET_URL_school_id);
+           $create_schooladmin_href = "create_school_admin.php?q=".mask($_GET_URL_school_id);
         ?>
-        <button onClick="window.location='<?php echo $create_head_href; ?>'" class='btn btn-sm btn-primary rounded'>Create School Head</button>
+        <button onClick="window.location='<?php echo $create_schooladmin_href; ?>'" class='btn btn-sm btn-primary rounded'>Create School Admin</button>
     </div>
  </div>
 

@@ -82,7 +82,7 @@
 
      public function getNESUser($DB, $moodleUserId){
         $result = '';
-        $this->sqlQuery = "Select nw.id, nw.uuid, nw.title, nw.surname, nw.firstname, nw.middlename, nw.gender,
+        $this->sqlQuery = "Select nw.id, nw.schoolid, nw.uuid, nw.title, nw.surname, nw.firstname, nw.middlename, nw.gender,
                            nw.email, nw.phone, nw.role, nw.bvn, nw.photo, nw.status, nw.mdl_userid, nw.creator, nw.timecreated,
                            nw.timemodified from {newwaves_schools_users} nw where nw.mdl_userid='{$moodleUserId}'";
          $this->output = $DB->get_records_sql($this->sqlQuery);

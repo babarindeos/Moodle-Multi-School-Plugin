@@ -27,8 +27,9 @@
  $PAGE->set_context(\context_system::instance());
  $PAGE->set_title('Newwaves Multi-School Learning Management System Administrative Dashboard');
 
-
+ require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
  require_once($CFG->dirroot.'/local/newwaves/classes/auth.php');
+
  // validate user's role and access
 
 
@@ -41,18 +42,22 @@
 
  foreach($getUser as $row){
       $role = $row->role;
+      $schoolid = $row->schoolid;
+      $_SESSION['role'] = $role;
+      $_SESSION['schoolid'] = $schoolid;
+
  }
 
 
  if ($role=="headadmin")
  {
-    redirect($CFG->wwwroot."/local/newwaves/myschool/headadmin/headadmin_dashboard.php");
+    redirect($CFG->wwwroot."/local/newwaves/myschool/headadmin/headadmin_dashboard.php?q=".mask($schoolid));
  }else if($role=="schooladmin"){
-    redirect($CFG->wwwroot."/local/newwaves/myschool/schooladmin/schooladmin_dashboard.php");
+    redirect($CFG->wwwroot."/local/newwaves/myschool/schooladmin/schooladmin_dashboard.php?q={$schoolid}");
  }else if($role=="teacher"){
-    redirect($CFG->wwwroot."/local/newwaves/myschool/teacher/teacher_dashboard.php");
+    redirect($CFG->wwwroot."/local/newwaves/myschool/teacher/teacher_dashboard.php?q={$schoolid}");
  }else if($role=="student"){
-    redirect($CFG->wwwroot."/local/newwaves/myschool/student/student_dashboard.php");
+    redirect($CFG->wwwroot."/local/newwaves/myschool/student/student_dashboard.php?q={$schoolid}");
  }
 
 
