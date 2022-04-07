@@ -21,7 +21,7 @@
  * @var stdClass $plugin
  */
 
-require_once(__DIR__.'/../../../config.php');
+require_once(__DIR__ . '/../../../../config.php');
 require_once($CFG->dirroot.'/local/newwaves/classes/form/verify_school.php');
 require_once($CFG->dirroot.'/local/newwaves/functions/schooltypes.php');
 require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
@@ -44,13 +44,20 @@ $PAGE->set_heading('Student Registration');
 
 $mform = new VerifySchool();
 if ($mform->is_cancelled()){
-    redirect($CFG->wwwroot.'/local/newwaves/student_selfregistration/pre_registration1.php', 'Verification of school is cancelled.');
+    redirect($CFG->wwwroot.'/local/newwaves/myschool/student_selfregistration/pre_registration1.php', 'Verification of school is cancelled.');
 
 }else if($fromform = $mform->get_data()){
+            $regcode = $fromform->enter_school_code;
 
+            // retrieve school information from DB
+            $sql = "SELECT * from {newwaves_schools} where regcode='{$regcode}'";
+            $school =  $DB->get_records_sql($sql);
+            foreach ($school as $row){
+                $schoolid = $row->id;
+            }
 
-        $registration_href = "pre_registration2.php?q=".mask(1);
-        redirect($CFG->wwwroot."/local/newwaves/student_selfregistration/{$registration_href}", " STEP 2 of 3 - Complete Registration Form");
+    $registration_href = "pre_registration2.php?q=".mask($schoolid);
+        redirect($CFG->wwwroot."/local/newwaves/myschool/student_selfregistration/{$registration_href}", " STEP 2 of 3 - Complete Registration Form");
 //    }
 
 
