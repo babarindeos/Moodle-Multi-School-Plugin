@@ -15,4 +15,8 @@
     <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 border py-2 text-center" <?php if($active_menu_item=='students'){echo "style='background-color:#f1f1f1; color:white; font-weight:bold';"; } ?>>
           <a href='manage_students.php?q=<?php echo mask($_GET_URL_school_id);; ?>'>Students</a>
     </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 border py-2 text-center" <?php if($active_menu_item=='students'){echo "style='background-color:#f1f1f1; color:white; font-weight:bold';"; } ?>>
+          <a href='manage_course.php?q=<?php echo mask($_GET_URL_school_id); ?>'>Courses</a>
+    </div>
 </div>

@@ -41,6 +41,8 @@
 
      // col 1
      $manage_schooladmin = "manage_schooladmin.php?q=".mask($_SESSION['schoolid']);
+     $manage_course = "../course/manage_course.php?q=".mask($_SESSION['schoolid']);
+
      echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 px-1 py-1 text-center'
            style='border:1px solid #f1f1f1;background-color:#E67E22;color:#ffffff;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
            href='{$manage_schooladmin}' title='Manage School Admins'>";
@@ -68,7 +70,7 @@
     // col 3
     echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 px-1 py-1 text-center'
                     style='border:1px solid #f1f1f1;background-color:#2ECC71;color:#ffffff;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
-                    href='manage_schools.php' title='Manage Courses'>";
+                    href='$manage_course' title='Manage Courses'>";
                         echo "<h2 class='mt-2'>Courses</h2>";
     echo "</a></div>";
     // end of col 3
