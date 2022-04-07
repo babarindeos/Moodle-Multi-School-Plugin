@@ -115,7 +115,7 @@ global $DB;
             $editHref = "window.location='edit_schooladmin.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
             $btnView =  "<button onclick={$viewHref} class='btn btn-success btn-sm rounded '>View</button>";
             $btnEdit =  "<button onclick={$editHref} class='btn btn-warning btn-sm rounded '>Edit</button>";
-            $btnDelete = "<button class='btn btn-danger btn-sm rounded'>Delete</button>";
+            $btnDelete = "<button id='btn{$row->id}' class='btn btn-danger btn-sm rounded btn-delete' data-toggle='modal' data-target='#deleteModalCenter'>Delete</button>";
             echo "<tr>";
                 echo "<td class='text-center'>{$sn}.</td>";
                 echo "<td class='text-left'>{$title} {$row->surname} {$row->firstname}</td>";
@@ -139,3 +139,51 @@ global $DB;
   require_once($CFG->dirroot.'/local/newwaves/lib/mdb.js.php');
   echo $OUTPUT->footer();
 ?>
+
+<?php
+ $page = "manage_schooladmin.php";
+
+ echo "<input id='select_delete_record' type='hidden' value='' />";
+ echo "<input id='school_id' type='text' value='{$_GET_URL_school_id}' />";
+ echo "<input id='page' type='text' value='{$page}' />";
+ require_once($CFG->dirroot.'/local/newwaves/includes/modal_delete.inc.php');
+ require_once($CFG->dirroot.'/local/newwaves/lib/mdb.js.php');
+ //require_once($CFG->dirroot.'/local/newwaves/lib/mask.js');
+
+
+?>
+
+<script>
+ $(document).ready(function(){
+     $(".btn-delete").on("click", function(){
+         var selectedBtnId = $(this).attr('id');
+         var userId = $(this).attr('id').replace(/\D/g,'');
+         $('#select_delete_record').val(userId);
+     });
+
+     $("#btn-delete-modal").on("click", function(){
+         var school_id = $("#school_id").val();
+         var userId = $("#select_delete_record").val();
+         var qcode = generateMask(60);
+         var zcode = generateMask(60);
+         var page = 'manage_headadmin.php';
+
+         window.location='delete_schooladmin.php?q='+qcode+'&uid='+userId+'&z='+zcode+'&sid='+school_id+'&pg='+page+'&j='+qcode;
+     });
+ });
+
+ function generateMask(length){
+     // declare all characters
+     const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+     let result = ' ';
+     const charactersLength = characters.length;
+       for ( let i = 0; i < length; i++ ) {
+           result += characters.charAt(Math.floor(Math.random() * charactersLength));
+       }
+       return result;
+ }
+
+
+
+
+</script>

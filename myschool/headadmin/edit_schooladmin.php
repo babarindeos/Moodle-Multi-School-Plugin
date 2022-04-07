@@ -58,15 +58,15 @@
             if ($fromform->title==0){
                 //\core\notification::add('Title has not been selected. Please select Title option.', \core\output\notification::NOTIFY_ERROR);
 
-                $edit_school_admin_href = "edit_schooladmin.php?q=".mask($fromform->school_id);
+                $edit_school_admin_href = "edit_schooladmin.php?q=".mask($_SESSION['schoolid'])."&u=".mask($_SESSION['schooladmin_id']);
                 redirect($CFG->wwwroot."/local/newwaves/myschool/headadmin/{$edit_school_admin_href}", 'Title has not been selected. Please select Title option.', null, \core\output\notification::NOTIFY_ERROR );
             }
 
             if ($fromform->gender==0){
                 //\core\notification::add('Gender has not been selected. Please select a Gender option.', \core\output\notification::NOTIFY_ERROR);
 
-                $edit_school_admin_href = "edit_schooladmin.php?q=".mask($fromform->school_id);
-                redirect($CFG->wwwroot."/local/newwaves/moe/school/{$create_school_head_href}", 'Gender has not been selected. Please select Gender option.', null, \core\output\notification::NOTIFY_ERROR );
+                $edit_school_admin_href = "edit_schooladmin.php?q=".mask($_SESSION['schoolid'])."&u=".mask($_SESSION['schooladmin_id']);
+                redirect($CFG->wwwroot."/local/newwaves/myschool/headadmin/{$edit_school_admin_href}", 'Gender has not been selected. Please select Gender option.', null, \core\output\notification::NOTIFY_ERROR );
 
             }
 
@@ -74,7 +74,7 @@
                             $transaction = $DB->start_delegated_transaction();
 
                             $recordtoupdate = new stdClass();
-                            $recordtoupdate->id = $fromform->headadmin_id;
+                            $recordtoupdate->id = $fromform->school_admin_id;
                             $recordtoupdate->title = $fromform->title;
                             $recordtoupdate->surname = $fromform->surname;
                             $recordtoupdate->firstname = $fromform->firstname;
@@ -105,8 +105,8 @@
                             }
 
 
-                            $schooladmin_href = "edit_schooladmin.php?q=".mask($_SESSION['schoolid'])."&u=".mask($fromform->headadmin_id);
-                            redirect($CFG->wwwroot."/local/newwaves/myschool/headadmin/{$schooladmin_href}", "A Head Admin with the name <strong>{$fromform->surname} {$fromform->firstname}</strong> has been successfully updated.");
+                            $schooladmin_href = "edit_schooladmin.php?q=".mask($_SESSION['schoolid'])."&u=".mask($fromform->school_admin_id);
+                            redirect($CFG->wwwroot."/local/newwaves/myschool/headadmin/{$schooladmin_href}", "A School Admin with the name <strong>{$fromform->surname} {$fromform->firstname}</strong> has been successfully updated.");
                     } // end of if statement
 
  }else{

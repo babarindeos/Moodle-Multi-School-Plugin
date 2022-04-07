@@ -22,7 +22,7 @@
  * @var stdClass $plugin
  */
 
- require_once(__DIR__.'/../../../../../config.php');
+ require_once(__DIR__.'/../../../../config.php');
  require_login();
  require_once($CFG->dirroot.'/local/newwaves/classes/headadmin.php');
  require_once($CFG->dirroot.'/local/newwaves/classes/auth.php');
@@ -33,11 +33,11 @@
 
 
  if (!isset($_SERVER['HTTP_REFERER'])){
-      redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php', 'Unauthorised access.');
+      redirect($CFG->wwwroot.'/local/newwaves/myschool/headadmin/manage_schooladmin.php', 'Unauthorised access.');
  }
 
 
- $PAGE->set_url(new moodle_url('/local/newwaves/moe/school/teacher/delete_headadmin.php'));
+ $PAGE->set_url(new moodle_url('/local/newwaves/myschool/headadmin/delete_schooladmin.php'));
  $PAGE->set_context(\context_system::instance());
  $PAGE->set_title('School Admin Profile');
  $PAGE->set_heading('School Admin');
@@ -88,8 +88,8 @@
 
 
   // redirect
-  if ($_GET_URL_page=='manage_headadmin.php'){
-     $redirect_url = $CFG->wwwroot."/local/newwaves/moe/school/{$_GET_URL_page}?q=".mask($_GET_URL_school_id);
+  if ($_GET_URL_page=='manage_schooladmin.php'){
+     $redirect_url = $CFG->wwwroot."/local/newwaves/myschool/headadmin/{$_GET_URL_page}?q=".mask($_GET_URL_school_id);
      redirect($redirect_url, "The selected record has been successfully deleted.");
   }
 
@@ -100,7 +100,7 @@
   echo $OUTPUT->header();
   echo "<div class='mb-5'><h2><small> [Head Admin Profile ]</small></h2></div>";
 
-  include_once($CFG->dirroot.'/local/newwaves/nav/moe_main_nav.php');
+
 
 
   echo $OUTPUT->footer();

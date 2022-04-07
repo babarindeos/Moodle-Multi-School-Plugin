@@ -73,7 +73,7 @@
         $mform->setDefault('phone', '');
 
         //school_id
-        $mform->addElement('text', 'school_admin_id', 'School Admin ID');
+        $mform->addElement('hidden', 'school_admin_id', 'School Admin ID');
         $mform->setType('school_admin_id', PARAM_NOTAGS);
 
         $this->add_action_buttons();
