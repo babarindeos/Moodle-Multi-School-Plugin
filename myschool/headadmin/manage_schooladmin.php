@@ -112,9 +112,9 @@ global $DB;
             $title = title($row->title);
 
             $viewHref = "window.location='view_headadmin.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
-            $editHref = "window.location='edit_headadmin.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
-            $btnView = "<button onclick={$viewHref} class='btn btn-success btn-sm rounded '>View</button>";
-            $btnEdit = "<button onclick={$editHref} class='btn btn-warning btn-sm rounded '>Edit</button>";
+            $editHref = "window.location='edit_schooladmin.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
+            $btnView =  "<button onclick={$viewHref} class='btn btn-success btn-sm rounded '>View</button>";
+            $btnEdit =  "<button onclick={$editHref} class='btn btn-warning btn-sm rounded '>Edit</button>";
             $btnDelete = "<button class='btn btn-danger btn-sm rounded '>Delete</button>";
             echo "<tr>";
                 echo "<td class='text-center'>{$sn}.</td>";
