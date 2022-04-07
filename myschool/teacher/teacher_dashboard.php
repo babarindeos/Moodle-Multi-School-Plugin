@@ -21,7 +21,7 @@
  * @var stdClass $plugin
  */
 
- require_once(__DIR__.'/../../../../../config.php');
+ require_once(__DIR__.'/../../../../config.php');
  require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
  require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
  require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');

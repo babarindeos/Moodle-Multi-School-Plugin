@@ -21,7 +21,7 @@
  * @var stdClass $plugin
  */
 
- require_once(__DIR__.'/../../../config.php');
+ require_once(__DIR__.'/../../../../config.php');
  require_login();
  $PAGE->set_url(new moodle_url('/local/newwaves/moe/schooladmin_dashboard.php'));
  $PAGE->set_context(\context_system::instance());

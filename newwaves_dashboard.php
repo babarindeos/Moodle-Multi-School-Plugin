@@ -26,7 +26,38 @@
  $PAGE->set_url(new moodle_url('/local/newwaves/newwaves_dashboard.php'));
  $PAGE->set_context(\context_system::instance());
  $PAGE->set_title('Newwaves Multi-School Learning Management System Administrative Dashboard');
- ;
+
+
+ require_once($CFG->dirroot.'/local/newwaves/classes/auth.php');
+ // validate user's role and access
+
+
+ global $DB, $USER;
+
+
+ $auth  = new Auth();
+ $getUser = $auth->getNESUser($DB, $USER->id);
+
+
+ foreach($getUser as $row){
+      $role = $row->role;
+ }
+
+
+ if ($role=="headadmin")
+ {
+    redirect($CFG->wwwroot."/local/newwaves/myschool/headadmin/headadmin_dashboard.php");
+ }else if($role=="schooladmin"){
+    redirect($CFG->wwwroot."/local/newwaves/myschool/schooladmin/schooladmin_dashboard.php");
+ }else if($role=="teacher"){
+    redirect($CFG->wwwroot."/local/newwaves/myschool/teacher/teacher_dashboard.php");
+ }else if($role=="student"){
+    redirect($CFG->wwwroot."/local/newwaves/myschool/student/student_dashboard.php");
+ }
+
+
+
+
 
  echo $OUTPUT->header();
  echo "<div class='mb-5'><h2>Newwaves Multi-School Learning Management System<br/><small>Administrative Dashboard</small>  </h2></div>";

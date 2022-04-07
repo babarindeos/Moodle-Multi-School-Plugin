@@ -15,13 +15,13 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package     local_message
- * @author      Kristian
+ * @package     schools_dashboard
+ * @author      Seyibabs
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @var stdClass $plugin
  */
 
- require_once(__DIR__.'/../../../config.php');
+require_once(__DIR__.'/../../../config.php');
 require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
  require_login();
  $PAGE->set_url(new moodle_url('/local/newwaves/schools/schools_dashboard.php'));
