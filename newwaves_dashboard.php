@@ -39,7 +39,7 @@
  $auth  = new Auth();
  $getUser = $auth->getNESUser($DB, $USER->id);
 
-
+ $role = '';
  foreach($getUser as $row){
       $role = $row->role;
       $schoolid = $row->schoolid;
@@ -48,6 +48,7 @@
 
  }
 
+ echo $role;
 
  if ($role=="headadmin")
  {
