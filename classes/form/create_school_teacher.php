@@ -12,7 +12,7 @@
  class createSchoolTeacher extends moodleform{
 
     public function definition(){
-//hello
+      //hello
 
         global $CFG;
         $mform = $this->_form;
@@ -77,7 +77,7 @@
         $mform->setType('phone', PARAM_NOTAGS);
         $mform->setDefault('phone', '');
 
-        
+
         // phone
         $phone_attributes = array('size'=>'40%');
         $mform->addElement('text', 'bvn', 'BVN', $phone_attributes);
