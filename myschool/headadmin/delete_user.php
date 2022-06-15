@@ -52,6 +52,7 @@
  $_GET_URL_page = htmlspecialchars(strip_tags($_GET['pg']));
 
 
+
  $sql = "Select id, email from {newwaves_schools_users} where id={$_GET_URL_user_id}";
  $studentData = $DB->get_records_sql($sql);
 

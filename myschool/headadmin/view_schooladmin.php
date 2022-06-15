@@ -22,7 +22,7 @@
  * @var stdClass $plugin
  */
 
- require_once(__DIR__.'/../../../../../config.php');
+ require_once(__DIR__.'/../../../../config.php');
  require_login();
  require_once($CFG->dirroot.'/local/newwaves/classes/headadmin.php');
  require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
@@ -31,12 +31,10 @@
  require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
 
 
- $PAGE->set_url(new moodle_url('/local/newwaves/moe/school/teacher/view_headadmin.php'));
+ $PAGE->set_url(new moodle_url('/local/newwaves/myschool/headadmin/teacher/view_schooladmin.php'));
  $PAGE->set_context(\context_system::instance());
  $PAGE->set_title('Head Admin Profile');
- $PAGE->set_heading('Head Admin');
-
- global $DB, $USER;
+ //$PAGE->set_heading('Head Admin');
 
  // Get School Id
  if (!isset($_GET['q']) || $_GET['q']==''){
@@ -46,6 +44,14 @@
     $_GET_URL_school_id = explode("-",htmlspecialchars(strip_tags($_GET['q'])));
     $_GET_URL_school_id = $_GET_URL_school_id[1];
  }
+
+ $PAGE->navbar->ignore_active();
+ $PAGE->navbar->add(get_string('myschoolheadadmindashboard', 'local_newwaves'), new moodle_url('/local/newwaves/myschool/headadmin/headadmin_dashboard.php?q='.mask($_GET_URL_school_id)));
+ $PAGE->navbar->add(get_string('myschoolheadadminmanageschooladmin', 'local_newwaves'), new moodle_url('/local/newwaves/myschool/headadmin/manage_schooladmin.php?q='.mask($_GET_URL_school_id)));
+
+ global $DB, $USER;
+
+
 
 
 // Student id
@@ -88,9 +94,9 @@ if (!isset($_GET['u']) || $_GET['u']==''){
 
 
  echo $OUTPUT->header();
- echo "<div class='mb-1'><h2><small> [ Head Admin Profile ]</small></h2></div>";
+ echo "<div class='mb-1'><h2><small> School Admin Profile</small></h2></div>";
 
- include_once($CFG->dirroot.'/local/newwaves/nav/moe_main_nav.php');
+ echo "<hr/>";
 
 
 ?>

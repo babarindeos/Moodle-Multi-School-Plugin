@@ -55,7 +55,7 @@ global $DB;
  $PAGE->navbar->add(get_string('myschoolheadadminmanageschooladmin', 'local_newwaves'), new moodle_url('/local/newwaves/myschool/headadmin/manage_schooladmin.php?q='.$_GET_URL_school_id));
 
  echo $OUTPUT->header();
- echo "<h2>Manage School Admin</h2>";
+ echo "<h2>Manage Teachers</h2>";
  $active_menu_item = 'headadmin';
 
  echo "<hr/>";
@@ -83,16 +83,16 @@ global $DB;
  <div class="row d-flex justify-content-right mt-2 mb-4">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <?php
-           $create_schooladmin_href = "create_school_admin.php?q=".mask($_GET_URL_school_id);
+           $create_teacher_href = "create_teacher.php?q=".mask($_GET_URL_school_id);
         ?>
-        <button onClick="window.location='<?php echo $create_schooladmin_href; ?>'" class='btn btn-sm btn-primary rounded'>Create School Admin</button>
+        <button onClick="window.location='<?php echo $create_teacher_href; ?>'" class='btn btn-sm btn-primary rounded'>Create Teacher</button>
     </div>
  </div>
 
 
  <?php
   $sql = "SELECT id, title, surname, firstname, middlename , gender, email, phone, role FROM
-          {newwaves_schools_users} where role='schooladmin' and schoolid={$_GET_URL_school_id} order by id desc";
+          {newwaves_schools_users} where role='teacher' and schoolid='{$_GET_URL_school_id}' order by id desc";
 
   $headadmin = $DB->get_records_sql($sql);
 
@@ -111,8 +111,8 @@ global $DB;
 
             $title = title($row->title);
 
-            $viewHref = "window.location='view_schooladmin.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
-            $editHref = "window.location='edit_schooladmin.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
+            $viewHref = "window.location='view_teacher.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
+            $editHref = "window.location='edit_teacher.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
             $btnView =  "<button onclick={$viewHref} class='btn btn-success btn-sm rounded '>View</button>";
             $btnEdit =  "<button onclick={$editHref} class='btn btn-warning btn-sm rounded '>Edit</button>";
             $btnDelete = "<button id='btn{$row->id}' class='btn btn-danger btn-sm rounded btn-delete' data-toggle='modal' data-target='#deleteModalCenter'>Delete</button>";
@@ -141,7 +141,7 @@ global $DB;
 ?>
 
 <?php
- $page = "manage_schooladmin.php";
+ $page = "manage_teachers.php";
 
  echo "<input id='select_delete_record' type='hidden' value='' />";
  echo "<input id='school_id' type='hidden' value='{$_GET_URL_school_id}' />";
@@ -166,9 +166,9 @@ global $DB;
          var userId = $("#select_delete_record").val();
          var qcode = generateMask(60);
          var zcode = generateMask(60);
-         var page = 'manage_schooladmin.php';
+         var page = 'manage_teachers.php';
 
-         window.location='delete_schooladmin.php?q='+qcode+'&uid='+userId+'&z='+zcode+'&sid='+school_id+'&pg='+page+'&j='+qcode;
+         window.location='delete_user.php?q='+qcode+'&uid='+userId+'&z='+zcode+'&sid='+school_id+'&pg='+page+'&j='+qcode;
      });
  });
 
