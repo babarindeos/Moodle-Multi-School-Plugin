@@ -23,8 +23,9 @@
 
 
 
-require_once(__DIR__.'/../../../../config.php');
+ require_once(__DIR__.'/../../../../config.php');
  require_login();
+
  require_once($CFG->dirroot.'/local/newwaves/functions/schooltypes.php');
  require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
  require_once($CFG->dirroot.'/local/newwaves/functions/title.php');
@@ -44,12 +45,16 @@ $_GET_URL_school_id = $_GET_URL_school_id[1];
 
 global $DB;
 
- $PAGE->set_url(new moodle_url('/local/newwaves/schools/manage_course.php'));
- $PAGE->set_context(\context_system::instance());
- $PAGE->set_title('Course Information');
- $PAGE->set_heading('Course Information');
+$PAGE->set_url(new moodle_url('/local/newwaves/schools/manage_course.php'));
+$PAGE->set_context(\context_system::instance());
+$PAGE->set_title('Course Information');
+//$PAGE->set_heading('Course Information');
 
- echo $OUTPUT->header();
+$PAGE->navbar->ignore_active();
+$PAGE->navbar->add(get_string('myschoolcoursemanagecourse','local_newwaves'), new moodle_url('/local/newwaves/schools/manage_course.php'));
+
+echo $OUTPUT->header();
+echo "<h2>Manage Courses</h2>";
 
 
 
@@ -85,7 +90,7 @@ global $DB;
  <?php
   $sql = "SELECT * FROM {newwaves_course} order by id desc";
 
-  $student = $DB->get_records_sql($sql);
+  $course = $DB->get_records_sql($sql);
 
   //$schools = $DB->get_records('newwaves_schools');
   //var_dump($schools);
@@ -98,21 +103,17 @@ global $DB;
        echo "<th class='py-3'>SN</th><th>Name</th><th>Short code</th><th>Description</th><th class='text-center'>Action</th></tr>";
   echo "</thead>";
   echo "<tbody>";
-        foreach($student as $row){
+        foreach($course as $row){
+          $course_id = $row->id;
 
-            $statusPane = '';
-//            if ($row->status=='active'){
-//                $statusPane = "<span class='badge badge-pill badge-success px-3 py-1'>Active</span>";
-//            }else if($row->status=='suspended'){
-//                $statusPane = "<span class='badge badge-pill badge-danger px-3 py-1'>Suspended</span>";
-//            }
+            $assign_href = "window.location='assign_course.php?q=".mask($_GET_URL_school_id)."&c=".mask($course_id)."'";//
+            $edit_href =  "window.location='edit_course.php?q=".mask($_GET_URL_school_id)."&c=".mask($course_id)."'";
+            $enrol_href = "window.location='enrol_students.php?q=".mask($_GET_URL_school_id)."&c=".mask($course_id)."'";
 
-            $viewHref = "window.location='assign_course.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
-//            $editHref = "window.location='edit_student.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
-            $editHref = "";
-            $btnView = "<button onclick={$viewHref} class='btn btn-success btn-sm rounded' >Assign course</button>";
-            $btnEdit = "<button onclick={$editHref} class='btn btn-warning btn-sm rounded'>Edit</button>";
-            $btnDelete = "<button id='btn{$row->id}' class='btn btn-danger btn-sm rounded btn-delete' data-toggle='modal' data-target='#deleteModalCenter'>Delete</button>";
+            $btnAssign = "<button title='Assign Course to Teacher' onclick={$assign_href} class='btn btn-success btn-sm rounded' >Assign course</button>";
+            $btnEdit = "<button title='Edit Course' onclick={$edit_href} class='btn btn-warning btn-sm rounded' >Edit</button>";
+            $btnEnrol = "<button title='Enrol Student to Course' onclick={$enrol_href} class='btn btn-primary btn-sm rounded' >Enrol</button>";
+            $btnDelete = "<button title='Delete Course' id='btn{$course_id}' class='btn btn-danger btn-sm rounded btn-delete' data-toggle='modal' data-target='#deleteModalCenter'>Delete</button>";
             echo "<tr>";
                 echo "<td class='text-center'>{$sn}.</td>";
 //                echo "<td>{$row->uuid}</td>";
@@ -120,13 +121,14 @@ global $DB;
                 echo "<td class='text-left'>{$row->short_code}</td>";
                 echo "<td class='text-left'>{$row->description}</td>";
 //                echo "<td class='text-left'>{$statusPane}</td>";
-                echo "<td class='text-center'>{$btnView} {$btnEdit} {$btnDelete}</td>";
+                echo "<td class='text-right'>{$btnEdit} {$btnDelete} {$btnEnrol} {$btnAssign}  </td>";
             echo "</tr>";
 
             $sn++;
         }
   echo "</tbody>";
   echo "</table>";
+
 
 
 
@@ -141,7 +143,7 @@ global $DB;
   echo "<input id='school_id' type='hidden' value='{$_GET_URL_school_id}' />";
   echo "<input id='page' type='hidden' value='{$page}' />";
   require_once($CFG->dirroot.'/local/newwaves/includes/modal_delete.inc.php');
-  require_once($CFG->dirroot.'/local/newwaves/lib/mdb.js.php');
+  //require_once($CFG->dirroot.'/local/newwaves/lib/mdb.js.php');
   //require_once($CFG->dirroot.'/local/newwaves/lib/mask.js');
   echo $OUTPUT->footer();
 
