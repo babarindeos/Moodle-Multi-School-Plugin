@@ -24,18 +24,18 @@
 
 
 require_once(__DIR__.'/../../../../config.php');
- require_login();
- require_once($CFG->dirroot.'/local/newwaves/functions/schooltypes.php');
+require_login();
+require_once($CFG->dirroot.'/local/newwaves/functions/schooltypes.php');
 require_once($CFG->dirroot.'/local/newwaves/classes/form/create_assign_course.php');
 require_once($CFG->dirroot.'/local/newwaves/classes/schooladmin.php');
 require_once($CFG->dirroot.'/local/newwaves/classes/Coursecategory.php');
- require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
- require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
- require_once($CFG->dirroot.'/local/newwaves/functions/title.php');
- require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
- require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
- require_once($CFG->dirroot.'/local/newwaves/functions/title.php');
- require_once($CFG->dirroot.'/local/newwaves/functions/gender.php');
+require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
+require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
+require_once($CFG->dirroot.'/local/newwaves/functions/title.php');
+require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
+require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
+require_once($CFG->dirroot.'/local/newwaves/functions/title.php');
+require_once($CFG->dirroot.'/local/newwaves/functions/gender.php');
 
 // Get School Id
 if (!isset($_GET['q']) || $_GET['q']==''){
@@ -53,7 +53,7 @@ global $DB;
  $PAGE->set_title('Course Information');
  $PAGE->set_heading('Course Information');
 
- echo $OUTPUT->header();
+
 
 // course id
 if (!isset($_GET['u']) || $_GET['u']==''){
@@ -63,7 +63,7 @@ if (!isset($_GET['u']) || $_GET['u']==''){
     $_GET_URL_course_id = $_GET_URL_course_id[1];
 }
 
-
+echo $OUTPUT->header();
 
 // // retrieve school information from DB
 // $sql = "SELECT * from {newwaves_schools} where id={$_GET_URL_school_id}";
