@@ -22,6 +22,7 @@
  */
 
  require_once(__DIR__.'/../../../config.php');
+
  require_login();
  require_once($CFG->dirroot.'/local/newwaves/functions/schooltypes.php');
  require_once($CFG->dirroot.'/local/newwaves/functions/state.php');

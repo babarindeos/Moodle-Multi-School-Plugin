@@ -26,6 +26,12 @@
 require_once(__DIR__.'/../../../../config.php');
 require_login();
 
+require_once($CFG->dirroot.'/local/newwaves/classes/student.php');
+require_once($CFG->dirroot.'/local/newwaves/classes/course.php');
+require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
+require_once($CFG->dirroot.'/local/newwaves/classes/form/course_enrolment.php');
+require_once($CFG->dirroot.'/local/newwaves/classes/school.php');
+
 
 // Get School Id
 if (!isset($_GET['q']) || $_GET['q']==''){
@@ -38,21 +44,37 @@ $_GET_URL_school_id = $_GET_URL_school_id[1];
 
 
 
-// Get Course Id
+//************************* Check page accessibility *********************************************************
+// Check and Get School Id from URL if set
 if (!isset($_GET['c']) || $_GET['c']==''){
-    redirect($CFG->wwwroot.'/local/newwaves/myschool/course/enrol_students.php');
+    redirect($CFG->wwwroot.'/local/newwaves/myschool/course/enrol_students.php', "Unathorised to access the Course Enrolment page");
+}else{
+
+    $_GET_URL_course_id = explode("-",htmlspecialchars(strip_tags($_GET['q'])));
+    $_GET_URL_course_id = $_GET_URL_course_id[1];
+}
+
+// Check user accessibility status using role
+if (!isset($_SESSION['schoolid']) || $_SESSION['schoolid']==''){
+    // if Session Variable Schoolid is not set, redirect from page
+    redirect($CFG->wwwroot."/local/newwaves/newwaves_dashboard.php", "Unathorised to access the Course Enrolment page");
 }
 
 
-$_GET_URL_course_id = explode("-",htmlspecialchars(strip_tags($_GET['q'])));
-$_GET_URL_course_id = $_GET_URL_course_id[1];
+// check if the page URL and the session variable are not the same
+if($_SESSION['schoolid']!=$_GET_URL_school_id){
+    redirect($CFG->wwwroot."/local/newwaves/newwaves_dashboard.php", "Unathorised to access the Course Enrolment page");
+}
+
+//************************ End of Check page accessibility *****************************************************
+
 
 
 global $DB;
 
 $PAGE->set_url(new moodle_url('/local/newwaves/myschool/course/enrol_students.php'));
 $PAGE->set_context(\context_system::instance());
-$PAGE->set_title('Course Information');
+$PAGE->set_title('Course Enrolment');
 //$PAGE->set_heading('Course Information');
 
 $PAGE->navbar->ignore_active();
@@ -60,8 +82,52 @@ $PAGE->navbar->add(get_string('myschoolcourseenrolstudents','local_newwaves'), n
 
 
 
+
+// get course name
+$clCourse = new Course();
+$getCourse = $clCourse->getNESCourseBySchoolAndCourse($DB, $_GET_URL_school_id, $_GET_URL_course_id);
+
+$courseName = '';
+foreach($getCourse as $row){
+     $courseName = $row->full_name;
+}
+
+
+// get records of students in the current school
+$studentObj = new Student();
+$getSchoolStudents = $studentObj->getStudentsBySchool($DB, $_GET_URL_school_id);
+
+//var_dump($getSchoolStudents);
+
+$studentsData = array();
+$studentsData[0] = '-- Select Student ---';
+foreach($getSchoolStudents as $row){
+  $index = $row->id;
+  $studentsData[$index] = $row->surname.' '.$row->firstname;
+}
+
+
+
+//get MySchool Name
+$getMySchoolName = School::getName($DB, $_SESSION['schoolid']);
+
+
+
 echo $OUTPUT->header();
-echo "<h2>Enrol Students</h2>";
+echo "<h2>{$getMySchoolName}<br/><small>{$courseName}</small></h2>";
+echo "<hr/>";
+
+
+$to_form = array('my_array'=>$studentsData);
+
+echo "<h5 class='mt-5 font-weight-normal'>Students Enrolment into Course</h5>";
+//form
+
+
+$mform = new courseEnrolment(null, $to_form);
+$mform->set_data(["school_id"=>$_GET_URL_school_id,"course_id"=>$_GET_URL_course_id]);
+$mform->display();
+
 
 ?>
 
@@ -72,6 +138,12 @@ echo "<h2>Enrol Students</h2>";
 
 
 <?php
+// display table
+
+
+
+
+
 
   require_once($CFG->dirroot.'/local/newwaves/lib/mdb.js.php');
   echo $OUTPUT->footer();

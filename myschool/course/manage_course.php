@@ -33,28 +33,65 @@
  require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
  require_once($CFG->dirroot.'/local/newwaves/functions/title.php');
  require_once($CFG->dirroot.'/local/newwaves/functions/gender.php');
+ require_once($CFG->dirroot.'/local/newwaves/classes/school.php');
 
-// Get School Id
+
+//************************* Check page accessibility *********************************************************
+// Check and Get School Id from URL if set
 if (!isset($_GET['q']) || $_GET['q']==''){
-    redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php');
+    // URL ID not set redirect from page
+    redirect($CFG->wwwroot.'/local/newwaves/newwaves_dashboard.php', "Unathorised to access the Manage Courses page");
+}else{
+    // URL ID set collect ID into page variable and continue
+    $_GET_URL_school_id = explode("-",htmlspecialchars(strip_tags($_GET['q'])));
+    $_GET_URL_school_id = $_GET_URL_school_id[1];
 }
 
-$_GET_URL_school_id = explode("-",htmlspecialchars(strip_tags($_GET['q'])));
-$_GET_URL_school_id = $_GET_URL_school_id[1];
+// Check user accessibility status using role
+if (!isset($_SESSION['schoolid']) || $_SESSION['schoolid']==''){
+    // if Session Variable Schoolid is not set, redirect from page
+    redirect($CFG->wwwroot."/local/newwaves/newwaves_dashboard.php", "Unathorised to access the Manage Courses page");
+}
 
 
+// check if the page URL and the session variable are not the same
+if($_SESSION['schoolid']!=$_GET_URL_school_id){
+    redirect($CFG->wwwroot."/local/newwaves/newwaves_dashboard.php", "Unathorised to access the Manage Courses page");
+}
+
+//************************ End of Check page accessibility *****************************************************
+
+
+// global database handler
 global $DB;
 
+
+// set page
 $PAGE->set_url(new moodle_url('/local/newwaves/schools/manage_course.php'));
 $PAGE->set_context(\context_system::instance());
-$PAGE->set_title('Course Information');
+$PAGE->set_title('Manage Courses');
 //$PAGE->set_heading('Course Information');
 
 $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('myschoolcoursemanagecourse','local_newwaves'), new moodle_url('/local/newwaves/schools/manage_course.php'));
 
+
+//get MySchool Name
+$getMySchoolName = School::getName($DB, $_SESSION['schoolid']);
+
+
+//get courses created for a particular school
+$sql = "SELECT * FROM {newwaves_course} order by id desc";
+$course = $DB->get_records_sql($sql);
+
+
+
+//$schools = $DB->get_records('newwaves_schools');
+//var_dump($schools);
+
+
 echo $OUTPUT->header();
-echo "<h2>Manage Courses</h2>";
+echo "<h2>{$getMySchoolName}<br/><small>Manage Courses (".number_format(count(($course))).")</small></h2>";
 
 
 
@@ -82,18 +119,15 @@ echo "<h2>Manage Courses</h2>";
           <?php
                 $create_head_href = "create_course.php?q=".mask($_GET_URL_school_id);
           ?>
-                <button onClick="window.location='<?php echo $create_head_href; ?>'" class='btn btn-sm btn-primary rounded'>Create Course</button>
+                <button onClick="window.location='<?php echo $create_head_href; ?>'" class='btn btn-sm btn-primary rounded'>
+                    <i class="far fa-file-alt"></i> Create Course
+                </button>
     </div>
  </div>
 
 
  <?php
-  $sql = "SELECT * FROM {newwaves_course} order by id desc";
 
-  $course = $DB->get_records_sql($sql);
-
-  //$schools = $DB->get_records('newwaves_schools');
-  //var_dump($schools);
 
   $sn = 1;
 
@@ -110,10 +144,11 @@ echo "<h2>Manage Courses</h2>";
             $edit_href =  "window.location='edit_course.php?q=".mask($_GET_URL_school_id)."&c=".mask($course_id)."'";
             $enrol_href = "window.location='enrol_students.php?q=".mask($_GET_URL_school_id)."&c=".mask($course_id)."'";
 
-            $btnAssign = "<button title='Assign Course to Teacher' onclick={$assign_href} class='btn btn-success btn-sm rounded' >Assign course</button>";
-            $btnEdit = "<button title='Edit Course' onclick={$edit_href} class='btn btn-warning btn-sm rounded' >Edit</button>";
-            $btnEnrol = "<button title='Enrol Student to Course' onclick={$enrol_href} class='btn btn-primary btn-sm rounded' >Enrol</button>";
-            $btnDelete = "<button title='Delete Course' id='btn{$course_id}' class='btn btn-danger btn-sm rounded btn-delete' data-toggle='modal' data-target='#deleteModalCenter'>Delete</button>";
+            $btnAssign = "<button title='Assign Course to Teacher' onclick={$assign_href} class='btn btn-success btn-sm rounded' ><i class='fas fa-chalkboard-teacher'></i> Assign course</button>";
+            $btnEdit = "<button title='Edit Course' onclick={$edit_href} class='btn btn-warning btn-sm rounded' ><i class='far fa-edit'></i> Edit</button>";
+            $btnEnrol = "<button title='Enrol Student to Course' onclick={$enrol_href} class='btn btn-primary btn-sm rounded' ><i class='fas fa-user-graduate'></i> Enrol</button>";
+            $btnDelete = "<button title='Delete Course' id='btn{$course_id}' class='btn btn-danger btn-sm rounded btn-delete' data-toggle='modal' data-target='#deleteModalCenter'>
+                         <i class='far fa-trash-alt'></i> Delete</button>";
             echo "<tr>";
                 echo "<td class='text-center'>{$sn}.</td>";
 //                echo "<td>{$row->uuid}</td>";

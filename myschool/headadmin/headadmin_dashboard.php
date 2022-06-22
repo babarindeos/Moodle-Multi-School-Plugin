@@ -23,17 +23,30 @@
 
  require_once(__DIR__.'/../../../../config.php');
  require_login();
+ require_once($CFG->dirroot.'/local/newwaves/classes/school.php');
+ require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
+
+
+
+
  $PAGE->set_url(new moodle_url('/local/newwaves/myschool/headadmin/headadmin_dashboard.php'));
  $PAGE->set_context(\context_system::instance());
  $PAGE->set_title('Head Admin Dashboard');
 
- require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
-
  $PAGE->navbar->ignore_active();
  $PAGE->navbar->add(get_string('myschoolheadadmindashboard', 'local_newwaves'), new moodle_url('/local/newwaves/myschool/headadmin/headadmin_dashboard.php'));
 
+ global $DB;
+
+ // get user school
+ $getMySchoolName = School::getName($DB, $_SESSION['schoolid']);
+
+
+
+
  echo $OUTPUT->header();
- echo "<div class='mb-5'><h2>Head Admin Dashboard</h2></div>";
+ echo "<div class='mb-5'><h2>{$getMySchoolName}<br/><small>Head Admin Dashboard</small></h2></div>";
+
 
 
  // row 1
