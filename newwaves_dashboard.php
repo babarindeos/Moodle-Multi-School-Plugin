@@ -48,7 +48,7 @@
 
  }
 
- echo $role;
+ 
 
  if ($role=="headadmin")
  {
