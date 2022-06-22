@@ -3,7 +3,9 @@
   class Student{
 
       private $studentId;
+      private $schoolId;
       private $sqlQuery;
+      private $role;
 
 
       public function __construct(){
@@ -22,7 +24,19 @@
       }
 
       public function getStudentInfoBySchoolAndAdmissionNo($DB, $schoolId, $admission_no){
-          
+
+      }
+
+      public function getStudentsBySchool($DB, $schoolId){
+          $this->schoolId = $schoolId;
+          $this->role = "student";
+
+          $this->sqlQuery = "Select id, mdl_userid, title, surname, firstname, middlename, gender, role, photo, status,
+                             bvn, uuid, schoolid, timecreated, timemodified from {newwaves_schools_users} where
+                             schoolid={$this->schoolId} and role='{$this->role}' ";
+
+          $studentData = $DB->get_records_sql($this->sqlQuery);
+          return $studentData;
       }
 
 
