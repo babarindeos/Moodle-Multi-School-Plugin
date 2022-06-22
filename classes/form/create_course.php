@@ -23,7 +23,7 @@
 
         // name
         $name_attributes = array('size'=>'100%', 'required'=>'^([0-9]{2}[a-zA-Z]?)?$');
-        $mform->addElement('text', 'name', 'Name.', $name_attributes);
+        $mform->addElement('text', 'name', 'Name', $name_attributes);
         $mform->setType('name', PARAM_NOTAGS);
         $mform->setDefault('name', '');
 
@@ -41,7 +41,8 @@
         $mform->setType('description', PARAM_NOTAGS);
         $mform->setDefault('description', '');
 
-//        // retrieve school information from DB
+//
+        // retrieve school information from DB
         $sql = "SELECT * from {course_categories}";
         $school =  $DB->get_records_sql($sql);
 
@@ -58,9 +59,14 @@
 
         $mform->addElement('select', 'course_category', 'Course Category', $course_category);
         $mform->setDefault('course_category', '0');
-        //school_id
+
+        //creator_id
         $mform->addElement('hidden', 'creator_id', 'creator_id');
         $mform->setType('creator_id', PARAM_NOTAGS);
+
+        //school_id
+        $mform->addElement('hidden', 'school_id', 'school_id');
+        $mform->setType('school_id', PARAM_NOTAGS);
 
         $this->add_action_buttons();
 
