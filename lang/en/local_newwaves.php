@@ -30,3 +30,6 @@ $string['moecreateschool'] = 'Create School';
 $string['moeschoolinfo'] = 'School Information';
 $string['myschoolheadadmindashboard'] = 'Head Admin Dashboard';
 $string['myschoolheadadminmanageschooladmin'] = "Manage School Admin";
+$string['myschoolcoursemanagecourse'] = "Manage Course";
+$string['myschoolcoursecreatecourse'] = "Create Course";
+$string['myschoolcourseenrolstudents'] = "Enrol Students";
