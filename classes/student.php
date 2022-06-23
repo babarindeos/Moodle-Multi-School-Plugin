@@ -33,7 +33,7 @@
 
           $this->sqlQuery = "Select id, mdl_userid, title, surname, firstname, middlename, gender, role, photo, status,
                              bvn, uuid, schoolid, timecreated, timemodified from {newwaves_schools_users} where
-                             schoolid={$this->schoolId} and role='{$this->role}' ";
+                             schoolid={$this->schoolId} and role='{$this->role}' order by surname, firstname, middlename, uuid desc ";
 
           $studentData = $DB->get_records_sql($this->sqlQuery);
           return $studentData;
