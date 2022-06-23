@@ -9,7 +9,7 @@
 
  require_once("$CFG->libdir/formslib.php");
 
- class createCourseCategories extends moodleform{
+ class createCourseCategory extends moodleform{
 
     public function definition(){
 
@@ -20,7 +20,7 @@
 
         // name
         $name_attributes = array('size'=>'100%', 'required'=>'^([0-9]{2}[a-zA-Z]?)?$');
-        $mform->addElement('text', 'name', 'Name.', $name_attributes);
+        $mform->addElement('text', 'name', 'Name', $name_attributes);
         $mform->setType('name', PARAM_NOTAGS);
         $mform->setDefault('name', '');
 
@@ -28,7 +28,7 @@
 
         // code
         $name_attributes = array('size'=>'100%', 'required'=>'^([0-9]{2}[a-zA-Z]?)?$');
-        $mform->addElement('text', 'code', 'Code', $name_attributes);
+        $mform->addElement('text', 'code', 'Shortname', $name_attributes);
         $mform->setType('code', PARAM_NOTAGS);
         $mform->setDefault('code', '');
 
@@ -39,9 +39,14 @@
         $mform->setDefault('summary', '');
 
 
-        //school_id
+        //creator_id
         $mform->addElement('hidden', 'creator_id', 'creator_id');
         $mform->setType('creator_id', PARAM_NOTAGS);
+
+
+        //school_id
+        $mform->addElement('hidden', 'school_id', 'school_id');
+        $mform->setType('school_id', PARAM_NOTAGS);
 
         $this->add_action_buttons();
 

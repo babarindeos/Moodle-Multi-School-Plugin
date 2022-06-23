@@ -8,6 +8,7 @@
  */
 
  require_once("$CFG->libdir/formslib.php");
+ require($CFG->dirroot.'/local/newwaves/classes/Coursecategory.php');
 
 
 
@@ -31,7 +32,7 @@
 
         // code
         $name_attributes = array('size'=>'100%', 'required'=>'^([0-9]{2}[a-zA-Z]?)?$');
-        $mform->addElement('text', 'code', 'Code', $name_attributes);
+        $mform->addElement('text', 'code', 'Shortname', $name_attributes);
         $mform->setType('code', PARAM_NOTAGS);
         $mform->setDefault('code', '');
 
@@ -42,19 +43,16 @@
         $mform->setDefault('description', '');
 
 //
-        // retrieve school information from DB
-        $sql = "SELECT * from {course_categories}";
-        $school =  $DB->get_records_sql($sql);
 
 //class
+        $course_category = new Coursecategory();
+        $getCourseCategory = $course_category->getCourseCategory($DB);
+
         $course_category = array();
-//        for($i = 0; $i < count($school); $i++){
-//            $course_category[(string)$i] = $school[$i]['code'] ." ".$school[$i]['name'];
-//        }
-        $i = 0;
-        foreach($school as $row){
-            $course_category[$i] = $row->name;
-            $i++;
+        $course_category[0] = "-- Select Course Category --";
+
+        foreach($getCourseCategory as $row){
+            $course_category[$row->id] = $row->name;            
         }
 
         $mform->addElement('select', 'course_category', 'Course Category', $course_category);
