@@ -102,8 +102,13 @@ $getSchoolStudents = $studentObj->getStudentsBySchool($DB, $_GET_URL_school_id);
 $studentsData = array();
 $studentsData[0] = '-- Select Student ---';
 foreach($getSchoolStudents as $row){
+  $admission_no = '';
+  if ($row->uuid !=''){
+      $admission_no = $row->uuid;
+  }
+
   $index = $row->id;
-  $studentsData[$index] = $row->surname.' '.$row->firstname;
+  $studentsData[$index] = $row->surname.' '.$row->firstname.' ('.$admission_no.')';
 }
 
 
@@ -127,6 +132,9 @@ echo "<div class='border rounded' style='padding-top:20px;'>";
 $mform = new courseEnrolment(null, $to_form);
 $mform->set_data(["school_id"=>$_GET_URL_school_id,"course_id"=>$_GET_URL_course_id]);
 $mform->display();
+echo "<div style='margin-left:320px; margin-top:-15px;'>";
+  echo "<button id='btnEnrol' class='btn btn-primary rounded btn-sm' disabled><i class='fas fa-user-graduate'></i> Enrol Student</button>";
+echo "</div>";
 
 
 echo "</div>"
@@ -159,3 +167,15 @@ echo "</table>";
   require_once($CFG->dirroot.'/local/newwaves/lib/mdb.js.php');
   echo $OUTPUT->footer();
 ?>
+<script>
+    $(document).ready(function(){
+          $("#id_students").bind('change', function(){
+                var cboValue = $(this).val();
+                if(cboValue=='0'){                  
+                    $('#btnEnrol').prop('disabled', true);
+                }else{
+                    $('#btnEnrol').prop('disabled', false);
+                }
+          });
+    });
+</script>
