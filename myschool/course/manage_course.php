@@ -136,11 +136,11 @@ echo "<h2>{$getMySchoolName}<br/><small>Manage Courses (".number_format(count(($
             $edit_href =  "window.location='edit_course.php?q=".mask($_GET_URL_school_id)."&c=".mask($course_id)."'";
             $enrol_href = "window.location='enrol_students.php?q=".mask($_GET_URL_school_id)."&c=".mask($course_id)."'";
 
-            $btnAssign = "<button title='Assign Course to Teacher' onclick={$assign_href} class='btn btn-success btn-sm rounded' ><i class='fas fa-chalkboard-teacher'></i> Assign course</button>";
-            $btnEdit = "<button title='Edit Course' onclick={$edit_href} class='btn btn-warning btn-sm rounded' ><i class='far fa-edit'></i> Edit</button>";
-            $btnEnrol = "<button title='Enrol Student to Course' onclick={$enrol_href} class='btn btn-primary btn-sm rounded' ><i class='fas fa-user-graduate'></i> Enrol</button>";
+            $btnAssign = "<button title='Assign Course to Teacher' onclick={$assign_href} class='btn btn-success btn-sm rounded' ><i class='fas fa-chalkboard-teacher'></i> <small>Assign course</small></button>";
+            $btnEdit = "<button title='Edit Course' onclick={$edit_href} class='btn btn-warning btn-sm rounded' ><i class='far fa-edit'></i> <small>Edit</small></button>";
+            $btnEnrol = "<button title='Enrol Student to Course' onclick={$enrol_href} class='btn btn-primary btn-sm rounded' ><i class='fas fa-user-graduate'></i> <small>Enrol</small></button>";
             $btnDelete = "<button title='Delete Course' id='btn{$course_id}' class='btn btn-danger btn-sm rounded btn-delete' data-toggle='modal' data-target='#deleteModalCenter'>
-                         <i class='far fa-trash-alt'></i> Delete</button>";
+                         <i class='far fa-trash-alt'></i> <small>Delete</small></button>";
             echo "<tr>";
                 echo "<td class='text-center'>{$sn}.</td>";
 //                echo "<td>{$row->uuid}</td>";

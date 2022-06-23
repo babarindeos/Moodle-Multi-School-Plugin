@@ -37,32 +37,6 @@ require($CFG->dirroot.'/local/newwaves/classes/auth.php');
 require_once($CFG->dirroot.'/local/newwaves/classes/school.php');
 
 
-//************************* Check page accessibility *********************************************************
-// Check and Get School Id from URL if set
-if (!isset($_GET['q']) || $_GET['q']==''){
-    // URL ID not set redirect from page
-    redirect($CFG->wwwroot.'/local/newwaves/newwaves_dashboard.php', "Unathorised to access the Create Course page");
-}else{
-    // URL ID set collect ID into page variable and continue
-    $_GET_URL_school_id = explode("-",htmlspecialchars(strip_tags($_GET['q'])));
-    $_GET_URL_school_id = $_GET_URL_school_id[1];
-}
-
-// Check user accessibility status using role
-if (!isset($_SESSION['schoolid']) || $_SESSION['schoolid']==''){
-    // if Session Variable Schoolid is not set, redirect from page
-    redirect($CFG->wwwroot."/local/newwaves/newwaves_dashboard.php", "Unathorised to access the Create Course page");
-}
-
-
-// check if the page URL and the session variable are not the same
-if($_SESSION['schoolid']!=$_GET_URL_school_id){
-    redirect($CFG->wwwroot."/local/newwaves/newwaves_dashboard.php", "Unathorised to access the Create Course page");
-}
-
-//************************ End of Check page accessibility *****************************************************
-
-
 
 global $DB;
 
@@ -76,8 +50,11 @@ $PAGE->set_title('Create Course');
 $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('myschoolcoursecreatecourse', 'local_newwaves'), new moodle_url('/local/newwaves/myschool/course/create_course.php'));
 
+$to_form = array('my_array'=>array("school_id"=>$_SESSION['schoolid']));
 
-$mform = new createCourse();
+//var_dump($to_form);
+
+$mform = new createCourse(null, $to_form);
 
 if ($mform->is_cancelled()){
     redirect($CFG->wwwroot.'/local/newwaves/newwaves_dashboard.php', 'No Course is created. You cancelled the operation.');
@@ -137,11 +114,33 @@ if ($mform->is_cancelled()){
 
 }else {
     // Get School Id if not redirect page
-    if (!isset($_GET['q']) || $_GET['q'] == '') {
-        redirect($CFG->wwwroot . '/local/newwaves/newwaves_dashboard.php', 'Sorry, the page is not fully formed with the required information.');
+  
+
+    //************************* Check page accessibility *********************************************************
+    // Check and Get School Id from URL if set
+    if (!isset($_GET['q']) || $_GET['q']==''){
+        // URL ID not set redirect from page
+        redirect($CFG->wwwroot.'/local/newwaves/newwaves_dashboard.php', "Unathorised to access the Create Course page");
+    }else{
+        // URL ID set collect ID into page variable and continue
+        $_GET_URL_school_id = explode("-",htmlspecialchars(strip_tags($_GET['q'])));
+        $_GET_URL_school_id = $_GET_URL_school_id[1];
     }
-    $_GET_URL_school_id = explode("-", htmlspecialchars(strip_tags($_GET['q'])));
-    $_GET_URL_school_id = $_GET_URL_school_id[1];
+
+    // Check user accessibility status using role
+    if (!isset($_SESSION['schoolid']) || $_SESSION['schoolid']==''){
+        // if Session Variable Schoolid is not set, redirect from page
+        redirect($CFG->wwwroot."/local/newwaves/newwaves_dashboard.php", "Unathorised to access the Create Course page");
+    }
+
+
+    // check if the page URL and the session variable are not the same
+    if($_SESSION['schoolid']!=$_GET_URL_school_id){
+        redirect($CFG->wwwroot."/local/newwaves/newwaves_dashboard.php", "Unathorised to access the Create Course page");
+    }
+
+    //************************ End of Check page accessibility *****************************************************
+
 
 }
 

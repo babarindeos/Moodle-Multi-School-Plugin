@@ -170,7 +170,7 @@ echo "<h2>{$getMySchoolName}<br/><div class='mt-2'><small>Create Category</small
           <table class="table table-striped" id="tblData">
               <thead>
                   <tr>
-                      <th>#</th><th>Name</th><th>Shortname</th><th>Summary</th><th>Actions</th>
+                      <th>#</th><th>Name</th><th>Shortname</th><th>Summary</th><th class='text-center'>Actions</th>
                   </tr>
               </thead>
               <tbody class="tblBody">
@@ -178,7 +178,26 @@ echo "<h2>{$getMySchoolName}<br/><div class='mt-2'><small>Create Category</small
                 <?php
 
                     $courseCategory = new Coursecategory();
-                    $getCourseCategory = $courseCategory->getCategoriesBySchool($_GET_URL_school_id);
+                    $getCourseCategory = $courseCategory->getCategoriesBySchool($DB, $_GET_URL_school_id);
+
+
+
+                    $sn = 1;
+                    foreach($getCourseCategory as $row){
+                        $edit_href= "window.location='edit_category.php?q=".mask($row->id)."'";
+                        $btn_edit_href = "<button title='Edit Category' onClick={$edit_href} class='btn btn-warning btn-sm rounded'><i class='far fa-edit'></i> <small>Edit</small> </button>";
+
+                        $delete_href= "window.location='delete_category.php?q=".mask($row->id)."'";
+                        $btn_delete_href = "<button title='Delete Category' onClick={$delete_href} class='btn btn-danger btn-sm rounded'><i class='far fa-trash-alt'></i><small> Delete</small> </button>";
+                        echo "<tr>";
+                          echo "<td>{$sn}.</td>";
+                          echo "<td>{$row->name}</td>";
+                          echo "<td>{$row->code}</td>";
+                          echo "<td>{$row->summary}</td>";
+                          echo "<td class='text-center' width='25%'>{$btn_edit_href} {$btn_delete_href}</td>";
+                        echo "</tr>";
+                        $sn++;
+                    }
                 ?>
 
               </tbody>
