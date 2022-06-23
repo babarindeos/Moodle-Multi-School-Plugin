@@ -20,6 +20,10 @@
         global $CFG;
         global $DB;
         $mform = $this->_form;
+        $school_id = $this->_customdata['my_array']['school_id'];
+
+        //echo "School_id: ".$school_id;
+        //exit;
 
 
         // name
@@ -46,13 +50,13 @@
 
 //class
         $course_category = new Coursecategory();
-        $getCourseCategory = $course_category->getCourseCategory($DB);
+        $getCourseCategory = $course_category->getCategoriesBySchool($DB, $school_id);
 
         $course_category = array();
         $course_category[0] = "-- Select Course Category --";
 
         foreach($getCourseCategory as $row){
-            $course_category[$row->id] = $row->name;            
+            $course_category[$row->mdl_course_cat_id] = $row->name;
         }
 
         $mform->addElement('select', 'course_category', 'Course Category', $course_category);

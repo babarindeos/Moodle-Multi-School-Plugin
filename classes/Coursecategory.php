@@ -5,6 +5,7 @@ class Coursecategory
 
     private $courseId;
     private $sqlQuery;
+    private $result;
 
 
     public function __construct(){
@@ -45,7 +46,21 @@ class Coursecategory
         return $lastId;
     }
 
-    public function getCategoriesBySchool($_GET_URL_school_id){
-        
+    public function getCategoriesBySchool($DB, $school_id){
+        $this->sqlQuery = "SELECT  * from {newwaves_course_categories} where id='".$school_id."' order by id desc";
+
+        $this->result = $DB->get_records_sql($this->sqlQuery);
+        return $this->result;
     }
+
+
+    public function getCourseCategoryBySchool($DB, $school_id){
+        $this->sqlQuery = "SELECT  * from {newwaves_course_categories} where id={$school_id} order by id desc";
+
+        $this->result = $DB->get_records_sql($this->sqlQuery);
+        return $this->result;
+    }
+
+
+
 }
