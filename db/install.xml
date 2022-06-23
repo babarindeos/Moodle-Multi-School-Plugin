@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="UTF-8" ?>
 <XMLDB PATH="local/newwaves/db" VERSION="20220308" COMMENT="XMLDB file for Local Message"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -169,6 +170,7 @@
         <FIELD NAME="name" TYPE="text" LENGTH="50" NOTNULL="false" />
         <FIELD NAME="code" TYPE="text" LENGTH="50" NOTNULL="false" />
         <FIELD NAME="summary" TYPE="text" LENGTH="50" NOTNULL="false" />
+        <FIELD NAME="mdl_course_cat_id" TYPE="text" LENGTH="50" NOTNULL="false" />
         <FIELD NAME="timecreated" TYPE="int" NOTNULL="true" LENGTH="15" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timemodified" TYPE="int" NOTNULL="true" LENGTH="15" DEFAULT="0" SEQUENCE="false"/>
       </FIELDS>
