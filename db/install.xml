@@ -1,6 +1,5 @@
-
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/newwaves/db" VERSION="20220308" COMMENT="XMLDB file for Local Message"
+<XMLDB PATH="local/newwaves/db" VERSION="20220623" COMMENT="XMLDB file for Local Message"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -161,7 +160,7 @@
     </TABLE>
     <!-- Newwaves Transfers//-->
 
- <!--Newwaves Course Categories //-->
+    <!--Newwaves Course Categories //-->
     <TABLE NAME="newwaves_course_categories" COMMENT="each record is of a course category">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
@@ -177,7 +176,6 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
-
     </TABLE>
     <!-- Newwaves Course Categories//-->
 

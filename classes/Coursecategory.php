@@ -44,4 +44,8 @@ class Coursecategory
         }
         return $lastId;
     }
+
+    public function getCategoriesBySchool($_GET_URL_school_id){
+        
+    }
 }

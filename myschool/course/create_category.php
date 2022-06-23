@@ -163,6 +163,32 @@ echo "<h2>{$getMySchoolName}<br/><div class='mt-2'><small>Create Category</small
 
 
 
+<div class="row border rounded py-4 mt-2 ml-1 mr-1">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <h4>Course Categories</h4>
+
+          <table class="table table-striped" id="tblData">
+              <thead>
+                  <tr>
+                      <th>#</th><th>Name</th><th>Shortname</th><th>Summary</th><th>Actions</th>
+                  </tr>
+              </thead>
+              <tbody class="tblBody">
+
+                <?php
+
+                    $courseCategory = new Coursecategory();
+                    $getCourseCategory = $courseCategory->getCategoriesBySchool($_GET_URL_school_id);
+                ?>
+
+              </tbody>
+          </table>
+
+    </div>
+</div>
+
+
+
 
 
 
