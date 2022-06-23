@@ -96,18 +96,6 @@ echo "<h2>{$getMySchoolName}<br/><small>Manage Courses (".number_format(count(($
 
 
 
-// // retrieve school information from DB
-// $sql = "SELECT * from {newwaves_schools} where id={$_GET_URL_school_id}";
-// $school =  $DB->get_records_sql($sql);
-//
-// foreach($school as $row){
-//    $school_name = $row->name;
-//    $school_type = schoolTypes($row->type);
-//    $lga = $row->lga;
-//    $address = $row->address;
-//    echo "<h4>{$school_name}</h4>";
-//    echo "<div>{$address}, {$lga}</div>";
-// }
 
 
  ?>
@@ -117,9 +105,13 @@ echo "<h2>{$getMySchoolName}<br/><small>Manage Courses (".number_format(count(($
  <div class="row d-flex justify-content-right mt-2 mb-4">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <?php
-                $create_head_href = "create_course.php?q=".mask($_GET_URL_school_id);
+                $create_course_href = "create_course.php?q=".mask($_GET_URL_school_id);
+                $create_category_href = "create_category.php?q=".mask($_GET_URL_school_id);
           ?>
-                <button onClick="window.location='<?php echo $create_head_href; ?>'" class='btn btn-sm btn-primary rounded'>
+                <button onClick="window.location='<?php echo $create_category_href; ?>'" class='btn btn-sm btn-success rounded'>
+                    <i class="far fa-file-alt"></i> Create Category
+                </button>
+                <button onClick="window.location='<?php echo $create_course_href; ?>'" class='btn btn-sm btn-primary rounded'>
                     <i class="far fa-file-alt"></i> Create Course
                 </button>
     </div>
@@ -134,7 +126,7 @@ echo "<h2>{$getMySchoolName}<br/><small>Manage Courses (".number_format(count(($
   echo "<table class='table table-stripped border' id='tblData'>";
   echo "<thead>";
   echo "<tr class='font-weight-bold' >";
-       echo "<th class='py-3'>SN</th><th>Name</th><th>Short code</th><th>Description</th><th class='text-center'>Action</th></tr>";
+       echo "<th class='py-3'>SN</th><th>Name</th><th>Short code</th><th class='text-center'>Action</th></tr>";
   echo "</thead>";
   echo "<tbody>";
         foreach($course as $row){
@@ -152,9 +144,8 @@ echo "<h2>{$getMySchoolName}<br/><small>Manage Courses (".number_format(count(($
             echo "<tr>";
                 echo "<td class='text-center'>{$sn}.</td>";
 //                echo "<td>{$row->uuid}</td>";
-                echo "<td class='text-left'>{$row->full_name}</td>";
+                echo "<td class='text-left'>{$row->full_name}<br/><small>Course Category | Course Details</small></td>";
                 echo "<td class='text-left'>{$row->short_code}</td>";
-                echo "<td class='text-left'>{$row->description}</td>";
 //                echo "<td class='text-left'>{$statusPane}</td>";
                 echo "<td class='text-right'>{$btnEdit} {$btnDelete} {$btnEnrol} {$btnAssign}  </td>";
             echo "</tr>";

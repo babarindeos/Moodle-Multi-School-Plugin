@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package     create_school_student
+ * @package     create_course_category
  * @author      Seyibabs
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @var stdClass $plugin
@@ -24,138 +24,138 @@
 
 require_once(__DIR__ . '/../../../../config.php');
 
-require_once($CFG->dirroot.'/local/newwaves/classes/form/create_course_categories.php');
+require_once($CFG->dirroot.'/local/newwaves/classes/form/create_course_category.php');
 require_once($CFG->dirroot.'/local/newwaves/functions/schooltypes.php');
 require_once($CFG->dirroot.'/local/newwaves/functions/encrypt.php');
 require_once($CFG->dirroot.'/local/newwaves/functions/gender.php');
 require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
 require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
 require_once($CFG->dirroot.'/local/newwaves/classes/auth.php');
+require_once($CFG->dirroot.'/local/newwaves/classes/school.php');
+require_once($CFG->dirroot.'/local/newwaves/classes/Coursecategory.php');
 
 
-//------------------------------------------------------------------------------
 
 global $DB;
 
-$PAGE->set_url(new moodle_url('/local/newwaves/schools.create_category.php'));
+
+$PAGE->set_url(new moodle_url('/local/newwaves/myschool/course/create_category.php'));
 $PAGE->set_context(\context_system::instance());
-$PAGE->set_title('Create Course Cartegories');
-$PAGE->set_heading('Course Cartegories');
+$PAGE->set_title('Create Course Category');
+//$PAGE->set_heading('Course Cartegories');
+
+$PAGE->navbar->ignore_active();
+$PAGE->navbar->add(get_string('myschoolcoursecreatecategory', 'local_newwaves'), new moodle_url('/local/newwaves/myschool/course/create_category.php'));
 
 
-$mform = new createCourseCategories();
+$mform = new createCourseCategory();
 
 
 if ($mform->is_cancelled()){
-    redirect($CFG->wwwroot.'/local/newwaves/schools/create_category.php', 'No School Student is created. You cancelled the operation.');
+    redirect($CFG->wwwroot.'/local/newwaves/newwaves_dashboard.php', 'No Course Category is created. You cancelled the operation.');
 
 }else if($fromform = $mform->get_data()){
 
-    $auth = new Auth();
-//    $isEmailExist = $auth->isEmailExist($DB, $fromform->email);
-//
-//    if ($isEmailExist>0){
-//        $create_school_teacher_href = "preregistration2.php?q=".mask($fromform->school_id);
-//        $email = $fromform->email;
-//        redirect($CFG->wwwroot."/local/newwaves/teacherselfregistration/{$create_school_teacher_href}", "<strong>[Duplicate Email Error]</strong> A user record with that email <strong>{$email}</strong> already exist.");
-//
-//    }else{
+          //get last category id
+          $getLastId = Coursecategory::getLastCategoryId($DB);
+
+
+          // write to moodle_course_categories
+          $mdlcoursecat = new stdClass();
+          $mdlcoursecat->name = $fromform->name;
+          $mdlcoursecat->idnumber = $fromform->code;
+          $mdlcoursecat->description = $fromform->summary;
+          $mdlcoursecat->descriptionformat = 1;
+          $mdlcoursecat->parent = 0;
+          $mdlcoursecat->visible = 1;
+          $mdlcoursecat->visibleold = 1;
+          $mdlcoursecat->timemodified = time();
+          $mdlcoursecat->depth = 1;
+          $mdlcoursecat->path = $getLastId + 1;
+
+          $DB->insert_record("course_categories", $mdlcoursecat);
+
+
+          //get mdl_course_categories_id
+          $getMdlCategoryId = Coursecategory::getMoodleCourseCategoryId($DB, $fromform->name, $fromform->code);
+
+
 
           $recordtoinsert = new stdClass();
           $recordtoinsert->name = $fromform->name;
           $recordtoinsert->code = $fromform->code;
-          $recordtoinsert->surmmary = $fromform->summary;
-          $recordtoinsert->creator_id = 1;
+          $recordtoinsert->summary = $fromform->summary;
+          $recordtoinsert->creator_id = $fromform->creator_id;
+          $recordtoinsert->school_id = $fromform->school_id;
+          $recordtoinsert->mdl_course_cat_id = $getMdlCategoryId;
           $recordtoinsert->timecreated = time();
           $recordtoinsert->timemodified = time();
 
           $DB->insert_record('newwaves_course_categories', $recordtoinsert);
 
-          // write to moodle_course_categories
-          $createlogin = new stdClass();
-          $createlogin->name = $fromform->name;
-          $createlogin->description = $fromform->summary;
-
-          $DB->insert_record("course_categories", $createlogin);
-
-//
-//          //
-//          // write to teacher
-//          $createteacher = new stdClass();
-//          $createteacher->staff_no = $fromform->staff_no;
-//          $createteacher->schoolid = $fromform->school_id;
-//          $createteacher->timecreated = time();
-//          $createteacher->timemodified = time();
-//
-//          $DB->insert_record("newwaves_schools_teachers", $createteacher);
-
-
-    $schoolinfo_href = "create_category.php?q=".mask(1);
-    $newStudent = $fromform->name;
-    redirect($CFG->wwwroot."/local/newwaves/schools/{$schoolinfo_href}", "A Course with the name <strong>{$newStudent}</strong> has been successfully created.");
-//    }
 
 
 
+
+    $schoolinfo_href = "create_category.php?q=".mask($fromform->school_id);
+    $newCategory = $fromform->name;
+    redirect($CFG->wwwroot."/local/newwaves/myschool/course/create_category.php?q={$schoolinfo_href}", "A Category with the name <strong>{$newCategory}</strong> has been successfully created.");
 
 
 }else {
-    // Get School Id if not redirect page
-    if (!isset($_GET['q']) || $_GET['q'] == '') {
-        redirect($CFG->wwwroot . '/local/newwaves/moe/school_dashboard.php', 'Sorry, the page is not fully formed with the required information.');
-    }
-    $_GET_URL_school_id = explode("-", htmlspecialchars(strip_tags($_GET['q'])));
-    $_GET_URL_school_id = $_GET_URL_school_id[1];
+
+    //************************* Check page accessibility *********************************************************
+            // Check and Get School Id from URL if set
+            if (!isset($_GET['q']) || $_GET['q']==''){
+                // URL ID not set redirect from page
+                redirect($CFG->wwwroot.'/local/newwaves/newwaves_dashboard.php', "Unathorised to access the Create Category page");
+            }else{
+                // URL ID set collect ID into page variable and continue
+                $_GET_URL_school_id = explode("-",htmlspecialchars(strip_tags($_GET['q'])));
+                $_GET_URL_school_id = $_GET_URL_school_id[1];
+            }
+
+            // Check user accessibility status using role
+            if (!isset($_SESSION['schoolid']) || $_SESSION['schoolid']==''){
+                // if Session Variable Schoolid is not set, redirect from page
+                redirect($CFG->wwwroot."/local/newwaves/newwaves_dashboard.php", "Unathorised to access the Create Category page");
+            }
+
+
+            // check if the page URL and the session variable are not the same
+            if($_SESSION['schoolid']!=$_GET_URL_school_id){
+                redirect($CFG->wwwroot."/local/newwaves/newwaves_dashboard.php", "Unathorised to access the Create Category page");
+            }
+
+    //************************ End of Check page accessibility *****************************************************
+
 
 }
 
 
+//get MySchool Name
+$getMySchoolName = School::getName($DB, $_SESSION['schoolid']);
+
 echo $OUTPUT->header();
+echo "<h2>{$getMySchoolName}<br/><div class='mt-2'><small>Create Category</small></div></h2>";
 
 
-// retrieve school information from DB
-//$sql = "SELECT * from {newwaves_schools} where id={$_GET_URL_school_id}";
-//$school =  $DB->get_records_sql($sql);
-//
-//foreach($school as $row){
-//    $school_name = $row->name;
-//    $school_type = schoolTypes($row->type);
-//    $lga = $row->lga;
-//    $address = $row->address;
-//    echo "<h4>{$school_name}</h4>";
-//    echo "<div>{$address}, {$lga}</div>";
-//}
 
 ?>
 
 <hr/>
 
-<div class="row d-flex justify-content-right mt-4 mb-4">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-        <h4 class='font-weight-normal'>Create Course Cartegories</h4>
-    </div>
-</div>
 
 
-<div class="row border rounded py-4">
+
+<div class="row border rounded py-4 ml-1 mr-1">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <?php
 
+              $data_packet = array("school_id"=>$_GET_URL_school_id, "creator_id"=>$USER->id);
 
-
-
-//        // Get School Id if not redirect page
-//        if (!isset($_GET['q']) || $_GET['q']==''){
-//            redirect($CFG->wwwroot.'/local/newwaves/moe/manage_schools.php', 'Sorry, the page is not fully formed with the required information.');
-//        }else{
-//            $_GET_URL_school_id = explode("-",htmlspecialchars(strip_tags($_GET['q'])));
-//            $_GET_URL_school_id = $_GET_URL_school_id[1];
-//        }
-
-        $data_packet = array("school_id"=>$_GET_URL_school_id);
-
-        $mform->set_data($data_packet);
-        $mform->display();
+              $mform->set_data($data_packet);
+              $mform->display();
 
         ?>
     </div><!-- end of column //-->

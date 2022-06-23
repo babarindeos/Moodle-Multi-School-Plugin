@@ -120,14 +120,16 @@ echo "<hr/>";
 
 $to_form = array('my_array'=>$studentsData);
 
-echo "<h5 class='mt-5 font-weight-normal'>Students Enrolment into Course</h5>";
+echo "<h4 class='mt-5 mb-3'>Students Enrolment into Course</h4>";
 //form
-
+echo "<div class='border rounded' style='padding-top:20px;'>";
 
 $mform = new courseEnrolment(null, $to_form);
 $mform->set_data(["school_id"=>$_GET_URL_school_id,"course_id"=>$_GET_URL_course_id]);
 $mform->display();
 
+
+echo "</div>"
 
 ?>
 
@@ -139,7 +141,16 @@ $mform->display();
 
 <?php
 // display table
+echo "<div class='mb-5' style='margin-top:50px;'><h4>Students Enrolled Into Course</h4></div>";
+echo "<table class='table table-stripped border' id='tblData'>";
+echo "<thead>";
+echo "<tr class='font-weight-bold' >";
+     echo "<th class='py-3'>SN</th><th>Name</th><th>Short code</th><th>Description</th><th class='text-center'>Action</th></tr>";
+echo "</thead>";
+echo "<tbody>";
 
+echo "</tbody>";
+echo "</table>";
 
 
 
