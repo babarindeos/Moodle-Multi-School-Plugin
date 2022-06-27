@@ -130,11 +130,12 @@ echo "<h2>{$getMySchoolName}<br/><small>Manage Courses (".number_format(count(($
   echo "</thead>";
   echo "<tbody>";
         foreach($course as $row){
-          $course_id = $row->id;
+            $course_id = $row->id;
+            $mdl_course_id = $row->mdl_course_id;
 
-            $assign_href = "window.location='assign_course.php?q=".mask($_GET_URL_school_id)."&c=".mask($course_id)."'";//
+            $assign_href = "window.location='assign_course.php?q=".mask($_GET_URL_school_id)."&c=".mask($course_id)."&m=".mask($mdl_course_id)."'";//
             $edit_href =  "window.location='edit_course.php?q=".mask($_GET_URL_school_id)."&c=".mask($course_id)."'";
-            $enrol_href = "window.location='enrol_students.php?q=".mask($_GET_URL_school_id)."&c=".mask($course_id)."'";
+            $enrol_href = "window.location='enrol_students.php?q=".mask($_GET_URL_school_id)."&c=".mask($course_id)."&m=".mask($mdl_course_id)."'";
 
             $btnAssign = "<button title='Assign Course to Teacher' onclick={$assign_href} class='btn btn-success btn-sm rounded' ><i class='fas fa-chalkboard-teacher'></i> <small>Assign course</small></button>";
             $btnEdit = "<button title='Edit Course' onclick={$edit_href} class='btn btn-warning btn-sm rounded' ><i class='far fa-edit'></i> <small>Edit</small></button>";
