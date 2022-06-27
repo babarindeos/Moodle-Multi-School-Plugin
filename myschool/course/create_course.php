@@ -35,6 +35,7 @@ require($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
 require($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
 require($CFG->dirroot.'/local/newwaves/classes/auth.php');
 require_once($CFG->dirroot.'/local/newwaves/classes/school.php');
+require_once($CFG->dirroot.'/local/newwaves/classes/course.php');
 
 
 
@@ -44,6 +45,7 @@ $PAGE->set_url(new moodle_url('/local/newwaves/myschool/course/create_course.php
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Create Course');
 //$PAGE->set_heading('Create Course');
+
 
 // create page navigation at breadcrumb
 
@@ -63,21 +65,6 @@ if ($mform->is_cancelled()){
 
           //$transaction = $DB->start_delegated_transaction();
 
-          // newwaves course table
-          $recordtoinsert = new stdClass();
-          $recordtoinsert->full_name = $fromform->name;
-          $recordtoinsert->short_code = $fromform->code;
-          $recordtoinsert->description = $fromform->description;
-          $recordtoinsert->category_id = $fromform->course_category;
-          $recordtoinsert->creator_id = $fromform->creator_id;
-          $recordtoinsert->school_id = $fromform->school_id;
-
-          $recordtoinsert->timecreated = time();
-          $recordtoinsert->timemodified = time();
-
-          $newwaves_course = $DB->insert_record('newwaves_course', $recordtoinsert);
-
-
           // mdl course table
           $mdlcoursetoinsert = new stdClass();
           $mdlcoursetoinsert->category = $fromform->course_category;
@@ -94,8 +81,47 @@ if ($mform->is_cancelled()){
 
           $mdl_course = $DB->insert_record('course', $mdlcoursetoinsert);
 
+          // get the id of the mdl_course
+          $getMoodleCourseId = Course::getMoodleCourseId($DB, $fromform->course_category, $fromform->name, $fromform->code, $fromform->description);
 
-          if ($newwaves_course && $mdl_course){
+
+          // newwaves course table
+          $recordtoinsert = new stdClass();
+          $recordtoinsert->full_name = $fromform->name;
+          $recordtoinsert->short_code = $fromform->code;
+          $recordtoinsert->description = $fromform->description;
+          $recordtoinsert->category_id = $fromform->course_category;
+          $recordtoinsert->creator_id = $fromform->creator_id;
+          $recordtoinsert->school_id = $fromform->school_id;
+          $recordtoinsert->mdl_course_id = $getMoodleCourseId;
+
+          $recordtoinsert->timecreated = time();
+          $recordtoinsert->timemodified = time();
+
+          $newwaves_course = $DB->insert_record('newwaves_course', $recordtoinsert);
+
+
+          // check if this course has been created into the mdl_enrol
+          // if course has not been created here....create it using the manual
+          // check if the course has been created in the mdl_enrol
+          //$courseEnrolmentId = Enrolment::getEnrolmentByCourse($DB, $fromform->mdl_course_id);
+
+          //if($courseEnrolmentId==0 || $courseEnrolmentId==''){}
+
+          $enroltoinsert = new stdClass();
+          $enroltoinsert->enrol = 'manual';
+          $enroltoinsert->status = 0;
+          $enroltoinsert->courseid = $getMoodleCourseId;
+          $enroltoinsert->sortorder = 0;
+          $enroltoinsert->roleid = 5;
+          $enroltoinsert->timecreated = time();
+          $enroltoinsert->timemodified = time();
+
+          $mdl_enrol = $DB->insert_record('enrol', $enroltoinsert);
+
+
+
+          if ($newwaves_course && $mdl_course && $mdl_enrol){
               //$DB->commit_delegated_transaction($transaction);
               $manage_course_href = "manage_course.php?q=".mask($fromform->school_id);
               $new_course = $fromform->name;
@@ -114,7 +140,7 @@ if ($mform->is_cancelled()){
 
 }else {
     // Get School Id if not redirect page
-  
+
 
     //************************* Check page accessibility *********************************************************
     // Check and Get School Id from URL if set
