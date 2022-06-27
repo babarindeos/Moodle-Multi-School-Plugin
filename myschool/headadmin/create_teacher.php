@@ -92,7 +92,7 @@ if ($mform->is_cancelled()){
                       $recordtoinsert->gender = $fromform->gender;
                       $recordtoinsert->email = $fromform->email;
                       $recordtoinsert->phone = $fromform->phone;
-                      $recordtoinsert->role = "schooladmin";
+                      $recordtoinsert->role = "teacher";
                       $recordtoinsert->status = "active";
                       $recordtoinsert->creator = $USER->id;
                       $recordtoinsert->timecreated = time();
@@ -134,7 +134,7 @@ if ($mform->is_cancelled()){
 
                       $manage_school_href = "manage_schooladmin.php?q=".mask($fromform->school_id);
                       $newSchoolAdmin = $fromform->surname.' '.$fromform->firstname;
-                      redirect($CFG->wwwroot."/local/newwaves/myschool/headadmin/{$manage_school_href}", "A School Admin with the name <strong>{$newSchoolAdmin}</strong> has been successfully created.");
+                      redirect($CFG->wwwroot."/local/newwaves/myschool/headadmin/{$manage_school_href}", "A Teacher with the name <strong>{$newSchoolAdmin}</strong> has been successfully created.");
 
                 } // end of if statement
     }
