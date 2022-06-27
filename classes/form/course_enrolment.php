@@ -22,22 +22,26 @@
       $studentData = $this->_customdata['my_array'];
 
 
+      //course_id
+      $mform->addElement('hidden', 'course_id', 'course_id');
+      $mform->setType('course_id', PARAM_NOTAGS);
 
-
+      //mdl_course_id
+      $mform->addElement('hidden', 'mdl_course_id', 'mdl_course_id');
+      $mform->setType('mdl_course_id', PARAM_NOTAGS);
 
 
       //school_id
-      $mform->addElement('text', 'course_id', 'course_id');
-      $mform->setType('course_id', PARAM_NOTAGS);
-
+      $mform->addElement('hidden', 'school_id', 'school_id');
+      $mform->setType('school_id', PARAM_NOTAGS);
 
 
       //studentData
       $student_data_attributes = array('width'=>'80%');
-      $mform->addElement('select', 'students', 'Students', $studentData, $student_data_attributes);
-      $mform->setDefault('students', '0');
+      $mform->addElement('select', 'student_id', 'Students', $studentData, $student_data_attributes);
+      $mform->setDefault('student_id', '0');
 
-
+      $this->add_action_buttons();
 
 
   }
