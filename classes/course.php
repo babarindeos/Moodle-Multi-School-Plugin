@@ -41,6 +41,17 @@
      return $result;
    }
 
+   public static function getMoodleCourseId($DB, $course_category, $name, $code, $description){
+      $sqlQuery = "Select * from {course} where category='{$course_category}' and fullname='{$name}' and shortname='{$code}' and summary='{$description}'";
+      $output = $DB->get_records_sql($sqlQuery);
+
+      $mdl_course_id = '';
+      foreach($output as $row){
+            $mdl_course_id = $row->id;
+      }
+      return $mdl_course_id;
+   }
+
  }
 
 
