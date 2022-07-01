@@ -108,8 +108,7 @@ global $DB;
 //            }
 
             $viewHref = "window.location='assign_course.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
-//            $editHref = "window.location='edit_student.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
-            $editHref = "";
+            $editHref = "window.location='edit_course.php?q=".mask($_GET_URL_school_id)."&u=".mask($row->id)."'";
             $btnView = "<button onclick={$viewHref} class='btn btn-success btn-sm rounded' >Assign course</button>";
             $btnEdit = "<button onclick={$editHref} class='btn btn-warning btn-sm rounded'>Edit</button>";
             $btnDelete = "<button id='btn{$row->id}' class='btn btn-danger btn-sm rounded btn-delete' data-toggle='modal' data-target='#deleteModalCenter'>Delete</button>";

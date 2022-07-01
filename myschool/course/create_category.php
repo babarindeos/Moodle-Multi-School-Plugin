@@ -184,11 +184,12 @@ echo "<h2>{$getMySchoolName}<br/><div class='mt-2'><small>Create Category</small
 
                     $sn = 1;
                     foreach($getCourseCategory as $row){
-                        $edit_href= "window.location='edit_category.php?q=".mask($row->id)."'";
+                        $edit_href= "window.location='edit_category.php?q=".mask($_GET_URL_school_id)."&c=".mask($row->id)."&m=".mask($row->mdl_course_cat_id)."'";//
                         $btn_edit_href = "<button title='Edit Category' onClick={$edit_href} class='btn btn-warning btn-sm rounded'><i class='far fa-edit'></i> <small>Edit</small> </button>";
 
-                        $delete_href= "window.location='delete_category.php?q=".mask($row->id)."'";
+                        $delete_href= "window.location='delete_category.php?q=".mask($_GET_URL_school_id)."&c=".mask($row->id)."&m=".mask($row->mdl_course_cat_id)."'";//
                         $btn_delete_href = "<button title='Delete Category' onClick={$delete_href} class='btn btn-danger btn-sm rounded'><i class='far fa-trash-alt'></i><small> Delete</small> </button>";
+
                         echo "<tr>";
                           echo "<td>{$sn}.</td>";
                           echo "<td>{$row->name}</td>";

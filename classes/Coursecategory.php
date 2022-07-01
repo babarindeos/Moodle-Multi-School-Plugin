@@ -47,8 +47,7 @@ class Coursecategory
     }
 
     public function getCategoriesBySchool($DB, $school_id){
-        $this->sqlQuery = "SELECT  * from {newwaves_course_categories} where id='".$school_id."' order by id desc";
-
+        $this->sqlQuery = "SELECT  * from {newwaves_course_categories} where school_id='".$school_id."' order by id desc";
         $this->result = $DB->get_records_sql($this->sqlQuery);
         return $this->result;
     }
