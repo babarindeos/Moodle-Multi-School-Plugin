@@ -56,7 +56,7 @@
         $course_category[0] = "-- Select Course Category --";
 
         foreach($getCourseCategory as $row){
-            $course_category[$row->mdl_course_cat_id] = $row->name;
+            $course_category[$row->id] = $row->name;
         }
 
         $mform->addElement('select', 'course_category', 'Course Category', $course_category);

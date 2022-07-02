@@ -199,6 +199,10 @@ foreach($school as $row){
     $course_name = $row->full_name;
     $course_code = $row->short_code;
     $course_description = $row->description;
+    $course_category_id = $row->category_id;
+    $sql = "SELECT name from {newwaves_course_categories} where id={$row->category_id}";
+    $school =  $DB->get_records_sql($sql);
+    $course_category = $school;
 }
 
 ?>
@@ -218,9 +222,7 @@ foreach($school as $row){
 
 
 
-
-
-        $data_packet = array('name'=>$course_name,'code'=>$course_code, 'description'=>$course_description,"school_id"=>$_GET_URL_school_id);
+        $data_packet = array('name'=>$course_name,'code'=>$course_code, 'description'=>$course_description,"school_id"=>$_GET_URL_school_id,"course_category"=>$course_category);
 
         $mform->set_data($data_packet);
         $mform->display();
