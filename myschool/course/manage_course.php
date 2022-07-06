@@ -34,6 +34,7 @@
  require_once($CFG->dirroot.'/local/newwaves/functions/title.php');
  require_once($CFG->dirroot.'/local/newwaves/functions/gender.php');
  require_once($CFG->dirroot.'/local/newwaves/classes/school.php');
+ require_once($CFG->dirroot.'/local/newwaves/classes/Coursecategory.php');
 
 
 //************************* Check page accessibility *********************************************************
@@ -129,9 +130,19 @@ echo "<h2>{$getMySchoolName}<br/><small>Manage Courses (".number_format(count(($
        echo "<th class='py-3'>SN</th><th>Name</th><th>Short code</th><th class='text-center'>Action</th></tr>";
   echo "</thead>";
   echo "<tbody>";
+        $category = new Coursecategory();
         foreach($course as $row){
             $course_id = $row->id;
             $mdl_course_id = $row->mdl_course_id;
+
+            $getCategory = $category->getCategoryById($DB, $row->category_id);
+
+            //$categoryName = $getCategory['name'];
+            foreach($getCategory as $gc){
+                $categoryName = $gc->name;
+                $categoryName = "<span style='border-radius:10px;background-color:lightblue;padding-left:10px; padding-right:10px'><a title='Course Category information' href=''>{$categoryName}</a></span>";
+            }
+
 
             $assign_href = "window.location='assign_course.php?q=".mask($_GET_URL_school_id)."&c=".mask($course_id)."&m=".mask($mdl_course_id)."'";//
             $edit_href =  "window.location='edit_course.php?q=".mask($_GET_URL_school_id)."&c=".mask($course_id)."&m=".mask($mdl_course_id)."'";
@@ -145,7 +156,7 @@ echo "<h2>{$getMySchoolName}<br/><small>Manage Courses (".number_format(count(($
             echo "<tr>";
                 echo "<td class='text-center'>{$sn}.</td>";
 //                echo "<td>{$row->uuid}</td>";
-                echo "<td class='text-left'>{$row->full_name}<br/><small>Course Category | Course Details</small></td>";
+                echo "<td class='text-left'>{$row->full_name}<br/><small>{$categoryName} &nbsp; <a href='#' title='Course information'>Course Details</a></small></td>";
                 echo "<td class='text-left'>{$row->short_code}</td>";
 //                echo "<td class='text-left'>{$statusPane}</td>";
                 echo "<td class='text-right'>{$btnEdit} {$btnDelete} {$btnEnrol} {$btnAssign}  </td>";

@@ -60,6 +60,15 @@ class Coursecategory
         return $this->result;
     }
 
+    public function getCategoryById($DB, $categoryId){
+        $this->sqlQuery = "SELECT id, name, idnumber, description, descriptionformat, parent, sortorder, coursecount, visible,
+                           visibleold, timemodified, depth, path, theme from {course_categories} where id={$categoryId}";
+
+        $this->result = $DB->get_records_sql($this->sqlQuery);
+
+        return $this->result;
+    }
+
 
 
 }
