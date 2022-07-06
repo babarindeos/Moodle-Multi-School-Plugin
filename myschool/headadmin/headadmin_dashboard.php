@@ -57,6 +57,8 @@
      $manage_teacher = "manage_teachers.php?q=".mask($_SESSION['schoolid']);
      $manage_students = "manage_students.php?q=".mask($_SESSION['schoolid']);
      $manage_course = "../course/manage_course.php?q=".mask($_SESSION['schoolid']);
+     $grade_book = "../gradebook/books.php?q=".mask($_SESSION['schoolid']);
+     $contentbank = "../contentbank/resources.php?q=".mask($_SESSION['schoolid']);
 
      echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 px-1 py-1 text-center'
            style='border:1px solid #f1f1f1;background-color:#E67E22;color:#ffffff;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
@@ -87,6 +89,24 @@
                     style='border:1px solid #f1f1f1;background-color:#2ECC71;color:#ffffff;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
                     href='$manage_course' title='Manage Courses'>";
                         echo "<h2 class='mt-2'>Courses</h2>";
+    echo "</a></div>";
+    // end of col 3
+
+
+    // col 3
+    echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 px-1 py-1 text-center'
+                    style='border:1px solid #f1f1f1;background-color:#e65100;color:#ffffff;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
+                    href='$grade_book' title='Grade Books'>";
+                        echo "<h2 class='mt-2'>Grade Books</h2>";
+    echo "</a></div>";
+    // end of col 3
+
+
+    // col 3
+    echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 px-1 py-1 text-center'
+                    style='border:1px solid #f1f1f1;background-color:#7cb342;color:#ffffff;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
+                    href='$contentbank' title='Content Bank'>";
+                        echo "<h2 class='mt-2'>Content Bank</h2>";
     echo "</a></div>";
     // end of col 3
 
