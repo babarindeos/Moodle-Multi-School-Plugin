@@ -30,6 +30,7 @@ require_once($CFG->dirroot.'/local/newwaves/functions/gender.php');
 require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
 require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
 require_once($CFG->dirroot.'/local/newwaves/classes/auth.php');
+require_once($CFG->dirroot.'/local/newwaves/classes/course.php');
 
 
 //------------------------------------------------------------------------------
@@ -42,91 +43,42 @@ $PAGE->set_title('Delete Course');
 $PAGE->set_heading('Delete Course');
 
 
-// check for theCourseId
-$theCourseId = '';
-if (!isset($_GET['c']) || $_GET['c']==''){
-    $theCourseId = $_SESSION['course_id'];
-}else{
-    $_GET_URL_course_id = explode("-",htmlspecialchars(strip_tags($_GET['c'])));
-    $_GET_URL_course_id = $_GET_URL_course_id[1];
-
-    $theCourseId = $_GET_URL_course_id;
-}
-
-// check for theMdlCourseId
-$theMdlCourseId = '';
-if (!isset($_GET['m']) || $_GET['m']==''){
-    $theMdlCourseId = $_SESSION['mdl_course_id'];
-}else{
-    $_GET_URL_mdl_course_id = explode("-",htmlspecialchars(strip_tags($_GET['m'])));
-    $_GET_URL_mdl_course_id = $_GET_URL_mdl_course_id[1];
-
-    $theMdlCourseId = $_GET_URL_mdl_course_id;
-}
-
-
 
 
 
     //************************* Check page accessibility *********************************************************
     // Check and Get School Id from URL if set
 
-    if (!isset($_GET['q']) || $_GET['q']==''){
+    if (!isset($_GET['sid']) || $_GET['sid']==''){
         redirect($CFG->wwwroot.'/local/newwaves/newwaves_dashboard.php', "Unathorised to access the Course Update page");
     }else{
-        $_GET_URL_school_id = explode("-",htmlspecialchars(strip_tags($_GET['q'])));
-        $_GET_URL_school_id = $_GET_URL_school_id[1];
-        $_SESSION['school_id'] = $_GET_URL_school_id;
+        $_GET_URL_school_id = htmlspecialchars(strip_tags($_GET['sid']));
+
     }
 
 
-    if (!isset($_GET['c']) || $_GET['c']==''){
-        redirect($CFG->wwwroot.'/local/newwaves/newwaves_dashboard.php', "Unathorised to access the Course Update page");
-    }else{
-
-        $_GET_URL_course_id = explode("-",htmlspecialchars(strip_tags($_GET['c'])));
-        $_GET_URL_course_id = $_GET_URL_course_id[1];
-
-        // put this course into session  for postback purpose
-        $_SESSION['course_id'] = $_GET_URL_course_id;
-    }
-
-
-
-    if (!isset($_GET['m']) || $_GET['m']==''){
+    if (!isset($_GET['cid']) || $_GET['cid']==''){
         redirect($CFG->wwwroot.'/local/newwaves/newwaves_dashboard.php', "Unathorised to access the Course Update page");
     }else{
 
-        $_GET_URL_mdl_course_id = explode("-",htmlspecialchars(strip_tags($_GET['m'])));
-        $_GET_URL_mdl_course_id = $_GET_URL_mdl_course_id[1];
+        $_GET_URL_course_id = htmlspecialchars(strip_tags($_GET['cid']));
 
-        // put this course into session for postback purpose
-        $_SESSION['mdl_course_id'] = $_GET_URL_mdl_course_id;
-    }
-
-
-    // Check user accessibility status using role
-    if (!isset($_SESSION['schoolid']) || $_SESSION['schoolid']==''){
-        // if Session Variable Schoolid is not set, redirect from page
-        redirect($CFG->wwwroot."/local/newwaves/newwaves_dashboard.php", "Unathorised to access the Course Update page");
-    }
-
-
-    // check if the page URL and the session variable are not the same
-    if($_SESSION['schoolid']!=$_GET_URL_school_id){
-        redirect($CFG->wwwroot."/local/newwaves/newwaves_dashboard.php", "Unathorised to access the Course Update page");
     }
 
     //************************ End of Check page accessibility *****************************************************
 
-    // retrieve school information from DB
-    $school =  $DB->delete_records("newwaves_course",['id' => $_SESSION['course_id']]);
 
-// retrieve school information from DB
-    $school1 =  $DB->delete_records("course",['id' => $_SESSION['mdl_course_id']]);
+    // delete course from mdl_course_
+    $del_mdl_course =  $DB->delete_records("course",['id' => $_GET_URL_course_id]);
+
+    // delete course from newwaves_course
+    $newwaves_course = new Course();
+    $get_nes_course_id = $newwaves_course->getNESCourseIdByMdlCourseId($DB, $_GET_URL_course_id);
+
+    $del_nes_course = $DB->delete_records("newwaves_course",['id'=> $get_nes_course_id]);
 
 
-    redirect($CFG->wwwroot."/local/newwaves/myschool/course/manage_course.php?q=".mask($_GET_URL_school_id), "Course deleted");
+    redirect($CFG->wwwroot."/local/newwaves/myschool/course/manage_course.php?q=".mask($_GET_URL_school_id), "The selected course has been deleted");
 
 
 

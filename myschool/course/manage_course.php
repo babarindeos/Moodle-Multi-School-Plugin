@@ -141,7 +141,7 @@ echo "<h2>{$getMySchoolName}<br/><small>Manage Courses (".number_format(count(($
             $btnAssign = "<button title='Assign Course to Teacher' onclick={$assign_href} class='btn btn-success btn-sm rounded' ><i class='fas fa-chalkboard-teacher'></i> <small>Assign course</small></button>";
             $btnEdit = "<button title='Edit Course' onclick={$edit_href} class='btn btn-warning btn-sm rounded' ><i class='far fa-edit'></i> <small>Edit</small></button>";
             $btnEnrol = "<button title='Enrol Student to Course' onclick={$enrol_href} class='btn btn-primary btn-sm rounded' ><i class='fas fa-user-graduate'></i> <small>Enrol</small></button>";
-            $btnDelete = "<button title='Delete Course' onClick={$delete_href} class='btn btn-danger btn-sm rounded btn-delete'><i class='far fa-trash-alt'></i><small> Delete</small> </button>";
+            $btnDelete = "<button id='btn{$mdl_course_id}' title='Delete Course' class='btn btn-danger btn-sm rounded btn-delete' data-toggle='modal' data-target='#deleteModalCenter'><i class='far fa-trash-alt'></i><small> Delete</small> </button>";
             echo "<tr>";
                 echo "<td class='text-center'>{$sn}.</td>";
 //                echo "<td>{$row->uuid}</td>";
@@ -158,13 +158,13 @@ echo "<h2>{$getMySchoolName}<br/><small>Manage Courses (".number_format(count(($
 
 
 
-
+  require_once($CFG->dirroot.'/local/newwaves/includes/modal_delete.inc.php');
   require_once($CFG->dirroot.'/local/newwaves/lib/mdb.js.php');
 ?>
 
 
  <?php
-  $page = "manage_students.php";
+  $page = "manage_course.php";
 
   echo "<input id='select_delete_record' type='hidden' value='' />";
   echo "<input id='school_id' type='hidden' value='{$_GET_URL_school_id}' />";
@@ -186,12 +186,12 @@ echo "<h2>{$getMySchoolName}<br/><small>Manage Courses (".number_format(count(($
 
       $("#btn-delete-modal").on("click", function(){
           var school_id = $("#school_id").val();
-          var userId = $("#select_delete_record").val();
+          var courseId = $("#select_delete_record").val();
           var qcode = generateMask(60);
           var zcode = generateMask(60);
           var page = 'manage_students.php';
 
-          window.location='student/delete_student.php?q='+qcode+'&uid='+userId+'&z='+zcode+'&sid='+school_id+'&pg='+page+'&j='+qcode;
+          window.location='delete_course.php?q='+qcode+'&cid='+courseId+'&z='+zcode+'&sid='+school_id+'&pg='+page+'&j='+qcode;
       });
   });
 
