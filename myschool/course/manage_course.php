@@ -137,11 +137,14 @@ echo "<h2>{$getMySchoolName}<br/><small>Manage Courses (".number_format(count(($
 
             $getCategory = $category->getCategoryById($DB, $row->category_id);
 
-            //$categoryName = $getCategory['name'];
-            foreach($getCategory as $gc){
-                $categoryName = $gc->name;
-                $categoryName = "<span style='border-radius:10px;background-color:lightblue;padding-left:10px; padding-right:10px'><a title='Course Category information' href=''>{$categoryName}</a></span>";
+            $categoryName = '';
+            if (Count($getCategory)){
+              foreach($getCategory as $gc){
+                  $categoryName = $gc->name;
+                  $categoryName = "<span style='border-radius:10px;background-color:lightblue;padding-left:10px; padding-right:10px'><a title='Course Category information' href=''>{$categoryName}</a></span>";
+              }
             }
+
 
 
             $assign_href = "window.location='assign_course.php?q=".mask($_GET_URL_school_id)."&c=".mask($course_id)."&m=".mask($mdl_course_id)."'";//

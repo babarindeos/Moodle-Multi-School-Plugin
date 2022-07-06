@@ -31,6 +31,8 @@ require_once($CFG->dirroot.'/local/newwaves/functions/gender.php');
 require_once($CFG->dirroot.'/local/newwaves/lib/mdb.css.php');
 require_once($CFG->dirroot.'/local/newwaves/includes/page_header.inc.php');
 require_once($CFG->dirroot.'/local/newwaves/classes/auth.php');
+require_once($CFG->dirroot.'/local/newwaves/classes/school.php');
+require_once($CFG->dirroot.'/local/newwaves/classes/course.php');
 
 
 //------------------------------------------------------------------------------
@@ -40,7 +42,13 @@ global $DB;
 $PAGE->set_url(new moodle_url('/local/newwaves/myschool/course/edit_course.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Update Course');
-$PAGE->set_heading('Update Course');
+//$PAGE->set_heading('Update Course');
+
+
+// create page navigation at breadcrumb
+
+$PAGE->navbar->ignore_active();
+$PAGE->navbar->add(get_string('myschoolcoursecreatecourse', 'local_newwaves'), new moodle_url('/local/newwaves/myschool/course/create_course.php'));
 
 
 
@@ -67,46 +75,50 @@ if (!isset($_GET['m']) || $_GET['m']==''){
 }
 
 
-$mform = new updateCourse();
+
+$to_form = array('my_array'=>array("school_id"=>$_SESSION['schoolid']));
+
+
+
+$mform = new updateCourse(null, $to_form);
 
 if ($mform->is_cancelled()){
     redirect($CFG->wwwroot.'/local/newwaves/myschool/course/manage_course.php?q='.mask($_SESSION['school_id']), 'No Update is performed. The operation is cancelled.');
 
 }else if($fromform = $mform->get_data()){
 
-            $transaction = $DB->start_delegated_transaction();
+          $transaction = $DB->start_delegated_transaction();
 
 
-          $recordtoinsert = new stdClass();
-          $recordtoinsert->id = $_SESSION['course_id'];
-          $recordtoinsert->full_name = $fromform->name;
-          $recordtoinsert->short_code = $fromform->code;
-          $recordtoinsert->description = $fromform->description;
-          $recordtoinsert->creator_id = 1;
-          $recordtoinsert->category_id = $fromform->course_category;
-          $recordtoinsert->timecreated = time();
-          $recordtoinsert->timemodified = time();
+          $recordtoupdate = new stdClass();
+          $recordtoupdate->id = $_SESSION['course_id'];
+          $recordtoupdate->full_name = $fromform->name;
+          $recordtoupdate->short_code = $fromform->code;
+          $recordtoupdate->description = $fromform->description;
+          $recordtoupdate->creator_id = 1;
+          $recordtoupdate->category_id = $fromform->course_category;
+          $recordtoupdate->timemodified = time();
 
-          $update_school_users = $DB->update_record('newwaves_course', $recordtoinsert);
+          $update_school_course = $DB->update_record('newwaves_course', $recordtoupdate);
 
-        // get id of user in moodle_user tbl
-        $auth = new Auth();
-        $moodleUserId = $auth->getMoodleUserId($DB, $fromform->name);
+          // get id of user in moodle_user tbl
+          $auth = new Auth();
+          $moodleUserId = $auth->getMoodleUserId($DB, $fromform->name);
 
           // write to moodle_users
-          $createlogin = new stdClass();
-          $createlogin->category = $fromform->course_category;
-          $createlogin->fullname = $fromform->name;
-          $createlogin->summary = $fromform->description;
-          $createlogin->id = $moodleUserId;
+          $updateMdlCourse = new stdClass();
+          $updateMdlCourse->category = $fromform->course_category;
+          $updateMdlCourse->fullname = $fromform->name;
+          $updateMdlCourse->summary = $fromform->description;
+          $updateMdlCourse->id = $moodleUserId;
 
-          $update_user = $DB->update_record("course", $createlogin);
+          $update_mdl_course = $DB->update_record("course", $updateMdlCourse);
 
-    if ($update_school_users && $update_user){
+    if ($update_school_course && $update_mdl_course){
         $DB->commit_delegated_transaction($transaction);
     }
 
-    $schoolinfo_href = "edit_course.php?q=".mask($_SESSION['school_id'])."&u=".mask($fromform->teacher_id);
+    $schoolinfo_href = "edit_course.php?q=".mask($_SESSION['school_id'])."&c=".mask($_SESSION['course_id']);
     $newStudent = $fromform->name;
     redirect($CFG->wwwroot."/local/newwaves/myschool/course/{$schoolinfo_href}", "A Course with the name <strong>{$newStudent}</strong> has been successfully updated.");
 //    }
@@ -166,29 +178,23 @@ if ($mform->is_cancelled()){
 
 }
 
+// get course name
+$clCourse = new Course();
+$getCourse = $clCourse->getNESCourseBySchoolAndCourse($DB, $_GET_URL_school_id, $_GET_URL_course_id);
+//$getCourse = $clCourse->getMdlCourseBySchoolAndCourse($DB, $_GET_URL_school_id, $_GET_URL_course_id);
 
-//// get _GET variable
-//// Get School Id
-//if (!isset($_GET['q']) || $_GET['q']==''){
-//    redirect($CFG->wwwroot.'/local/newwaves/myschool/course/manage_course.php?q='.$_GET_URL_school_id);
-//}
-//
-//$_GET_URL_school_id = explode("-",htmlspecialchars(strip_tags($_GET['q'])));
-//$_GET_URL_school_id = $_GET_URL_school_id[1];
-//
-//// save school_id in session for purpose of postback
-//$_SESSION['school_id'] = $_GET_URL_school_id;
-//
-//// Get HeadAdmin id
-//if (!isset($_GET['u']) || $_GET['u']==''){
-//    redirect($CFG->wwwroot.'/local/newwaves/myschool/course/manage_course.php?q='.$_GET_URL_school_id);
-//}
-//
-//$_GET_URL_teacher_id = explode("-",htmlspecialchars(strip_tags($_GET['u'])));
-//$_GET_URL_teacher_id = $_GET_URL_teacher_id[1];
+$courseName = '';
+foreach($getCourse as $row){
+     $courseName = $row->full_name;
+}
 
+
+//get MySchool Name
+$getMySchoolName = School::getName($DB, $_SESSION['schoolid']);
 
 echo $OUTPUT->header();
+echo "<h2>{$getMySchoolName}<div class='mt-1'><small>{$courseName}</small></div></h2>";
+
 
 
 // retrieve school information from DB
@@ -222,7 +228,9 @@ foreach($school as $row){
 
 
 
-        $data_packet = array('name'=>$course_name,'code'=>$course_code, 'description'=>$course_description,"school_id"=>$_GET_URL_school_id,"course_category"=>$course_category);
+        $data_packet = array('name'=>$course_name,'code'=>$course_code, 'description'=>$course_description,
+                             "school_id"=>$_GET_URL_school_id,"course_category"=>$course_category,
+                             "creator_id"=>$USER->id);
 
         $mform->set_data($data_packet);
         $mform->display();
