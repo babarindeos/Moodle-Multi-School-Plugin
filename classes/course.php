@@ -52,6 +52,24 @@
       return $mdl_course_id;
    }
 
+   public function getNESCourseIdByMdlCourseId($DB, $mdlCourseId){
+      $this->sqlQuery = "Select id from {newwaves_course} where mdl_course_id={$mdlCourseId}";
+      $output = $DB->get_records_sql($this->sqlQuery);
+
+      $nes_course_id = '';
+      foreach($output as $row){
+          $nes_course_id = $row->id;
+      }
+      
+      return $nes_course_id;
+   }
+
+   public function delNewwavesCourse($DB, $mdlCourseId){
+
+       $this->sqlQuery = "Delete from {newwaves_course} where mdl_course_id={$mdlCourseId}";
+       $DB->get_records_sql($this->sqlQuery);
+   }
+
  }
 
 
