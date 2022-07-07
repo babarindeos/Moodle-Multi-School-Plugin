@@ -37,3 +37,4 @@ $string['myschoolcoursecreatecategory'] = "Create Category";
 $string['myschoolheadadmincreatestudent'] = "Create Student";
 $string['myschoolheadadminmanagestudents'] = "Manage Students";
 $string['myschoolcourseassigncourse'] = "Assign Course";
+$string['myschoolgradebookbooks'] = "Gradebooks";

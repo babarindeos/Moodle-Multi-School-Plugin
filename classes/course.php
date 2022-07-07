@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 // This file is part of Newwaves Integrator Plugin
 //
@@ -60,8 +60,15 @@
       foreach($output as $row){
           $nes_course_id = $row->id;
       }
-      
+
       return $nes_course_id;
+   }
+
+   public function getNESCourseBySchoolAndMdlCourseId($DB, $schoolId, $mdlCourseId){
+      $this->sqlQuery = "Select * from {newwaves_course} where school_id={$schoolId} and mdl_course_id={$mdlCourseId}";
+      $output = $DB->get_records_sql($this->sqlQuery);
+
+      return $output;
    }
 
    public function delNewwavesCourse($DB, $mdlCourseId){
