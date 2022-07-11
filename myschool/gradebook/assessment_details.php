@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package     manage_gradebooks
+ * @package     Assessment details
  * @author      Seyibabs
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @var stdClass $plugin
@@ -36,13 +36,14 @@
  require_once($CFG->dirroot.'/local/newwaves/classes/school.php');
  require_once($CFG->dirroot.'/local/newwaves/classes/Coursecategory.php');
  require_once($CFG->dirroot.'/local/newwaves/classes/gradebook.php');
+ require_once($CFG->dirroot.'/local/newwaves/classes/course.php');
 
 
 //************************* Check page accessibility *********************************************************
 // Check and Get School Id from URL if set
 if (!isset($_GET['q']) || $_GET['q']==''){
     // URL ID not set redirect from page
-    redirect($CFG->wwwroot.'/local/newwaves/newwaves_dashboard.php', "Unauthorised to access the Gradebooks");
+    redirect($CFG->wwwroot.'/local/newwaves/newwaves_dashboard.php', "Unauthorised to access the Gradebook Details");
 }else{
     // URL ID set collect ID into page variable and continue
     $_GET_URL_school_id = explode("-",htmlspecialchars(strip_tags($_GET['q'])));
@@ -52,13 +53,35 @@ if (!isset($_GET['q']) || $_GET['q']==''){
 // Check user accessibility status using role
 if (!isset($_SESSION['schoolid']) || $_SESSION['schoolid']==''){
     // if Session Variable Schoolid is not set, redirect from page
-    redirect($CFG->wwwroot."/local/newwaves/newwaves_dashboard.php", "Unauthorised to access the Gradebooks");
+    redirect($CFG->wwwroot."/local/newwaves/newwaves_dashboard.php", "Unauthorised to access the Gradebook Details");
 }
 
 
 // check if the page URL and the session variable are not the same
 if($_SESSION['schoolid']!=$_GET_URL_school_id){
-    redirect($CFG->wwwroot."/local/newwaves/newwaves_dashboard.php", "Unauthorised to access the Gradebooks");
+    redirect($CFG->wwwroot."/local/newwaves/newwaves_dashboard.php", "Unauthorised to access the Gradebook Details");
+}
+
+
+// Check and Get Course Id from URL if set
+if (!isset($_GET['c']) || $_GET['c']==''){
+    // URL ID not set redirect from page
+    redirect($CFG->wwwroot.'/local/newwaves/newwaves_dashboard.php', "Unauthorised to access the Gradebook Details");
+}else{
+    // URL ID set collect ID into page variable and continue
+    $_GET_URL_course_id = explode("-",htmlspecialchars(strip_tags($_GET['c'])));
+    $_GET_URL_course_id = $_GET_URL_course_id[1];
+}
+
+
+// Check and Get Grade Item Id from URL if set
+if (!isset($_GET['item']) || $_GET['item']==''){
+    // URL ID not set redirect from page
+    redirect($CFG->wwwroot.'/local/newwaves/newwaves_dashboard.php', "Unauthorised to access the Gradebook Details");
+}else{
+    // URL ID set collect ID into page variable and continue
+    $_GET_URL_item_id = explode("-",htmlspecialchars(strip_tags($_GET['item'])));
+    $_GET_URL_item_id = $_GET_URL_item_id[1];
 }
 
 //************************ End of Check page accessibility *****************************************************
@@ -71,8 +94,11 @@ global $DB;
 // set page
 $PAGE->set_url(new moodle_url('/local/newwaves/myschool/gradebook/books.php'));
 $PAGE->set_context(\context_system::instance());
-$PAGE->set_title('Gradebooks');
-//$PAGE->set_heading('Course Information');
+$PAGE->set_title('Assessment Details');
+//$PAGE->set_heading('Newwaves Multi-School LMS');
+
+
+
 
 $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('myschoolgradebookbooks','local_newwaves'), new moodle_url('/local/newwaves/myschool/gradebook/books.php'));
@@ -90,13 +116,27 @@ $gradebookItems = new Gradebook();
 $getGradebookItems = $gradebookItems->getGradeBooksBySchoolId($DB, $_GET_URL_school_id);
 
 
+//***********************************************************************************************
+// get course name
 
-//$schools = $DB->get_records('newwaves_schools');
-//var_dump($schools);
+$clCourse = new Course();
+$getCourse = $clCourse->getNESCourseBySchoolAndMdlCourseId($DB, $_GET_URL_school_id, $_GET_URL_course_id);
+//$getCourse = $clCourse->getMdlCourseBySchoolAndCourse($DB, $_GET_URL_school_id, $_GET_URL_course_id);
+
+$courseName = '';
+foreach($getCourse as $row){
+     $courseName = $row->full_name;
+}
+
+//***********************************************************************************************
+
+
+
+
 
 
 echo $OUTPUT->header();
-echo "<h2>{$getMySchoolName}<br/><small>Gradebooks (".number_format(count(($getGradebookItems))).")</small></h2>";
+echo "<h2>{$getMySchoolName}<br/><small>{$courseName} Gradebook </small></h2>";
 
 
 
@@ -107,8 +147,59 @@ echo "<h2>{$getMySchoolName}<br/><small>Gradebooks (".number_format(count(($getG
 
  <hr/>
 
+ <!-- Grade Infromation //-->
+ <div class='row mt-5 mb-5 rounded border ml-1 mr-1 py-3'>
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <h5 class='font-weight-normal'>Grade Information</h5>
+            <hr/>
+
+            <?php
+                  $gradebook = new GradeBook();
+                  $getGradeItem = $gradebook->getGradeBookItemByItemId($DB, $_GET_URL_item_id);
+                  foreach($getGradeItem as $row){
+                      $itemName = $row->itemname;
+                      $assessmentType = ucwords($row->itemmodule);
+                      $gradeMax = number_format($row->grademax, 2);
+                      $gradeMin = number_format($row->grademin, 2);
+                      $gradepass = number_format($row->gradepass, 2);
+                  }
 
 
+
+                  echo "<table class='table table-striped rounded'>";
+                  echo "<tr><td class='font-weight-normal'>Assessment Name</td><td colspan='4'>{$itemName}</td></tr>";
+                  echo "<tr><td class='font-weight-normal'>Assessment Type</td><td colspan='4'>{$assessmentType}</td></tr>";
+                  echo "<tr><td class='font-weight-normal'>Grade Max.</td><td>{$gradeMax}</td>";
+                  echo "<td class='font-weight-normal'>Grade Min.</td><td>{$gradeMin}</td></tr>";
+                  echo "<tr><td class='font-weight-normal'>Pass Grade</td><td colspan='4'>{$gradepass}</td></tr>";
+                  echo "</table>";
+             ?>
+
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <h5 class='font-weight-normal'>Course Information</h5>
+            <hr/>
+
+            <?php
+                  //echo $_GET_URL_course_id;
+
+                  echo "<table class='table table-striped rounded'>";
+                  echo "<tr><td>Course Category</td><td></td></tr>";
+                  echo "<tr><td>Teacher</td><td></td></tr>";
+                  echo "<tr><td>Participants</td><td></td></tr>";
+
+                  echo "</table>";
+             ?>
+    </div>
+ </div>
+ <!-- end of Grade Information //-->
+
+
+
+ <!-- ******************** Participants ********************************* //-->
+ <h4>Participants</h4>
+ <hr/>
  <?php
 
 
@@ -117,7 +208,7 @@ echo "<h2>{$getMySchoolName}<br/><small>Gradebooks (".number_format(count(($getG
   echo "<table class='table table-stripped border' id='tblData'>";
   echo "<thead>";
   echo "<tr class='font-weight-bold' >";
-       echo "<th class='py-3'>SN</th><th>Course</th><th class='text-center'>Assessment</th><th>Type</th><th class='text-center'>Grade Max</th><th class='text-center'>Grade Pass</th><th>Teacher</th><th>Date Created</th></tr>";
+       echo "<th class='py-3'>SN</th><th>Course</th><th>Assessment</th><th>Type</th><th class='text-center'>Grade Max</th><th class='text-center'>Grade Pass</th><th>Teacher</th><th>Date Created</th></tr>";
   echo "</thead>";
   echo "<tbody>";
         $category = new Coursecategory();
@@ -135,13 +226,11 @@ echo "<h2>{$getMySchoolName}<br/><small>Gradebooks (".number_format(count(($getG
             $fullnameLink = "book_details.php?q=".mask($_GET_URL_school_id)."&c=".mask($row->courseid)."&item=".mask($row->id);
             $courseName = "<a title='See Gradebook details' style='color:blue; text-decoration:underline;' href={$fullnameLink}>{$row->full_name}</a>";
 
-            $assessmentLink = "assessment_details.php?q=".mask($_GET_URL_school_id)."&c=".mask($row->courseid)."&item=".mask($row->id);
-            $assessment = "<a title='See Assessment Details' style='color:blue; text-decoration:underline;' href={$assessmentLink}>{$row->itemname}</a>";
             echo "<tr>";
                 echo "<td class='text-center'>{$sn}.</td>";
 //                echo "<td>{$row->uuid}</td>";
                 echo "<td class='text-left'>{$courseName}<br/><small>{$categoryName}</small></td>";
-                echo "<td class='text-center'>{$assessment}</td>";
+                echo "<td class='text-left'>{$row->itemname}</td>";
                 echo "<td class='text-left'>{$itemModule}</td>";
                 echo "<td class='text-center'>{$gradeMax}</td>";
                 echo "<td class='text-center'>{$gradeMin}</td>";

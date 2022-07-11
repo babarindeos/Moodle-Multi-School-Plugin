@@ -94,8 +94,11 @@ global $DB;
 // set page
 $PAGE->set_url(new moodle_url('/local/newwaves/myschool/gradebook/books.php'));
 $PAGE->set_context(\context_system::instance());
-$PAGE->set_title('Gradebooks');
-//$PAGE->set_heading('Course Information');
+$PAGE->set_title('Gradebook Details');
+//$PAGE->set_heading('Newwaves Multi-School LMS');
+
+
+
 
 $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('myschoolgradebookbooks','local_newwaves'), new moodle_url('/local/newwaves/myschool/gradebook/books.php'));
@@ -147,13 +150,40 @@ echo "<h2>{$getMySchoolName}<br/><small>{$courseName} Gradebook </small></h2>";
  <!-- Grade Infromation //-->
  <div class='row mt-5 mb-5 rounded border ml-1 mr-1 py-3'>
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-            <h5>Grade Information</h5>
+            <h5 class='font-weight-normal'>Grade Information</h5>
             <hr/>
+
+            <?php
+                  $gradebook = new GradeBook();
+                  $getGradeItem = $gradebook->getGradeBookItemByItemId($DB, $_GET_URL_item_id);
+
+
+                  echo "<table class='table table-striped rounded'>";
+                  echo "<tr><td>Assessment Name</td><td colspan='4'></td></tr>";
+                  echo "<tr><td>Assessment Type</td><td colspan='4'></td></tr>";
+                  echo "<tr><td>Grade Type</td><td colspan='4'></td></tr>";
+                  echo "<tr><td>Grade Max.</td><td></td>";
+                  echo "<td>Grade Min.</td><td></td></tr>";
+                  echo "<tr><td>Pass Grade</td><td colspan='4'></td></tr>";
+                  echo "</table>";
+             ?>
+
     </div>
 
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-            <h5>Course Information</h5>
+            <h5 class='font-weight-normal'>Course Information</h5>
             <hr/>
+
+            <?php
+                  //echo $_GET_URL_course_id;
+
+                  echo "<table class='table table-striped rounded'>";
+                  echo "<tr><td>Course Category</td><td></td></tr>";
+                  echo "<tr><td>Teacher</td><td></td></tr>";
+                  echo "<tr><td>Participants</td><td></td></tr>";
+
+                  echo "</table>";
+             ?>
     </div>
  </div>
  <!-- end of Grade Information //-->
