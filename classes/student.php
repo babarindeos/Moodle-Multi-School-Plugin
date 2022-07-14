@@ -39,6 +39,19 @@
           return $studentData;
       }
 
+      public function getStudentsProfileBySchoolId($DB, $schoolId){
+          $this->role = "student";
+
+          $this->sqlQuery = "Select u.id, u.mdl_userid, u.schoolid, u.uuid, u.surname, u.firstname, u.middlename, u.gender, u.email,
+                             u.phone, s.name, c.class from {newwaves_schools_users} u left join {newwaves_schools} s on
+                             u.schoolid=s.id left join {newwaves_schools_students} c on u.uuid=c.admission_no
+                             where u.schoolid={$schoolId} and u.role='{$this->role}' order by u.surname, u.firstname, u.middlename";
+          $studentData = $DB->get_records_sql($this->sqlQuery);
+          return $studentData;
+      }
+
+
+
 
   }
 
