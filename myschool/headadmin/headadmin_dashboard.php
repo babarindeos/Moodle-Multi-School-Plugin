@@ -60,46 +60,56 @@
      $grade_book = "../gradebook/books.php?q=".mask($_SESSION['schoolid']);
      $contentbank = "../contentbank/resources.php?q=".mask($_SESSION['schoolid']);
 
+     $reportsheet = "../reportsheets/studentslist.php?q=".mask($_SESSION['schoolid']);
+     $academic_report = "../academic_report/studentslist.php?q=".mask($_SESSION['schoolid']);
+     $global_report = "#";
+
      echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 px-1 py-1 text-center'
            style='border:1px solid #f1f1f1;background-color:#E67E22;color:#ffffff;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
            href='{$manage_schooladmin}' title='Manage School Admins'>";
-               echo "<h2 class='mt-2'>School Admins</h2>";
+            echo "<div style='float:left; border:1px solid black;text-align:center;'>icon</div>";
+            echo "<div><h2 class='mt-2'>School Admins</h2></div>";
      echo "</a></div>";
      // end of col 1
 
-    // col 1
+    // col 2
     echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 px-1 py-1 text-center'
           style='border:1px solid #f1f1f1;background-color:#3498DB;color:#ffffff;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
           href='{$manage_teacher}' title='Manage Teachers'>";
               echo "<h2 class='mt-2'>Teachers</h2>";
+    echo "</a></div>";
+    // end of col 2
+
+
+    // col 3
+    echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 px-1 py-1 text-center'
+                    style='border:1px solid #f1f1f1;background-color:#F1C40F ;color:#ffffff;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
+                    href='{$manage_students}' title='Manage Students'>";
+                        echo "<h2 class='mt-2'>Students</h2>";
+    echo "</a></div>";
+    // end of col 3
+
+  echo "</div>";
+  // end of row 1
+
+  // row 2
+  echo "<div class='row px-3'>";
+    // col 1
+    echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 px-1 py-1 text-center'
+                    style='border:1px solid #f1f1f1;background-color:#2ECC71;color:#ffffff;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
+                    href='$manage_course' title='Manage Courses'>";
+                        echo "<h2 class='mt-2'>Courses</h2>";
     echo "</a></div>";
     // end of col 1
 
 
     // col 2
     echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 px-1 py-1 text-center'
-                    style='border:1px solid #f1f1f1;background-color:#F1C40F ;color:#ffffff;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
-                    href='{$manage_students}' title='Manage Students'>";
-                        echo "<h2 class='mt-2'>Students</h2>";
-    echo "</a></div>";
-    // end of col 2
-
-    // col 3
-    echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 px-1 py-1 text-center'
-                    style='border:1px solid #f1f1f1;background-color:#2ECC71;color:#ffffff;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
-                    href='$manage_course' title='Manage Courses'>";
-                        echo "<h2 class='mt-2'>Courses</h2>";
-    echo "</a></div>";
-    // end of col 3
-
-
-    // col 3
-    echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 px-1 py-1 text-center'
                     style='border:1px solid #f1f1f1;background-color:#e65100;color:#ffffff;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
                     href='$grade_book' title='Grade Books'>";
                         echo "<h2 class='mt-2'>Grade Books</h2>";
     echo "</a></div>";
-    // end of col 3
+    // end of col 2
 
 
     // col 3
@@ -112,7 +122,40 @@
 
  echo "</div>";
 
- // end of row 1
+ // end of row 2
+
+ // row 3
+ echo "<div class='row px-3'>";
+       // col 1
+       echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 px-1 py-1 text-center'
+                       style='border:1px solid #f1f1f1;background-color:#7cb342;color:#ffffff;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
+                       href='$reportsheet' title='Report Sheet'>";
+                           echo "<h2 class='mt-2'>Report Sheets</h2>";
+       echo "</a></div>";
+       // end of col 1
+
+       // col 2
+       echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 px-1 py-1 text-center'
+                       style='border:1px solid #f1f1f1;background-color:#7cb342;color:#ffffff;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
+                       href='$academic_report' title='Academic Reports'>";
+                           echo "<h2 class='mt-2'>Academic Reports</h2>";
+       echo "</a></div>";
+       // end of col 2
+
+
+       // col 3
+       echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 px-1 py-1 text-center'
+                       style='border:1px solid #f1f1f1;background-color:#7cb342;color:#ffffff;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
+                       href='$global_report' title='Global Report'>";
+                           echo "<h2 class='mt-2'>Global Report</h2>";
+       echo "</a></div>";
+       // end of col 3
+
+ echo "</div>";
+
+ // end of row 3
+
+
 
 
 
