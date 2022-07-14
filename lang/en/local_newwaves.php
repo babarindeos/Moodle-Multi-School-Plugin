@@ -38,3 +38,5 @@ $string['myschoolheadadmincreatestudent'] = "Create Student";
 $string['myschoolheadadminmanagestudents'] = "Manage Students";
 $string['myschoolcourseassigncourse'] = "Assign Course";
 $string['myschoolgradebookbooks'] = "Gradebooks";
+$string['myschoolreportsheetstudentslist'] = "Report Sheets - Students List";
+$string['myschoolreportsheetsreport'] = "Report Sheet";
