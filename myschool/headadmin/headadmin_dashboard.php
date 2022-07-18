@@ -67,7 +67,7 @@
      echo "<div class='col-xs-12 col-sm-12 col-md-4 col-lg-4 px-1 py-1 text-center'
            style='border:1px solid #f1f1f1;background-color:#E67E22;color:#ffffff;border-radius:10px;'><a class='px-5 py-5' style='color:#ffffff;'
            href='{$manage_schooladmin}' title='Manage School Admins'>";
-            echo "<div style='float:left; border:1px solid black;text-align:center;'>icon</div>";
+            //echo "<div style='float:left; border:1px solid black;text-align:center;'><i class='fas fa-user-astronaut'></i></div>";
             echo "<div><h2 class='mt-2'>School Admins</h2></div>";
      echo "</a></div>";
      // end of col 1
