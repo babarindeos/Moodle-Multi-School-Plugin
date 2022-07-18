@@ -48,9 +48,8 @@
 
  }
 
- 
 
- if ($role=="headadmin")
+ if($role=="headadmin")
  {
     redirect($CFG->wwwroot."/local/newwaves/myschool/headadmin/headadmin_dashboard.php?q=".mask($schoolid));
  }else if($role=="schooladmin"){
