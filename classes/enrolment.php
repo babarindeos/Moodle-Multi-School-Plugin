@@ -39,6 +39,14 @@
           return $studentsEnrolled;
       }
 
+      public function getCoursesEnrolledforStudent($DB, $studentId){
+            $sqlQuery = "select ue.id, ue.enrolid, ue.userid, ue.timestart, ue.timeend, ue.modifierid, ue.timecreated,
+                         ue.timemodified, e.courseid, c.fullname, c.shortname, c.summary from {user_enrolments} ue inner
+                         join {enrol} e on ue.enrolid=e.id inner join {course} c on e.courseid=c.id where ue.userid={$studentId}";
+            $courses = $DB->get_records_sql($sqlQuery);
+            return $courses;
+      }
+
   }
 
 
