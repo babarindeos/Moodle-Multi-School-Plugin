@@ -37,6 +37,13 @@ class GradeBook{
       return $this->result;
   }
 
+
+  public function getGradesByCourseforStudent($DB, $courseId, $studentId){
+        $this->sqlQuery = "select gi.id, gi.courseid, gi.itemname, gg.rawgrade, gg.rawgrademax, gg.rawgrade, gg.finalgrade,
+                           gg.timecreated from {grade_items} gi inner join {grade_grades} gg on gi.id=gg.itemid";
+        $this->grades = p
+  }
+
 }
 
 

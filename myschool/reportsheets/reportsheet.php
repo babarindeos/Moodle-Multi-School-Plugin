@@ -163,9 +163,12 @@ foreach($getStudentProfile as $row){
           $enrolment = new Enrolment();
           $get_courses = $enrolment->getCoursesEnrolledforStudent($DB, $_GET_URL_Mdl_Student_id);
 
-          echo "<table>";
+          echo "<table class='table table-striped table-hover'>";
           foreach($get_courses as $row){
 
+                echo "<tr>";
+                  echo "<td>{$row->fullname} ($row->shortname)</td>";
+                echo "</tr>";
           }
           echo "</table>";
 
